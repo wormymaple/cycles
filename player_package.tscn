@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
-[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/character_body.png" id="2_k626h"]
+[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="2_k626h"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7dm0k"]
 radius = 1.0
@@ -25,5 +25,4 @@ shape = SubResource("CircleShape2D_7dm0k")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 scale = Vector2(0.15, 0.15)
-
 texture = ExtResource("2_k626h")
