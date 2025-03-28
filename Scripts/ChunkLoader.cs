@@ -6,14 +6,16 @@ public partial class ChunkLoader : Node2D
     public class Chunk
     {
         public string Biome;
-        public TileMapLayer MapLayer;
+        public ChunkGenerator ChunkScript;
         public Vector2I chunkPos;
 
-        public Chunk(string _biome, Vector2I _chunkPos, TileMapLayer _mapLayer)
+        public Chunk(string _biome, Vector2I _chunkPos, ChunkGenerator _chunkScript)
         {
             Biome = _biome;
-            MapLayer = _mapLayer;
+            ChunkScript = _chunkScript;
             chunkPos = _chunkPos;
+
+            ChunkScript.GenerateChunk();
         }
     }
     
@@ -72,11 +74,11 @@ public partial class ChunkLoader : Node2D
 
     void LoadChunk(Vector2I chunkPos)
     {
-        TileMapLayer newTileMap = chunkScene.Instantiate() as TileMapLayer;
-        AddChild(newTileMap);
-        newTileMap.GlobalPosition = (Vector2)chunkPos * chunkSize;
+        ChunkGenerator newChunkScene = chunkScene.Instantiate() as ChunkGenerator;
+        AddChild(newChunkScene);
+        newChunkScene.GlobalPosition = (Vector2)chunkPos * chunkSize;
 
-        Chunk newChunk = new("null", chunkPos, newTileMap);
+        Chunk newChunk = new("null", chunkPos, newChunkScene);
         loadedChunks.Add(newChunk);
     }
 
@@ -85,7 +87,7 @@ public partial class ChunkLoader : Node2D
         if (!loadedChunks.Contains(chunk))
             GD.PrintErr("Attempted to unload unloaded chunk! Pos: " + chunk.chunkPos);
         
-        chunk.MapLayer.QueueFree();
+        chunk.ChunkScript.QueueFree();
         loadedChunks.Remove(chunk);
     }
 }

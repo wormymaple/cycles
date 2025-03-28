@@ -18,6 +18,6 @@ position = Vector2(324, 176)
 
 [node name="Player" parent="PlayerPackage" index="0"]
 position = Vector2(28.0124, 11.4147)
-speed = 500.0
+speed = 128.0
 
 [editable path="PlayerPackage"]
