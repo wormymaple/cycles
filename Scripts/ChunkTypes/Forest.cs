@@ -6,6 +6,7 @@ public partial class Forest : ChunkGenerator
     [Export] int chunkSize;
     [Export] int biomeSetSource;
     RandomNumberGenerator rng = new();
+    
     public override void GenerateChunk()
     {   
         TileSetSource tileSetSource = GetTileSet().GetSource(biomeSetSource);
