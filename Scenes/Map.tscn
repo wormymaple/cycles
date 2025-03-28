@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://clwnpa0et0auh"]
+
+[ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/ChunkLoader.cs" id="1_s486e"]
+[ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/chunk.tscn" id="2_7yn8b"]
+[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://player_package.tscn" id="3_etk83"]
+
+[node name="Map" type="Node2D"]
+
+[node name="ChunkLoader" type="Node2D" parent="." node_paths=PackedStringArray("updateTarget")]
+script = ExtResource("1_s486e")
+updateTarget = NodePath("../PlayerPackage/Player")
+chunkScene = ExtResource("2_7yn8b")
+chunkDist = 1
+chunkSize = 1024.0
+
+[node name="PlayerPackage" parent="." instance=ExtResource("3_etk83")]
+position = Vector2(324, 176)
+
+[node name="Player" parent="PlayerPackage" index="0"]
+position = Vector2(28.0124, 11.4147)
+speed = 128.0
+
+[editable path="PlayerPackage"]
