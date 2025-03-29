@@ -1,3 +1,12 @@
+[gd_scene load_steps=5 format=3 uid="uid://cumt1j3h4nwn3"]
+
+[ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
+[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="2_k626h"]
+
+[sub_resource type="Curve" id="Curve_k626h"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.443709, 1), 0.0, 0.0, 0, 0, Vector2(0.966887, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [gd_scene load_steps=6 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
@@ -25,6 +34,9 @@ lock_rotation = true
 angular_damp = 10.0
 script = ExtResource("1_k626h")
 speed = 70.0
+dashCurve = SubResource("Curve_k626h")
+dashPower = 280.0
+dashTimeMax = 0.3
 mainCamera = NodePath("../Camera2D")
 hand1 = NodePath("Body/Hand1")
 hand2 = NodePath("Body/Hand2")
@@ -32,6 +44,7 @@ handOffset = Vector2(8, 4)
 handWiggleIntensity = 1.0
 handWiggleSpeed = 10.0
 forceHandPerspCutoff = 0.1
+
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
