@@ -31,4 +31,6 @@ dashTimeMax = 0.3
 shape = SubResource("CircleShape2D_7dm0k")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(0.15, 0.15)
+
 texture = ExtResource("2_k626h")

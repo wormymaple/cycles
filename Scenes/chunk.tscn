@@ -1,0 +1,19 @@
+[gd_scene load_steps=5 format=3 uid="uid://yfbf3udixswl"]
+
+[ext_resource type="Texture2D" uid="uid://cn8s2frx3hq3j" path="res://Sprites/GrassTileSet.png" id="1_byomg"]
+[ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bp61h"]
+texture = ExtResource("1_byomg")
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_s486e"]
+sources/0 = SubResource("TileSetAtlasSource_bp61h")
+
+[node name="Chunk" type="TileMapLayer"]
+tile_set = SubResource("TileSet_s486e")
+script = ExtResource("2_bp61h")
+chunkSize = 64
