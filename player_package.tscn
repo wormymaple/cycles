@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=6 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
+[ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
 [ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="2_k626h"]
 [ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="3_jkqk0"]
 
@@ -9,10 +10,14 @@ radius = 1.0
 
 [node name="PlayerPackage" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 zoom = Vector2(10, 10)
-position_smoothing_enabled = true
 position_smoothing_speed = 0.5
+script = ExtResource("1_kgrhw")
+target = NodePath("../Player")
+speed = 1.0
+zoomMoveSpeed = 2.0
+targetZoom = 5.0
 
 [node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2")]
 gravity_scale = 0.0
