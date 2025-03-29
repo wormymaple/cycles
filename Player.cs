@@ -11,6 +11,12 @@ public partial class Player : RigidBody2D
     [Export] private Curve dashCurve;
     [Export] private float dashPower;
     [Export] private float dashTimeMax;
+	[Export] Camera2D mainCamera;
+	[Export] Sprite2D hand1, hand2;
+	[Export] Vector2 handOffset;
+	[Export] float handWiggleIntensity, handWiggleSpeed;
+	float handWiggleT;
+	[Export] float forceHandPerspCutoff;
 
     private Vector2 dashDir;
     private bool isDashing;
@@ -54,9 +60,32 @@ public partial class Player : RigidBody2D
         }
         else
         {
-            Move();
+            Move((float)delta);
         }
+		
+		Animate();
     }
+    
+    void Animate()
+    {
+		Vector2 mousePos = mainCamera.GetGlobalMousePosition();
+		Vector2 lookDir = (mousePos - GlobalPosition).Normalized();
+
+		Vector2 perpDir = lookDir.Rotated(Mathf.Pi / 2);
+		Vector2 handWiggle = Mathf.Sin(handWiggleT * handWiggleSpeed) * handWiggleIntensity * lookDir;
+		hand1.Position = perpDir * handOffset + handWiggle;
+		hand2.Position = -perpDir * handOffset - handWiggle;
+
+		hand1.ZIndex = perpDir.Y < 0 ? -1 : 1;
+		hand2.ZIndex = -perpDir.Y < 0 ? -1 : 1;
+
+		if (Mathf.Abs(lookDir.X) < forceHandPerspCutoff)
+		{
+		int order = lookDir.Y < 0 ? -1 : 1;
+		hand1.ZIndex = order;
+		hand2.ZIndex = order;
+      }
+  	}
 
     public void _input(InputEvent @event)
     {
@@ -76,7 +105,9 @@ public partial class Player : RigidBody2D
     }
 
     void Move()
-    {
-        LinearVelocity = Input.GetVector("left", "right", "up", "down") * speed;
+    {		
+		Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
+		handWiggleT += delta * inputDir.Length();
+		LinearVelocity = inputDir * speed;
     }
 }

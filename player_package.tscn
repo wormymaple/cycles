@@ -7,17 +7,28 @@
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.443709, 1), 0.0, 0.0, 0, 0, Vector2(0.966887, 0), 0.0, 0.0, 0, 0]
 point_count = 3
 
+[gd_scene load_steps=6 format=3 uid="uid://cumt1j3h4nwn3"]
+
+[ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
+[ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
+[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="2_k626h"]
+[ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="3_jkqk0"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_7dm0k"]
 radius = 1.0
 
 [node name="PlayerPackage" type="Node2D"]
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 zoom = Vector2(10, 10)
-position_smoothing_enabled = true
 position_smoothing_speed = 0.5
+script = ExtResource("1_kgrhw")
+target = NodePath("../Player")
+speed = 1.0
+zoomMoveSpeed = 2.0
+targetZoom = 5.0
 
-[node name="Player" type="RigidBody2D" parent="."]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2")]
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
@@ -26,11 +37,27 @@ speed = 70.0
 dashCurve = SubResource("Curve_k626h")
 dashPower = 280.0
 dashTimeMax = 0.3
+mainCamera = NodePath("../Camera2D")
+hand1 = NodePath("Body/Hand1")
+hand2 = NodePath("Body/Hand2")
+handOffset = Vector2(8, 4)
+handWiggleIntensity = 1.0
+handWiggleSpeed = 10.0
+forceHandPerspCutoff = 0.1
+
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
 
-[node name="Sprite2D" type="Sprite2D" parent="Player"]
-scale = Vector2(0.15, 0.15)
-
+[node name="Body" type="Sprite2D" parent="Player"]
 texture = ExtResource("2_k626h")
+
+[node name="Hand1" type="Sprite2D" parent="Player/Body"]
+z_index = 1
+texture = ExtResource("3_jkqk0")
+offset = Vector2(-0.5, -0.5)
+
+[node name="Hand2" type="Sprite2D" parent="Player/Body"]
+z_index = 1
+texture = ExtResource("3_jkqk0")
+offset = Vector2(-0.5, -0.5)
