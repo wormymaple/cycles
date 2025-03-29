@@ -81,10 +81,10 @@ public partial class Player : RigidBody2D
 
 		if (Mathf.Abs(lookDir.X) < forceHandPerspCutoff)
 		{
-		int order = lookDir.Y < 0 ? -1 : 1;
-		hand1.ZIndex = order;
-		hand2.ZIndex = order;
-      }
+			int order = lookDir.Y < 0 ? -1 : 1;
+			hand1.ZIndex = order;
+			hand2.ZIndex = order;
+		}
   	}
 
     public void _input(InputEvent @event)
@@ -104,7 +104,7 @@ public partial class Player : RigidBody2D
 
     }
 
-    void Move()
+    void Move(float delta)
     {		
 		Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
 		handWiggleT += delta * inputDir.Length();
