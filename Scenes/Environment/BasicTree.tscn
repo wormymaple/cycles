@@ -1,0 +1,138 @@
+[gd_scene load_steps=5 format=3 uid="uid://d0donw3olqp03"]
+
+[ext_resource type="PackedScene" uid="uid://ndu846peb18h" path="res://Trees/leaf.tscn" id="1_lruhd"]
+
+[sub_resource type="Curve" id="Curve_vimdi"]
+_data = [Vector2(0, 1), 0.0, -2.53991e-07, 0, 1, Vector2(0.234672, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.30663, 0.0, 1, 0]
+point_count = 3
+
+[sub_resource type="Gradient" id="Gradient_om5wj"]
+colors = PackedColorArray(0.576471, 0.462745, 0.290196, 1, 0.720048, 0.591048, 0.397443, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vimdi"]
+radius = 5.0
+
+[node name="Tree" type="Node2D"]
+
+[node name="Branches" type="Node2D" parent="."]
+z_index = 5
+z_as_relative = false
+
+[node name="Branch2" type="Line2D" parent="Branches"]
+points = PackedVector2Array(0, -39, 15, -64, 18, -86)
+width = 4.0
+default_color = Color(0.574745, 0.46438, 0.290238, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Branch3" type="Line2D" parent="Branches"]
+points = PackedVector2Array(0, -51, -24, -62, -23, -75)
+width = 4.0
+default_color = Color(0.574745, 0.46438, 0.290238, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Branch4" type="Line2D" parent="Branches"]
+points = PackedVector2Array(-10, -82, 0, -99)
+width = 4.0
+default_color = Color(0.574745, 0.46438, 0.290238, 1)
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+
+[node name="Trunk" type="Line2D" parent="Branches"]
+points = PackedVector2Array(0, 0, 0, -75, -32, -95)
+width = 6.0
+width_curve = SubResource("Curve_vimdi")
+default_color = Color(0.574745, 0.46438, 0.290238, 1)
+gradient = SubResource("Gradient_om5wj")
+joint_mode = 2
+begin_cap_mode = 1
+end_cap_mode = 2
+
+[node name="Leaves" type="Node2D" parent="."]
+z_index = 6
+z_as_relative = false
+
+[node name="Leaf" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(0, -51)
+rotation = -0.523599
+
+[node name="Leaf17" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-24, -72)
+rotation = 1.00243
+
+[node name="Leaf18" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-21, -88)
+rotation = 2.49657
+
+[node name="Leaf2" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-13, -56)
+rotation = -0.523599
+
+[node name="Leaf3" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-4, -62)
+rotation = -0.523599
+
+[node name="Leaf4" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(7, -58)
+rotation = -0.523599
+
+[node name="Leaf5" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(14, -73)
+rotation = -0.523599
+
+[node name="Leaf6" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(3, -70)
+rotation = -0.523599
+
+[node name="Leaf7" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-12, -76)
+rotation = -0.523599
+
+[node name="Leaf8" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-21, -64)
+rotation = -0.523599
+
+[node name="Leaf9" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-22, -80)
+rotation = -1.74664
+
+[node name="Leaf10" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-29, -92)
+rotation = 1.29211
+
+[node name="Leaf11" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-3, -96)
+rotation = -2.75084
+
+[node name="Leaf12" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-13, -86)
+rotation = 2.22522
+
+[node name="Leaf13" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-13, -69)
+rotation = -2.4728
+
+[node name="Leaf14" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(-4, -80)
+rotation = 1.0193
+
+[node name="Leaf15" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(17, -83)
+rotation = 0.942282
+
+[node name="Leaf16" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(18, -62)
+rotation = 0.578437
+
+[node name="Leaf19" parent="Leaves" instance=ExtResource("1_lruhd")]
+position = Vector2(6, -64)
+rotation = 1.86111
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_vimdi")

@@ -3,14 +3,14 @@ using System;
 
 public partial class Player : RigidBody2D
 {
-    [Export] private float speed;
-    [Export] private int health;
-    [Export] private float hunger;
-    [Export] private float hungerRate;
-    [Export] private int attackDamage;
-    [Export] private Curve dashCurve;
-    [Export] private float dashPower;
-    [Export] private float dashTimeMax;
+    [Export] float speed;
+    [Export] int health;
+    [Export] float hunger;
+    [Export] float hungerRate;
+    [Export] int attackDamage;
+    [Export] Curve dashCurve;
+    [Export] float dashPower;
+    [Export] float dashTimeMax, dashRegenTimeMax;
 	[Export] Camera2D mainCamera;
 	[Export] Sprite2D hand1, hand2;
 	[Export] Vector2 handOffset;
@@ -18,13 +18,13 @@ public partial class Player : RigidBody2D
 	float handWiggleT;
 	[Export] float forceHandPerspCutoff;
 
-    private Vector2 dashDir;
-    private bool isDashing;
-    private float dashTime;
+	Vector2 dashDir;
+	bool isDashing;
+	float dashTime, dashRegenTime;
 
 
     // helpers
-    private Object RayCast(Vector2 start, Vector2 end)
+    Object RayCast(Vector2 start, Vector2 end)
     {
         var spaceState = GetWorld2D().DirectSpaceState;
         var query = PhysicsRayQueryParameters2D.Create(start, end);
@@ -39,6 +39,7 @@ public partial class Player : RigidBody2D
 
     public override void _Ready()
     {
+	    dashRegenTime = dashRegenTimeMax;
     }
 
     public override void _Process(double delta)
@@ -61,6 +62,7 @@ public partial class Player : RigidBody2D
         else
         {
             Move((float)delta);
+            dashRegenTime += (float)delta;
         }
 		
 		Animate();
@@ -94,12 +96,12 @@ public partial class Player : RigidBody2D
             GD.Print("hit");
         }
 
-        if (@event.IsActionPressed("dash"))
+        if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
         {
             isDashing = true;
             dashTime = 0;
+            dashRegenTime = 0;
             dashDir = GetLocalMousePosition().Normalized();
-            GD.Print(dashDir);
         }
 
     }

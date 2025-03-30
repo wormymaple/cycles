@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dh0hbhbiqe4h3"]
+
+[ext_resource type="Shader" uid="uid://d2hsfmmb81382" path="res://Shaders/grid_test.gdshader" id="1_2nmqu"]
+[ext_resource type="Texture2D" uid="uid://bjyxmvy8wi1m0" path="res://Sprites/grid.jpg" id="2_5eeb3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3keuf"]
+shader = ExtResource("1_2nmqu")
+shader_parameter/warp_amount = 1.0
+
+[node name="GridTest" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_3keuf")
+texture = ExtResource("2_5eeb3")
