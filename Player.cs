@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class Player : RigidBody2D
 {
@@ -15,8 +17,11 @@ public partial class Player : RigidBody2D
 	[Export] Sprite2D hand1, hand2;
 	[Export] Vector2 handOffset;
 	[Export] float handWiggleIntensity, handWiggleSpeed;
+	[Export] public int inventorySize;
 	float handWiggleT;
 	[Export] float forceHandPerspCutoff;
+
+	public Inventory.StackData[] inventory = new Inventory.StackData[16];
 
 	Vector2 dashDir;
 	bool isDashing;
@@ -40,6 +45,8 @@ public partial class Player : RigidBody2D
     public override void _Ready()
     {
 	    dashRegenTime = dashRegenTimeMax;
+	    // inventory = new List<Inventory.StackData>(inventorySize); REPLACE AFTER TESTING
+	    GD.Print(inventory.Length);
     }
 
     public override void _Process(double delta)
@@ -93,7 +100,6 @@ public partial class Player : RigidBody2D
     {
         if (@event.IsActionPressed("hit"))
         {
-            GD.Print("hit");
         }
 
         if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
@@ -111,5 +117,53 @@ public partial class Player : RigidBody2D
 		Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
 		handWiggleT += delta * inputDir.Length();
 		LinearVelocity = inputDir * speed;
+    }
+
+    int GetInventoryUsage()
+    {
+	    int itemCount = inventory.Count(item => item != null);
+	    return itemCount;
+    }
+    
+    public void AddInventoryItem(Inventory.StackData item)
+    {
+	    if (GetInventoryUsage() >= inventorySize) return;
+
+	    for (int i = 0; i < inventory.Length; i += 1)
+	    {
+		    if (inventory[i] != null) continue;
+
+		    inventory[i] = item;
+		    return;
+	    }
+    }
+
+    public void RemoveInventoryItem(Inventory.StackData item)
+    {
+	    for (int i = 0; i < inventory.Length; i += 1)
+	    {
+		    if (inventory[i] != item) continue;
+		    
+		    inventory[i] = null;
+		    return;
+	    }
+	    
+	    GD.PrintErr("Tried to remove item not in inventory");
+    }
+
+    public void SetInventoryItem(Inventory.StackData item, int index)
+    {
+	    if (inventory[index] != null)
+	    {
+		    GD.PrintErr("Tried to set a non-empty inventory slot");
+		    return;
+	    }
+
+	    inventory[index] = item;
+    }
+
+    public void EquipInventoryItem(Inventory.StackData item)
+    {
+	    
     }
 }
