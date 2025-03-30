@@ -1,0 +1,32 @@
+[gd_scene load_steps=8 format=3 uid="uid://ndu846peb18h"]
+
+[ext_resource type="Shader" uid="uid://dmvh1h0t28cy" path="res://Trees/leaf.gdshader" id="1_qihfy"]
+[ext_resource type="Texture2D" uid="uid://clkbujtiymqrw" path="res://Sprites/BigLeaves.png" id="2_5ccno"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_5ccno"]
+noise_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_0c451"]
+noise = SubResource("FastNoiseLite_5ccno")
+
+[sub_resource type="Gradient" id="Gradient_qihfy"]
+offsets = PackedFloat32Array(0, 0.55914, 1)
+colors = PackedColorArray(0.406089, 0.948047, 3.85046e-07, 1, 0.407843, 0.94902, 0, 1, 0.640363, 0.396343, 9.62615e-08, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_jiete"]
+gradient = SubResource("Gradient_qihfy")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_jiete"]
+shader = ExtResource("1_qihfy")
+shader_parameter/wave_speed = 0.02
+shader_parameter/wave_intensity = 4.0
+shader_parameter/season_gradient = SubResource("GradientTexture1D_jiete")
+shader_parameter/season_value = 0.0
+shader_parameter/noise = SubResource("NoiseTexture2D_0c451")
+shader_parameter/worldPos = Vector2(0, 0)
+
+[node name="Leaf" type="Sprite2D"]
+z_index = 5
+texture_filter = 1
+material = SubResource("ShaderMaterial_jiete")
+texture = ExtResource("2_5ccno")

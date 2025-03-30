@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://yfbf3udixswl"]
+[gd_scene load_steps=7 format=3 uid="uid://yfbf3udixswl"]
 
 [ext_resource type="Texture2D" uid="uid://cn8s2frx3hq3j" path="res://Sprites/GrassTileSet.png" id="1_byomg"]
 [ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
+[ext_resource type="Script" uid="uid://bfwbappijwpos" path="res://Scripts/TreeSpawner.cs" id="3_25o4d"]
+[ext_resource type="PackedScene" uid="uid://d0donw3olqp03" path="res://Scenes/Environment/BasicTree.tscn" id="4_25o4d"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bp61h"]
 texture = ExtResource("1_byomg")
@@ -14,6 +16,13 @@ texture = ExtResource("1_byomg")
 sources/0 = SubResource("TileSetAtlasSource_bp61h")
 
 [node name="Chunk" type="TileMapLayer"]
+z_index = -10
 tile_set = SubResource("TileSet_s486e")
 script = ExtResource("2_bp61h")
-chunkSize = 64
+chunkSize = 16
+
+[node name="TreeSpawner" type="Node2D" parent="."]
+script = ExtResource("3_25o4d")
+tree = ExtResource("4_25o4d")
+treeCount = 20
+spawnAreaSize = 256.0

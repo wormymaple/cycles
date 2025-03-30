@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3 uid="uid://be65q2kkyl2cn"]
+
+[ext_resource type="Script" uid="uid://cmfh6aqatqp1e" path="res://Scripts/InventoryItem.cs" id="2_avwti"]
+
+[node name="InventoryItem" type="TextureRect" node_paths=PackedStringArray("stackCount")]
+z_index = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+script = ExtResource("2_avwti")
+stackCount = NodePath("StackCount")
+
+[node name="StackCount" type="RichTextLabel" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 70.0
+offset_bottom = 70.0
+text = "0"
