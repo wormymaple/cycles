@@ -5,21 +5,34 @@ using System.Linq;
 
 public partial class Player : RigidBody2D
 {
-    [Export] float speed;
-    [Export] int health;
-    [Export] float hunger;
-    [Export] float hungerRate;
-    [Export] int attackDamage;
-    [Export] Curve dashCurve;
-    [Export] float dashPower;
-    [Export] float dashTimeMax, dashRegenTimeMax;
-	[Export] Camera2D mainCamera;
+    [Export] private float speed;
+    [Export] private int health;
+    [Export] private float hunger;
+    [Export] private float hungerRate;
+    [Export] private int attackDamage;
+    [Export] public int inventorySize;
+    
+    [Export] private Curve dashCurve;
+    [Export] private float dashPower;
+    [Export] private float dashTimeMax, dashRegenTimeMax;
+	
+    [Export] Camera2D mainCamera;
+	
+	float wiggleT;
+	[Export] private float wiggleSpeed, wiggleIntensity;
+	[Export] float forcePerspCutoff;
+
 	[Export] Sprite2D hand1, hand2;
 	[Export] Vector2 handOffset;
-	[Export] float handWiggleIntensity, handWiggleSpeed;
-	[Export] public int inventorySize;
-	float handWiggleT;
-	[Export] float forceHandPerspCutoff;
+	[Export] private Vector2 handVerticalShift;
+	
+	[Export] private Sprite2D eye1, eye2;
+	[Export] private Vector2 eyeOffset;
+	[Export] private Vector2 eyeVerticalShift;
+	
+	[Export] private Sprite2D foot1, foot2;
+	[Export] private Vector2 footOffset;
+	[Export] private Vector2 footVerticalShift;
 
 	public Inventory.StackData[] inventory = new Inventory.StackData[16];
 	Node2D equippedItem;
@@ -52,7 +65,6 @@ public partial class Player : RigidBody2D
 
     public override void _Process(double delta)
     {
-       
         hunger += (float)delta * hungerRate;
         
         if (isDashing)
@@ -72,30 +84,42 @@ public partial class Player : RigidBody2D
             Move((float)delta);
             dashRegenTime += (float)delta;
         }
-		
-		Animate();
+
+        Animate();
     }
-    
+
+    void AnimateBodyPart(Sprite2D bodyP, Vector2 lookDir, Vector2 perpDir, Vector2 wiggle, Vector2 offset,
+        Vector2 verticalShift)
+    {
+        if (LinearVelocity == Vector2.Zero) wiggle = Vector2.Zero;
+        bodyP.Position = perpDir * offset + wiggle + verticalShift;
+        bodyP.FlipH = lookDir.X > 0;
+        bodyP.ZIndex = perpDir.Y < 0 ? -1 : 1;
+
+        if (Mathf.Abs(lookDir.X) < forcePerspCutoff)
+        {
+            int order = lookDir.Y < 0 ? -1 : 1;
+            bodyP.ZIndex = order;
+        }
+    }
+
     void Animate()
     {
-		Vector2 mousePos = mainCamera.GetGlobalMousePosition();
-		Vector2 lookDir = (mousePos - GlobalPosition).Normalized();
+        Vector2 lookDir = GetLocalMousePosition().Normalized();
+        Vector2 perpDir = lookDir.Rotated(Mathf.Pi / 2);
+        Vector2 wiggle = Mathf.Sin(wiggleT * wiggleSpeed) * wiggleIntensity * lookDir;
+        
+        AnimateBodyPart(hand1, lookDir, perpDir, wiggle, handOffset, handVerticalShift);
+        AnimateBodyPart(hand2, lookDir, -perpDir, -wiggle, handOffset, handVerticalShift);
+        
+        AnimateBodyPart(eye1, lookDir, perpDir, wiggle, eyeOffset, eyeVerticalShift);
+        AnimateBodyPart(eye2, lookDir, -perpDir, -wiggle, eyeOffset, eyeVerticalShift);
+        
+        AnimateBodyPart(foot1, lookDir, perpDir, wiggle, footOffset, footVerticalShift);
+        AnimateBodyPart(foot2, lookDir, -perpDir, -wiggle, footOffset, footVerticalShift);
 
-		Vector2 perpDir = lookDir.Rotated(Mathf.Pi / 2);
-		Vector2 handWiggle = Mathf.Sin(handWiggleT * handWiggleSpeed) * handWiggleIntensity * lookDir;
-		hand1.Position = perpDir * handOffset + handWiggle;
-		hand2.Position = -perpDir * handOffset - handWiggle;
+    }
 
-		hand1.ZIndex = perpDir.Y < 0 ? -1 : 1;
-		hand2.ZIndex = -perpDir.Y < 0 ? -1 : 1;
-
-		if (Mathf.Abs(lookDir.X) < forceHandPerspCutoff)
-		{
-			int order = lookDir.Y < 0 ? -1 : 1;
-			hand1.ZIndex = order;
-			hand2.ZIndex = order;
-		}
-  	}
 
     public void _input(InputEvent @event)
     {
@@ -110,14 +134,13 @@ public partial class Player : RigidBody2D
             dashRegenTime = 0;
             dashDir = GetLocalMousePosition().Normalized();
         }
-
     }
 
     void Move(float delta)
-    {		
-		Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
-		handWiggleT += delta * inputDir.Length();
-		LinearVelocity = inputDir * speed;
+    {
+        Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
+        wiggleT += delta * inputDir.Length();
+        LinearVelocity = inputDir * speed;
     }
 
     int GetInventoryUsage()
