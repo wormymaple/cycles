@@ -1,15 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://cumt1j3h4nwn3"]
-[ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/Inventory.cs" id="5_1ppdh"]
+[gd_scene load_steps=13 format=3 uid="uid://cumt1j3h4nwn3"]
+
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
 [ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="2_k626h"]
 [ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="3_jkqk0"]
 [ext_resource type="Texture2D" uid="uid://bibjslvof0ak1" path="res://assets/character_sprite/eye.png" id="5_1ppdh"]
-[ext_resource type="Texture2D" uid="uid://dne7v3brjrcqb" path="res://assets/character_sprite/foot.png" id="6_xpgy0"]
-
+[ext_resource type="Texture2D" uid="uid://dne7v3brjrcqb" path="res://assets/character_sprite/foot.png" id="5_xpgy0"]
 [ext_resource type="PackedScene" uid="uid://06g62ysrjt30" path="res://Scenes/UI/inventory_frame.tscn" id="6_xpgy0"]
 [ext_resource type="PackedScene" uid="uid://be65q2kkyl2cn" path="res://Scenes/UI/inventory_item.tscn" id="7_1vh0t"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="7_mcha1"]
+[ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/Inventory.cs" id="7_qr73d"]
 
 [sub_resource type="Curve" id="Curve_k626h"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15544, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.224172), 0.0, 0.0, 0, 0]
@@ -35,12 +35,12 @@ lock_rotation = true
 angular_damp = 10.0
 script = ExtResource("1_k626h")
 speed = 70.0
+inventorySize = 16
 dashCurve = SubResource("Curve_k626h")
 dashPower = 350.0
 dashTimeMax = 0.3
 dashRegenTimeMax = 1.5
 mainCamera = NodePath("../Camera2D")
-
 wiggleSpeed = 25.0
 wiggleIntensity = 0.5
 forcePerspCutoff = 0.2
@@ -55,7 +55,6 @@ foot1 = NodePath("Body/foot1")
 foot2 = NodePath("Body/foot2")
 footOffset = Vector2(3, 2)
 footVerticalShift = Vector2(0, 6.5)
-inventorySize = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
@@ -64,20 +63,10 @@ shape = SubResource("CircleShape2D_7dm0k")
 texture = ExtResource("2_k626h")
 
 [node name="eye1" type="Sprite2D" parent="Player/Body"]
-position = Vector2(0, -7)
 texture = ExtResource("5_1ppdh")
 
 [node name="eye2" type="Sprite2D" parent="Player/Body"]
-position = Vector2(0, -7)
 texture = ExtResource("5_1ppdh")
-
-[node name="foot1" type="Sprite2D" parent="Player/Body"]
-position = Vector2(0, 7)
-texture = ExtResource("6_xpgy0")
-
-[node name="foot2" type="Sprite2D" parent="Player/Body"]
-position = Vector2(2, 7)
-texture = ExtResource("6_xpgy0")
 
 [node name="Hand1" type="Sprite2D" parent="Player/Body"]
 z_index = 1
@@ -88,6 +77,12 @@ offset = Vector2(-0.5, -0.5)
 z_index = 1
 texture = ExtResource("3_jkqk0")
 offset = Vector2(-0.5, -0.5)
+
+[node name="foot1" type="Sprite2D" parent="Player/Body"]
+texture = ExtResource("5_xpgy0")
+
+[node name="foot2" type="Sprite2D" parent="Player/Body"]
+texture = ExtResource("5_xpgy0")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -106,7 +101,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("5_1ppdh")
+script = ExtResource("7_qr73d")
 player = NodePath("../../Player")
 frame = ExtResource("6_xpgy0")
 itemIcon = ExtResource("7_1vh0t")
