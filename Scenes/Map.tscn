@@ -19,5 +19,6 @@ chunkSize = 256.0
 color = Color(0, 0, 0, 1)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
+visible = false
 
 [editable path="PlayerPackage"]

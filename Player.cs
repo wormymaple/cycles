@@ -35,6 +35,8 @@ public partial class Player : RigidBody2D
 	[Export] private Vector2 footVerticalShift;
 
 	public Inventory.StackData[] inventory = new Inventory.StackData[16];
+	Node2D equippedItem;
+	public Inventory.StackData EquippedItemData;
 
 	Vector2 dashDir;
 	bool isDashing;
@@ -59,7 +61,6 @@ public partial class Player : RigidBody2D
     {
 	    dashRegenTime = dashRegenTimeMax;
 	    // inventory = new List<Inventory.StackData>(inventorySize); REPLACE AFTER TESTING
-	    GD.Print(inventory.Length);
     }
 
     public override void _Process(double delta)
@@ -185,8 +186,23 @@ public partial class Player : RigidBody2D
 	    inventory[index] = item;
     }
 
+    void UnequipItem()
+    {
+	    if (equippedItem == null) return;
+	    
+	    equippedItem.QueueFree();
+	    equippedItem = null;
+	    EquippedItemData = null;
+    }
+
     public void EquipInventoryItem(Inventory.StackData item)
     {
+	    UnequipItem();
 	    
+	    Node2D spawnedItem = item.RelatedRes.EquippedScene.Instantiate() as Node2D;
+	    hand1.AddChild(spawnedItem);
+
+	    equippedItem = spawnedItem;
+	    EquippedItemData = item;
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=14 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://be65q2kkyl2cn" path="res://Scenes/UI/inventory_item.tscn" id="7_1vh0t"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="7_mcha1"]
 [ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/Inventory.cs" id="7_qr73d"]
+[ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="8_peuro"]
 
 [sub_resource type="Curve" id="Curve_k626h"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15544, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.224172), 0.0, 0.0, 0, 0]
@@ -29,32 +30,21 @@ speed = 1.0
 zoomMoveSpeed = 2.0
 targetZoom = 2.5
 
-[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2", "eye1", "eye2", "foot1", "foot2")]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2")]
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
 script = ExtResource("1_k626h")
 speed = 70.0
-inventorySize = 16
 dashCurve = SubResource("Curve_k626h")
 dashPower = 350.0
 dashTimeMax = 0.3
 dashRegenTimeMax = 1.5
 mainCamera = NodePath("../Camera2D")
-wiggleSpeed = 25.0
-wiggleIntensity = 0.5
-forcePerspCutoff = 0.2
 hand1 = NodePath("Body/Hand1")
 hand2 = NodePath("Body/Hand2")
 handOffset = Vector2(9, 4)
-eye1 = NodePath("Body/eye1")
-eye2 = NodePath("Body/eye2")
-eyeOffset = Vector2(3, 1.5)
-eyeVerticalShift = Vector2(0, -6.7)
-foot1 = NodePath("Body/foot1")
-foot2 = NodePath("Body/foot2")
-footOffset = Vector2(3, 2)
-footVerticalShift = Vector2(0, 6.5)
+inventorySize = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
@@ -105,12 +95,14 @@ script = ExtResource("7_qr73d")
 player = NodePath("../../Player")
 frame = ExtResource("6_xpgy0")
 itemIcon = ExtResource("7_1vh0t")
+equippedItemIcon = ExtResource("8_peuro")
 cameraController = NodePath("../../Camera2D")
 inventoryBackground = NodePath("../InventoryBackground")
 frameLayout = Vector2i(4, 4)
 frameSpacing = 100.0
 inventoryOrigin = Vector2(-250, 0)
 itemIconOffset = Vector2(20, 20)
+equippedIconOffset = Vector2(30, 85)
 inventoryCameraOffset = Vector2(-50, 0)
 items = Array[Object]([ExtResource("7_mcha1")])
 
@@ -128,3 +120,16 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.501961, 0.501961, 0.501961, 0.427451)
+
+[node name="InventoryLabel" type="RichTextLabel" parent="CanvasLayer/InventoryBackground"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -250.0
+offset_top = 100.0
+offset_right = 250.0
+offset_bottom = 140.0
+grow_horizontal = 2
+bbcode_enabled = true
+text = "[center]INVENTORY"

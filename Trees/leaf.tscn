@@ -19,7 +19,7 @@ gradient = SubResource("Gradient_qihfy")
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_jiete"]
 shader = ExtResource("1_qihfy")
 shader_parameter/wave_speed = 0.02
-shader_parameter/wave_intensity = 4.0
+shader_parameter/wave_intensity = 8.0
 shader_parameter/season_gradient = SubResource("GradientTexture1D_jiete")
 shader_parameter/season_value = 0.0
 shader_parameter/noise = SubResource("NoiseTexture2D_0c451")
