@@ -11,9 +11,16 @@ public partial class InventoryFrame : TextureRect
 
 	public override void _Input(InputEvent @event)
 	{
-		if (!@event.IsActionPressed("hit") || !hovering) return;
+		if (!hovering) return;
 
-		inventory.ItemIconClicked(this);
+		if (@event.IsActionPressed("hit"))
+		{
+			inventory.ItemIconClicked(this);
+		}
+		else if (@event.IsActionPressed("right_click"))
+		{
+			inventory.EquipItem(this);
+		}
 	}
 
 	void OnMouseEntered() {

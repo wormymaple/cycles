@@ -5,15 +5,16 @@ using System;
 public partial class ItemRes : Resource
 {
 	[Export] public string Name;
-	[Export] public bool Stackable;
+	[Export] public bool Stackable, Equippable;
 	[Export] public Texture2D InventoryTex;
-	[Export] PackedScene EquippedScene;
+	[Export] public PackedScene EquippedScene;
 
-	public ItemRes() : this("none", true, null, null) {}
-	public ItemRes(string name, bool stackable, Texture2D inventoryTex, PackedScene equippedScene)
+	public ItemRes() : this("none", true, false, null, null) {}
+	public ItemRes(string name, bool stackable, bool equippable, Texture2D inventoryTex, PackedScene equippedScene)
 	{
 		Name = name;
 		Stackable = stackable;
+		Equippable = equippable;
 		InventoryTex = inventoryTex;
 		EquippedScene = equippedScene;
 	}

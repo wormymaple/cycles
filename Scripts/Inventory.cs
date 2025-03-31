@@ -14,14 +14,14 @@ public partial class Inventory : Control
 
 	[ExportCategory("References")] 
 	[Export] PackedScene frame;
-	[Export] PackedScene itemIcon;
+	[Export] PackedScene itemIcon, equippedItemIcon;
 	[Export] CameraController cameraController;
 	[Export] ColorRect inventoryBackground;
 	
 	[ExportCategory("Inventory Settings")]
 	[Export] Vector2I frameLayout;
 	[Export] float frameSpacing;
-	[Export] Vector2 inventoryOrigin, itemIconOffset;
+	[Export] Vector2 inventoryOrigin, itemIconOffset, equippedIconOffset;
 	[Export] Vector2 inventoryCameraOffset;
 	
 	[ExportCategory("Item Info")]
@@ -29,6 +29,7 @@ public partial class Inventory : Control
 	
 	bool open;
 	InventoryItem liftedItem;
+	Control spawnedEquippedIcon;
 
 	public override void _Ready()
 	{
@@ -85,6 +86,8 @@ public partial class Inventory : Control
 				StackData playerItem = player.inventory[inventoryIndex];
 				if (playerItem == null) continue;
 				
+				if (playerItem == player.EquippedItemData) SpawnEquippedIcon(newFrame);
+				
 				InventoryItem newItemIcon = itemIcon.Instantiate() as InventoryItem;
 				AddChild(newItemIcon);
 				newItemIcon.Position = framePos + itemIconOffset;
@@ -96,9 +99,19 @@ public partial class Inventory : Control
 		}
 	}
 
+	void SpawnEquippedIcon(InventoryFrame spawnFrame)
+	{
+		spawnedEquippedIcon?.QueueFree();
+
+		spawnedEquippedIcon = equippedItemIcon.Instantiate() as Control;
+		AddChild(spawnedEquippedIcon);
+		spawnedEquippedIcon.Position = spawnFrame.Position + equippedIconOffset;
+	}
+
 	void CloseInventory()
 	{
 		cameraController.SetFocusOffset(Vector2.Zero);
+		spawnedEquippedIcon = null;
 
 		if (liftedItem != null)
 		{
@@ -136,8 +149,18 @@ public partial class Inventory : Control
 			liftedItem.Position = fromFrame.Position + itemIconOffset;
 			
 			player.SetInventoryItem(liftedItem.ItemData, fromFrame.inventoryIndex);
+			if (liftedItem.ItemData == player.EquippedItemData) SpawnEquippedIcon(fromFrame);
 
 			liftedItem = null;
 		}
+	}
+
+	public void EquipItem(InventoryFrame fromFrame)
+	{
+		if (liftedItem != null) return;
+		if (fromFrame.currentItem == null || !fromFrame.currentItem.ItemData.RelatedRes.Equippable) return;
+		
+		player.EquipInventoryItem(fromFrame.currentItem.ItemData);
+		SpawnEquippedIcon(fromFrame);
 	}
 }
