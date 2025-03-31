@@ -30,21 +30,30 @@ speed = 1.0
 zoomMoveSpeed = 2.0
 targetZoom = 2.5
 
-[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2")]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2", "eye1", "eye2", "foot1", "foot2")]
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
 script = ExtResource("1_k626h")
 speed = 70.0
+inventorySize = 16
 dashCurve = SubResource("Curve_k626h")
 dashPower = 350.0
 dashTimeMax = 0.3
 dashRegenTimeMax = 1.5
 mainCamera = NodePath("../Camera2D")
+wiggleSpeed = 10.0
+wiggleIntensity = 1.0
+forcePerspCutoff = 0.2
 hand1 = NodePath("Body/Hand1")
 hand2 = NodePath("Body/Hand2")
-handOffset = Vector2(9, 4)
-inventorySize = 16
+handOffset = Vector2(8, 4)
+eye1 = NodePath("Body/eye1")
+eye2 = NodePath("Body/eye2")
+eyeOffset = Vector2(4, 2)
+eyeVerticalShift = Vector2(0, -7)
+foot1 = NodePath("Body/foot1")
+foot2 = NodePath("Body/foot2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
@@ -69,9 +78,11 @@ texture = ExtResource("3_jkqk0")
 offset = Vector2(-0.5, -0.5)
 
 [node name="foot1" type="Sprite2D" parent="Player/Body"]
+visible = false
 texture = ExtResource("5_xpgy0")
 
 [node name="foot2" type="Sprite2D" parent="Player/Body"]
+visible = false
 texture = ExtResource("5_xpgy0")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]

@@ -112,8 +112,8 @@ public partial class Player : RigidBody2D
         AnimateBodyPart(hand1, lookDir, perpDir, wiggle, handOffset, handVerticalShift);
         AnimateBodyPart(hand2, lookDir, -perpDir, -wiggle, handOffset, handVerticalShift);
         
-        AnimateBodyPart(eye1, lookDir, perpDir, wiggle, eyeOffset, eyeVerticalShift);
-        AnimateBodyPart(eye2, lookDir, -perpDir, -wiggle, eyeOffset, eyeVerticalShift);
+        AnimateBodyPart(eye1, lookDir, perpDir, Vector2.Zero, eyeOffset, eyeVerticalShift);
+        AnimateBodyPart(eye2, lookDir, -perpDir, Vector2.Zero, eyeOffset, eyeVerticalShift);
         
         AnimateBodyPart(foot1, lookDir, perpDir, wiggle, footOffset, footVerticalShift);
         AnimateBodyPart(foot2, lookDir, -perpDir, -wiggle, footOffset, footVerticalShift);
