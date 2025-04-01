@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=15 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
@@ -16,6 +16,11 @@
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15544, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.224172), 0.0, 0.0, 0, 0]
 point_count = 3
 
+[sub_resource type="Curve" id="Curve_kkyro"]
+_limits = [-1.0, 1.0, 0.0, 1.0]
+_data = [Vector2(0.0159575, -0.101124), 0.0, 0.0, 0, 0, Vector2(0.228723, 0.910112), 0.0, 0.0, 0, 0, Vector2(0.515957, -0.707865), 0.0, 0.0, 0, 0, Vector2(0.957447, 0.0561798), 0.0, 0.0, 0, 0]
+point_count = 4
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_7dm0k"]
 radius = 8.0
 
@@ -30,14 +35,17 @@ speed = 1.0
 zoomMoveSpeed = 2.0
 targetZoom = 2.5
 
-[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hand1", "hand2", "eye1", "eye2", "foot1", "foot2")]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hands", "eyes", "feet")]
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
 script = ExtResource("1_k626h")
+controllerMode = true
 speed = 70.0
 inventorySize = 16
 dashCurve = SubResource("Curve_k626h")
+attackCurve = SubResource("Curve_kkyro")
+attackTimeMax = 0.5
 dashPower = 350.0
 dashTimeMax = 0.3
 dashRegenTimeMax = 1.5
@@ -45,15 +53,12 @@ mainCamera = NodePath("../Camera2D")
 wiggleSpeed = 10.0
 wiggleIntensity = 1.0
 forcePerspCutoff = 0.2
-hand1 = NodePath("Body/Hand1")
-hand2 = NodePath("Body/Hand2")
+hands = [NodePath("Body/Hand1"), NodePath("Body/Hand2")]
 handOffset = Vector2(8, 4)
-eye1 = NodePath("Body/eye1")
-eye2 = NodePath("Body/eye2")
+eyes = [NodePath("Body/eye1"), NodePath("Body/eye2")]
 eyeOffset = Vector2(4, 2)
 eyeVerticalShift = Vector2(0, -7)
-foot1 = NodePath("Body/foot1")
-foot2 = NodePath("Body/foot2")
+feet = []
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
