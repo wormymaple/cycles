@@ -1,64 +1,44 @@
+using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Godot;
 
 public partial class Player : RigidBody2D
 {
-    [Export]
-    bool controllerMode; // true is xbox remote false is keyboard + mouse
-    [ExportCategory("Player Stats")]
     [Export] float speed;
-
     [Export] int health;
-
     [Export] float hunger;
-
     [Export] float hungerRate;
-
     [Export] int attackDamage;
-
     [Export] public int inventorySize;
 
-    [ExportCategory("Player Logic")]
-
-    [Export] Curve dashCurve;
-
-    [Export] Curve attackCurve;
     [Export] float attackTimeMax;
-
+    [Export] Curve attackCurve;
+    
+    [Export] Curve dashCurve;
     [Export] float dashPower;
     [Export] float dashTimeMax, dashRegenTimeMax;
-
-    [ExportCategory("Animation")]
-
+	
     [Export] Camera2D mainCamera;
-    [Export] float wiggleSpeed, wiggleIntensity;
-
-    [Export] float forcePerspCutoff;
+	
+	[Export] float wiggleSpeed, wiggleIntensity;
+	[Export] float forcePerspCutoff;
 
     [Export] Sprite2D[] hands;
-
-    [Export] Vector2 handOffset;
-
-    [Export] Vector2 handVerticalShift;
+	[Export] Vector2 handOffset;
+	[Export] Vector2 handVerticalShift;
 
     [Export] Sprite2D[] eyes;
-
-    [Export] Vector2 eyeOffset;
-
-    [Export] Vector2 eyeVerticalShift;
+	[Export] Vector2 eyeOffset;
+	[Export] Vector2 eyeVerticalShift;
 
     [Export] Sprite2D[] feet;
+	[Export] Vector2 footOffset;
+	[Export] Vector2 footVerticalShift;
 
-    [Export] Vector2 footOffset;
-
-    [Export] Vector2 footVerticalShift;
-
-    // inventory vars
-    public Inventory.StackData[] inventory = new Inventory.StackData[16];
-    Node2D equippedItem;
-    public Inventory.StackData EquippedItemData;
+	public List<Inventory.StackData> Inventory = [];
+	Node2D equippedItem;
+	public Inventory.StackData EquippedItemData;
 
     // Dash vars
     Vector2 dashDir;
@@ -66,15 +46,15 @@ public partial class Player : RigidBody2D
     float dashTime, dashRegenTime;
 
     // attack vars
-    private Vector2 attackDir;
+    Vector2 attackDir;
     float attackTime;
     bool isAttacking;
-
+	
     // animation vars
     float wiggleT;
+    Vector2 lookDir;
 
-    private Vector2 lookDir;
-
+    bool controllerMode;
 
     public override void _Ready()
     {
@@ -117,9 +97,9 @@ public partial class Player : RigidBody2D
         Animate();
     }
 
-    public void _input(InputEvent @event)
+    public override void _Input(InputEvent @event)
     {
-        if (@event.IsActionPressed("hit") && !isAttacking)
+        if (@event.IsActionPressed("hit"))
         {
             attackTime = 0;
             isAttacking = true;
@@ -158,20 +138,6 @@ public partial class Player : RigidBody2D
         LinearVelocity = inputDir * speed;
     }
 
-    // helpers
-    Object RayCast(Vector2 start, Vector2 end)
-    {
-        var spaceState = GetWorld2D().DirectSpaceState;
-        var query = PhysicsRayQueryParameters2D.Create(start, end);
-        var result = spaceState.IntersectRay(query);
-        if (result.Count > 0)
-        {
-            return result["collider"];
-        }
-
-        return null;
-    }
-
     // Animation Methods
     void SetZIndexes(Sprite2D[] spriteNodes, Vector2[] perpDirs, Vector2 lookDir)
     {
@@ -204,6 +170,8 @@ public partial class Player : RigidBody2D
 
         hands[0].Position = perpDir * handOffset + handVerticalShift;
         hands[1].Position = -perpDir * handOffset + handVerticalShift;
+        if (equippedItem != null)
+            equippedItem.Rotation = sample / 2f * Mathf.Pi * -Mathf.Sign(perpDir.Y);
 
         Sprite2D[] spriteNodes = { eyes[0], eyes[1], hands[0], hands[1] };
         Vector2[] perpDirs = { perpDir, -perpDir, perpDir, -perpDir };
@@ -245,61 +213,35 @@ public partial class Player : RigidBody2D
         }
     }
 
-    // Inventory Methods
-    int GetInventoryUsage()
-    {
-        int itemCount = inventory.Count(item => item != null);
-        return itemCount;
-    }
-
+    int GetInventoryUsage() => Inventory.Count;
+    
     public void AddInventoryItem(Inventory.StackData item)
     {
-        if (GetInventoryUsage() >= inventorySize)
-            return;
+	    if (GetInventoryUsage() >= inventorySize) return;
 
-        for (int i = 0; i < inventory.Length; i += 1)
-        {
-            if (inventory[i] != null)
-                continue;
-
-            inventory[i] = item;
-            return;
-        }
+	    Inventory.Add(item);
     }
 
     public void RemoveInventoryItem(Inventory.StackData item)
     {
-        for (int i = 0; i < inventory.Length; i += 1)
-        {
-            if (inventory[i] != item)
-                continue;
-
-            inventory[i] = null;
-            return;
-        }
-
-        GD.PrintErr("Tried to remove item not in inventory");
-    }
-
-    public void SetInventoryItem(Inventory.StackData item, int index)
-    {
-        if (inventory[index] != null)
-        {
-            GD.PrintErr("Tried to set a non-empty inventory slot");
-            return;
-        }
-
-        inventory[index] = item;
+	    for (int i = 0; i < GetInventoryUsage(); i += 1)
+	    {
+		    if (Inventory[i] != item) continue;
+		    
+		    Inventory.RemoveAt(i);
+		    return;
+	    }
+	    
+	    GD.PrintErr("Tried to remove item not in inventory");
     }
 
     void UnequipItem()
     {
-        if (equippedItem == null)
-            return;
-
-        equippedItem.QueueFree();
-        equippedItem = null;
-        EquippedItemData = null;
+	    if (equippedItem == null) return;
+	    
+	    equippedItem.QueueFree();
+	    equippedItem = null;
+	    EquippedItemData = null;
     }
 
     public void EquipInventoryItem(Inventory.StackData item)
