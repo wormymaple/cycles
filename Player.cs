@@ -34,7 +34,7 @@ public partial class Player : RigidBody2D
 	[Export] private Vector2 footOffset;
 	[Export] private Vector2 footVerticalShift;
 
-	public Inventory.StackData[] inventory = new Inventory.StackData[16];
+	public List<Inventory.StackData> Inventory = [];
 	Node2D equippedItem;
 	public Inventory.StackData EquippedItemData;
 
@@ -143,47 +143,26 @@ public partial class Player : RigidBody2D
         LinearVelocity = inputDir * speed;
     }
 
-    int GetInventoryUsage()
-    {
-	    int itemCount = inventory.Count(item => item != null);
-	    return itemCount;
-    }
+    int GetInventoryUsage() => Inventory.Count;
     
     public void AddInventoryItem(Inventory.StackData item)
     {
 	    if (GetInventoryUsage() >= inventorySize) return;
 
-	    for (int i = 0; i < inventory.Length; i += 1)
-	    {
-		    if (inventory[i] != null) continue;
-
-		    inventory[i] = item;
-		    return;
-	    }
+	    Inventory.Add(item);
     }
 
     public void RemoveInventoryItem(Inventory.StackData item)
     {
-	    for (int i = 0; i < inventory.Length; i += 1)
+	    for (int i = 0; i < GetInventoryUsage(); i += 1)
 	    {
-		    if (inventory[i] != item) continue;
+		    if (Inventory[i] != item) continue;
 		    
-		    inventory[i] = null;
+		    Inventory.RemoveAt(i);
 		    return;
 	    }
 	    
 	    GD.PrintErr("Tried to remove item not in inventory");
-    }
-
-    public void SetInventoryItem(Inventory.StackData item, int index)
-    {
-	    if (inventory[index] != null)
-	    {
-		    GD.PrintErr("Tried to set a non-empty inventory slot");
-		    return;
-	    }
-
-	    inventory[index] = item;
     }
 
     void UnequipItem()
