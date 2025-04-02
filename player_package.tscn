@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=13 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
@@ -6,11 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="3_jkqk0"]
 [ext_resource type="Texture2D" uid="uid://bibjslvof0ak1" path="res://assets/character_sprite/eye.png" id="5_1ppdh"]
 [ext_resource type="Texture2D" uid="uid://dne7v3brjrcqb" path="res://assets/character_sprite/foot.png" id="5_xpgy0"]
-[ext_resource type="PackedScene" uid="uid://06g62ysrjt30" path="res://Scenes/UI/inventory_frame.tscn" id="6_xpgy0"]
-[ext_resource type="PackedScene" uid="uid://be65q2kkyl2cn" path="res://Scenes/UI/inventory_item.tscn" id="7_1vh0t"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="7_mcha1"]
 [ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/Inventory.cs" id="7_qr73d"]
 [ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="8_peuro"]
+[ext_resource type="PackedScene" uid="uid://ch55yi5bc7d1" path="res://Scenes/UI/item_listing.tscn" id="8_qr73d"]
 
 [sub_resource type="Curve" id="Curve_k626h"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.15544, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.224172), 0.0, 0.0, 0, 0]
@@ -87,60 +86,46 @@ texture = ExtResource("5_xpgy0")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Inventory" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("player", "cameraController", "inventoryBackground")]
+[node name="Inventory" type="Control" parent="CanvasLayer" node_paths=PackedStringArray("player", "listingsContainer", "cameraController")]
+visible = false
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
+anchors_preset = 9
+anchor_bottom = 1.0
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("7_qr73d")
 player = NodePath("../../Player")
-frame = ExtResource("6_xpgy0")
-itemIcon = ExtResource("7_1vh0t")
-equippedItemIcon = ExtResource("8_peuro")
+itemListing = ExtResource("8_qr73d")
+equippedIcon = ExtResource("8_peuro")
+listingsContainer = NodePath("ListingContainer")
 cameraController = NodePath("../../Camera2D")
-inventoryBackground = NodePath("../InventoryBackground")
-frameLayout = Vector2i(4, 4)
-frameSpacing = 100.0
-inventoryOrigin = Vector2(-250, 0)
-itemIconOffset = Vector2(20, 20)
-equippedIconOffset = Vector2(30, 85)
 inventoryCameraOffset = Vector2(-50, 0)
+equippedIconOffset = Vector2(200, 40)
 items = Array[Object]([ExtResource("7_mcha1")])
 
-[node name="InventoryBackground" type="ColorRect" parent="CanvasLayer"]
-visible = false
-z_index = -1
-anchors_preset = 13
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_right = 500.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
-mouse_filter = 2
-color = Color(0.501961, 0.501961, 0.501961, 0.427451)
-
-[node name="InventoryLabel" type="RichTextLabel" parent="CanvasLayer/InventoryBackground"]
+[node name="InventoryBackground" type="ColorRect" parent="CanvasLayer/Inventory"]
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -250.0
-offset_top = 100.0
+anchors_preset = 9
+anchor_bottom = 1.0
 offset_right = 250.0
-offset_bottom = 140.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.427451, 0.427451, 0.427451, 0.435294)
+
+[node name="InventoryLabel" type="RichTextLabel" parent="CanvasLayer/Inventory/InventoryBackground"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 100.0
 grow_horizontal = 2
-bbcode_enabled = true
-text = "[center]INVENTORY"
+mouse_filter = 2
+text = "Inventory"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ListingContainer" type="VBoxContainer" parent="CanvasLayer/Inventory"]
+layout_mode = 1
+offset_top = 100.0
+offset_right = 40.0
+offset_bottom = 140.0
