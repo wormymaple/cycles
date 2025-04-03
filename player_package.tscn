@@ -13,7 +13,7 @@
 
 [sub_resource type="Curve" id="Curve_kkyro"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
-_data = [Vector2(0.0159575, -0.101124), 0.0, 0.0, 0, 0, Vector2(0.228723, 0.910112), 0.0, 0.0, 0, 0, Vector2(0.515957, -0.707865), 0.0, 0.0, 0, 0, Vector2(0.957447, 0.0561798), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.228723, 0.910112), 0.0, 0.0, 0, 0, Vector2(0.515957, -0.707865), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
 point_count = 4
 
 [sub_resource type="Curve" id="Curve_k626h"]
@@ -32,7 +32,7 @@ script = ExtResource("1_kgrhw")
 target = NodePath("../Player")
 speed = 1.0
 zoomMoveSpeed = 2.0
-targetZoom = 2.5
+targetZoom = 5.0
 
 [node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hands", "eyes", "feet")]
 gravity_scale = 0.0
@@ -50,6 +50,7 @@ dashRegenTimeMax = 1.5
 mainCamera = NodePath("../Camera2D")
 wiggleSpeed = 10.0
 wiggleIntensity = 1.0
+alignRotSpeed = 10.0
 forcePerspCutoff = 0.2
 hands = [NodePath("Body/Hand1"), NodePath("Body/Hand2")]
 handOffset = Vector2(8, 4)
