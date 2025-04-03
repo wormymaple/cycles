@@ -22,6 +22,7 @@ public partial class Player : RigidBody2D
     [Export] Camera2D mainCamera;
 	
 	[Export] float wiggleSpeed, wiggleIntensity;
+    [Export] float alignRotSpeed;
 	[Export] float forcePerspCutoff;
 
     [Export] Sprite2D[] hands;
@@ -52,24 +53,26 @@ public partial class Player : RigidBody2D
 	
     // animation vars
     float wiggleT;
-    Vector2 lookDir;
+    Vector2 lookDir, lookingDir;
 
     bool controllerMode;
 
     public override void _Ready()
     {
-        lookDir = Vector2.Zero;
+        lookDir = Vector2.Down;
+        lookingDir = Vector2.Down;
         dashRegenTime = dashRegenTimeMax;
         // inventory = new List<Inventory.StackData>(inventorySize); REPLACE AFTER TESTING
     }
 
     public override void _Process(double delta)
     {
-        hunger += (float)delta * hungerRate;
+        float fDelta = (float)delta;
+        hunger += fDelta * hungerRate;
 
         if (isDashing)
         {
-            dashTime += (float)delta;
+            dashTime += fDelta;
             if (dashTime > dashTimeMax)
             {
                 dashTime = dashTimeMax;
@@ -81,12 +84,12 @@ public partial class Player : RigidBody2D
         }
         else
         {
-            Move((float)delta);
-            dashRegenTime += (float)delta;
+            Move(fDelta);
+            dashRegenTime += fDelta;
         }
         if (isAttacking)
         {
-            attackTime += (float)delta;
+            attackTime += fDelta;
             if (attackTime >= attackTimeMax)
             {
                 attackTime = attackTimeMax;
@@ -94,18 +97,20 @@ public partial class Player : RigidBody2D
             }
         }
 
-        Animate();
+        Animate(fDelta);
     }
 
     public override void _Input(InputEvent @event)
     {
         if (@event.IsActionPressed("hit"))
         {
+            if (isAttacking) return;
+            
             attackTime = 0;
             isAttacking = true;
             Vector2 aimDir = Input.GetVector("aim_left", "aim_right", "aim_up", "aim_down").Normalized();
             if (controllerMode)
-                attackDir = aimDir.Length() > 0 ? aimDir : lookDir;
+                attackDir = aimDir.Length() > 0 ? aimDir : lookingDir;
             else
             {
                 attackDir = GetLocalMousePosition().Normalized();
@@ -126,10 +131,7 @@ public partial class Player : RigidBody2D
     void Move(float delta)
     {
         Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
-        if (inputDir.Abs() > Vector2.Zero)
-        {
-            lookDir = inputDir.Normalized();
-        }
+        if (inputDir != Vector2.Zero) lookDir = inputDir.Normalized();
         else if (!controllerMode && !isAttacking)
         {
             lookDir = GetLocalMousePosition().Normalized();
@@ -139,24 +141,25 @@ public partial class Player : RigidBody2D
     }
 
     // Animation Methods
-    void SetZIndexes(Sprite2D[] spriteNodes, Vector2[] perpDirs, Vector2 lookDir)
+    void SetZIndexes(Sprite2D[] spriteNodes, Vector2[] perpDirs, Vector2 targetDir, int[] targetZIndices)
     {
         if (spriteNodes.Length != perpDirs.Length)
         {
             GD.PrintErr("SetZIndexes: spriteNodes and perpDirs length do not match");
             return;
         }
-        bool perspCutoff = Mathf.Abs(lookDir.X) < forcePerspCutoff;
+        bool perspCutoff = Mathf.Abs(targetDir.X) < forcePerspCutoff;
 
         for (int i = 0; i < spriteNodes.Length; i++)
         {
-            spriteNodes[i].ZIndex = perpDirs[i].Y < 0 ? -1 : 1;
+            int targetZIndex = targetZIndices[i];
             if (perspCutoff)
             {
-                int order = lookDir.Y < 0 ? -1 : 1;
-                spriteNodes[i].ZIndex = order;
-
+                int order = targetDir.Y < 0 ? -1 : 1;
+                spriteNodes[i].ZIndex = order * targetZIndex;
             }
+            else
+                spriteNodes[i].ZIndex = (perpDirs[i].Y < 0 ? -1 : 1) * targetZIndex;
         }
     }
     void AnimateAttack(Vector2 attackDir)
@@ -173,16 +176,18 @@ public partial class Player : RigidBody2D
         if (equippedItem != null)
             equippedItem.Rotation = sample / 2f * Mathf.Pi * -Mathf.Sign(perpDir.Y);
 
-        Sprite2D[] spriteNodes = { eyes[0], eyes[1], hands[0], hands[1] };
-        Vector2[] perpDirs = { perpDir, -perpDir, perpDir, -perpDir };
-        SetZIndexes(spriteNodes, perpDirs, simulatedLookDir);
+        Sprite2D[] spriteNodes = [eyes[0], eyes[1], hands[0], hands[1]];
+        int[] targetZIndices = [1, 1, 3, 3];
+        Vector2[] perpDirs = [perpDir, -perpDir, perpDir, -perpDir];
+        SetZIndexes(spriteNodes, perpDirs, simulatedLookDir, targetZIndices);
     }
     void AnimateBodyParts(
         Sprite2D[] bodyParts,
         Vector2[] perpDirs,
         Vector2 offset,
         Vector2 verticalShift,
-        Vector2 wiggle
+        Vector2 wiggle,
+        int targetZIndex
     )
     {
         if (LinearVelocity == Vector2.Zero)
@@ -190,15 +195,23 @@ public partial class Player : RigidBody2D
         for (int i = 0; i < bodyParts.Length; i++)
         {
             bodyParts[i].Position = perpDirs[i] * offset + wiggle + verticalShift;
-            bodyParts[i].FlipH = lookDir.X > 0;
+            bodyParts[i].FlipH = lookingDir.X > 0;
         }
 
-        SetZIndexes(bodyParts, perpDirs, lookDir);
+        int[] zIndices = [targetZIndex, targetZIndex];
+        SetZIndexes(bodyParts, perpDirs, lookingDir, zIndices);
     }
-    void Animate()
+    void Animate(float delta)
     {
-        Vector2 perpDir = lookDir.Rotated(Mathf.Pi / 2);
+        Vector2 perpDir = lookingDir.Rotated(Mathf.Pi / 2);
         Vector2[] perpDirs = [perpDir, -perpDir];
+
+        float currentAngle = Mathf.Atan2(lookingDir.Y, lookingDir.X);
+        float targetAngle = Mathf.Atan2(lookDir.Y, lookDir.X);
+        float moveAmount = targetAngle - currentAngle;
+        if (Mathf.Abs(moveAmount) > Mathf.Pi) moveAmount -= Mathf.Tau * Mathf.Sign(moveAmount);
+        
+        lookingDir = lookingDir.Rotated(moveAmount * alignRotSpeed * delta);
 
         if (isAttacking)
         {
@@ -206,9 +219,9 @@ public partial class Player : RigidBody2D
         }
         else
         {
-            Vector2 wiggle = Mathf.Sin(wiggleT * wiggleSpeed) * wiggleIntensity * lookDir;
-            AnimateBodyParts(hands, perpDirs, handOffset, handVerticalShift, wiggle);
-            AnimateBodyParts(eyes, perpDirs, eyeOffset, eyeVerticalShift, wiggle);
+            Vector2 wiggle = Mathf.Sin(wiggleT * wiggleSpeed) * wiggleIntensity * lookingDir;
+            AnimateBodyParts(hands, perpDirs, handOffset, handVerticalShift, wiggle, 3);
+            AnimateBodyParts(eyes, perpDirs, eyeOffset, eyeVerticalShift, wiggle, 1);
 
         }
     }
