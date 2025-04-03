@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemRes" load_steps=3 format=3 uid="uid://crieuil0u4yl7"]
+
+[ext_resource type="Texture2D" uid="uid://cdkaavw40ncig" path="res://assets/placeables/Mushrooms_Icon.png" id="1_0bmpn"]
+[ext_resource type="Script" uid="uid://copnyh8obxo7q" path="res://CustomResources/ItemRes.cs" id="1_ec0y7"]
+
+[resource]
+script = ExtResource("1_ec0y7")
+Name = "mushroom"
+Stackable = true
+Equippable = false
+InventoryTex = ExtResource("1_0bmpn")
+metadata/_custom_type_script = "uid://copnyh8obxo7q"
