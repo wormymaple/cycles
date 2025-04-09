@@ -40,7 +40,7 @@ public partial class Firepit : Node2D
 	public override void _Process(double delta){
 		if (player != null && Input.IsActionJustPressed("interact")){
 			GD.Print("togglefire");
-			if(player.consumeInventoryItem(neededRes, 5)){
+			if(player.ConsumeInventoryItem(neededRes, 7)){
 				isBurning = true;
 				ToggleFire(true);
 			}

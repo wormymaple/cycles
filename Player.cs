@@ -253,28 +253,25 @@ public partial class Player : RigidBody2D
         EquippedItemData = item;
     }
 
-    public bool consumeInventoryItem(ItemRes targetItem, int targetAmount)
+    public bool ConsumeInventoryItem(ItemRes targetItem, int targetAmount)
     {
         int currCount = 0;
-        List<int> targetIndexes = new List<int>();
-        Inventory.StackData currItem;
+        List<Inventory.StackData> targetElements = new List<Inventory.StackData>();
 
         for (int i = 0; i < Inventory.Count; i++)
         {
-            currItem = Inventory[i];
+            var currItem = Inventory[i];
             if (currItem.RelatedRes == targetItem)
             {
                 currCount += currItem.StackCount;
-                targetIndexes.Add(i);
+                targetElements.Add(currItem);
             }
         }
         if (currCount < targetAmount) return false;
         
-        foreach (int index in targetIndexes)
+        foreach (var currItem in targetElements)
         {
             if (targetAmount == 0) return true;
-
-            currItem = Inventory[index];
             if (targetAmount >= currItem.StackCount)
             {
                 targetAmount -= currItem.StackCount;

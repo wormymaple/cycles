@@ -5,7 +5,7 @@
 
 [resource]
 script = ExtResource("1_8tikm")
-Name = "Stick"
+Name = "stick"
 Stackable = true
 Equippable = false
 InventoryTex = ExtResource("1_rq4cf")
