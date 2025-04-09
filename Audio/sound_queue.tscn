@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://lb4c5g3l5lw6"]
+
+[ext_resource type="Script" uid="uid://c5vclgehpp78x" path="res://Audio/SoundQueue.cs" id="1_0silj"]
+[ext_resource type="AudioStream" uid="uid://b5uvopunqst8" path="res://Audio/Footstep.mp3" id="2_qd0sy"]
+[ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://Audio/SwingSound1.mp3" id="3_ty20f"]
+[ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://Audio/SwingSound2.mp3" id="4_okrcd"]
+[ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://Audio/DashSound.mp3" id="5_tokfs"]
+[ext_resource type="AudioStream" uid="uid://ck5vsaea65bq8" path="res://Audio/Bird_Sounds.mp3" id="6_2ots6"]
+
+[node name="SoundQueue" type="Node2D"]
+visible = false
+script = ExtResource("1_0silj")
+
+[node name="Footstep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_qd0sy")
+volume_db = -11.0
+pitch_scale = 0.82
+
+[node name="SwingSound1" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ty20f")
+
+[node name="SwingSound2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_okrcd")
+
+[node name="DashSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_tokfs")
+volume_db = -5.0
+pitch_scale = 2.1
+
+[node name="BackgroundSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_2ots6")
+volume_db = -14.5
+pitch_scale = 0.8
+parameters/looping = true

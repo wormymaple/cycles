@@ -26,7 +26,7 @@ public partial class ChunkLoader : Node2D
     [Export] float chunkSize;
 
     List<Chunk> loadedChunks = [];
-    
+
     public override void _Ready()
     {
         

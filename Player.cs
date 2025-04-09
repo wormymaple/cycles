@@ -5,6 +5,13 @@ using System.Linq;
 
 public partial class Player : RigidBody2D
 {
+    // Sounds 
+    [ExportCategory("Sound Effects")]
+    [Export] AudioStreamPlayer footstepSound;
+    [Export] AudioStreamPlayer swingSound;
+    [Export] AudioStreamPlayer dashSound;
+    
+    
     [Export] float speed;
     [Export] int health;
     [Export] float hunger;
@@ -40,23 +47,23 @@ public partial class Player : RigidBody2D
 	public List<Inventory.StackData> Inventory = [];
 	Node2D equippedItem;
 	public Inventory.StackData EquippedItemData;
-
+    
     // Dash vars
     Vector2 dashDir;
     bool isDashing;
     float dashTime, dashRegenTime;
-
+    
     // attack vars
     Vector2 attackDir;
     float attackTime;
-    bool isAttacking;
+    bool  isAttacking;
 	
     // animation vars
     float wiggleT;
     Vector2 lookDir, lookingDir;
 
     bool controllerMode;
-
+    
     public override void _Ready()
     {
         lookDir = Vector2.Down;
@@ -64,7 +71,7 @@ public partial class Player : RigidBody2D
         dashRegenTime = dashRegenTimeMax;
         // inventory = new List<Inventory.StackData>(inventorySize); REPLACE AFTER TESTING
     }
-
+    
     public override void _Process(double delta)
     {
         float fDelta = (float)delta;
@@ -78,7 +85,7 @@ public partial class Player : RigidBody2D
                 dashTime = dashTimeMax;
                 isDashing = false;
             }
-
+            
             float targetVel = dashCurve.Sample(dashTime / dashTimeMax) * dashPower;
             LinearVelocity = dashDir * targetVel;
         }
@@ -105,7 +112,7 @@ public partial class Player : RigidBody2D
         if (@event.IsActionPressed("hit"))
         {
             if (isAttacking) return;
-            
+            swingSound.Play();
             attackTime = 0;
             isAttacking = true;
             Vector2 aimDir = Input.GetVector("aim_left", "aim_right", "aim_up", "aim_down").Normalized();
@@ -119,6 +126,7 @@ public partial class Player : RigidBody2D
 
         if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
         {
+            dashSound.Play();
             isDashing = true;
             dashTime = 0;
             dashRegenTime = 0;
@@ -127,11 +135,15 @@ public partial class Player : RigidBody2D
                 : GetLocalMousePosition().Normalized();
         }
     }
-
+    
     void Move(float delta)
     {
         Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
-        if (inputDir != Vector2.Zero) lookDir = inputDir.Normalized();
+        if (inputDir != Vector2.Zero)
+        {
+            lookDir = inputDir.Normalized();
+            if (!footstepSound.IsPlaying()) footstepSound.Play();
+        }
         else if (!controllerMode && !isAttacking)
         {
             lookDir = GetLocalMousePosition().Normalized();
@@ -189,6 +201,7 @@ public partial class Player : RigidBody2D
         Vector2 wiggle,
         int targetZIndex
     )
+    
     {
         if (LinearVelocity == Vector2.Zero)
             wiggle = Vector2.Zero;

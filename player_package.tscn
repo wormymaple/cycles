@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=18 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
@@ -10,6 +10,10 @@
 [ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/Inventory.cs" id="7_qr73d"]
 [ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="8_peuro"]
 [ext_resource type="PackedScene" uid="uid://ch55yi5bc7d1" path="res://Scenes/UI/item_listing.tscn" id="8_qr73d"]
+[ext_resource type="AudioStream" uid="uid://b5uvopunqst8" path="res://Audio/Footstep.mp3" id="11_tn725"]
+[ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://Audio/SwingSound1.mp3" id="12_mrrh4"]
+[ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://Audio/SwingSound2.mp3" id="13_wtgu4"]
+[ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://Audio/DashSound.mp3" id="14_2be2t"]
 
 [sub_resource type="Curve" id="Curve_kkyro"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
@@ -34,11 +38,15 @@ speed = 1.0
 zoomMoveSpeed = 2.0
 targetZoom = 5.0
 
-[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hands", "eyes", "feet")]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("footstepSound", "swingSound", "dashSound", "mainCamera", "hands", "eyes", "feet")]
+position = Vector2(0, -1)
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
 script = ExtResource("1_k626h")
+footstepSound = NodePath("../PlayerSoundQueue/Footstep")
+swingSound = NodePath("../PlayerSoundQueue/SwingSound1")
+dashSound = NodePath("../PlayerSoundQueue/DashSound")
 speed = 70.0
 inventorySize = 16
 attackTimeMax = 0.5
@@ -132,3 +140,22 @@ layout_mode = 1
 offset_top = 100.0
 offset_right = 40.0
 offset_bottom = 140.0
+
+[node name="PlayerSoundQueue" type="Node2D" parent="."]
+visible = false
+
+[node name="Footstep" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
+stream = ExtResource("11_tn725")
+volume_db = -11.0
+pitch_scale = 0.82
+
+[node name="SwingSound1" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
+stream = ExtResource("12_mrrh4")
+
+[node name="SwingSound2" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
+stream = ExtResource("13_wtgu4")
+
+[node name="DashSound" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
+stream = ExtResource("14_2be2t")
+volume_db = -5.0
+pitch_scale = 2.1
