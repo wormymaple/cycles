@@ -1,8 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://clwnpa0et0auh"]
+[gd_scene load_steps=17 format=3 uid="uid://clwnpa0et0auh"]
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
+[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/ShadowCreature.cs" id="4_5t7yc"]
 [ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://player_package.tscn" id="4_qumfl"]
+[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="4_r08cw"]
+[ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="5_ngcqm"]
+[ext_resource type="Shader" uid="uid://cbvqn50wroe45" path="res://Shaders/shadow_effect.gdshader" id="5_r08cw"]
+[ext_resource type="Texture2D" uid="uid://uljgrncpkd5" path="res://icon.svg" id="6_00287"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5t7yc"]
+radius = 100.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_etk83"]
+radius = 8.0
+
+[sub_resource type="Gradient" id="Gradient_00287"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_5t7yc"]
+gradient = SubResource("Gradient_00287")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_ngcqm"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+angle_min = 1.07288e-05
+angle_max = 360.0
+gravity = Vector3(0, -5, 0)
+scale_max = 5.0
+color = Color(0.559938, 0.00196219, 0.77779, 1)
+color_ramp = SubResource("GradientTexture1D_5t7yc")
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_00287"]
+frequency = 0.02
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_5t7yc"]
+noise = SubResource("FastNoiseLite_00287")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5t7yc"]
+shader = ExtResource("5_r08cw")
+shader_parameter/noise = SubResource("NoiseTexture2D_5t7yc")
+shader_parameter/noise_intensity = 0.02
 
 [node name="Map" type="Node2D"]
 
@@ -20,5 +59,41 @@ color = Color(0, 0, 0, 1)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 visible = false
+
+[node name="ShadowCreature" type="RigidBody2D" parent="."]
+position = Vector2(77, 88)
+gravity_scale = 0.0
+lock_rotation = true
+linear_damp = 2.5
+script = ExtResource("4_5t7yc")
+moveSpeed = 30.0
+scaredItems = Array[Object]([ExtResource("5_ngcqm")])
+scaredDist = 100.0
+health = 10.0
+
+[node name="Area2D" type="Area2D" parent="ShadowCreature"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShadowCreature/Area2D"]
+shape = SubResource("CircleShape2D_5t7yc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShadowCreature"]
+shape = SubResource("CircleShape2D_etk83")
+
+[node name="Body" type="Sprite2D" parent="ShadowCreature"]
+self_modulate = Color(0.359363, 0.00163914, 0.687357, 1)
+texture = ExtResource("4_r08cw")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="ShadowCreature"]
+amount = 20
+lifetime = 3.0
+process_material = SubResource("ParticleProcessMaterial_ngcqm")
+
+[node name="Effect" type="Sprite2D" parent="ShadowCreature"]
+z_index = 2
+material = SubResource("ShaderMaterial_5t7yc")
+texture = ExtResource("6_00287")
+
+[connection signal="body_entered" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyEntered"]
+[connection signal="body_exited" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyExited"]
 
 [editable path="PlayerPackage"]
