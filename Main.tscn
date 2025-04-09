@@ -19,4 +19,4 @@ position = Vector2(-48, -45)
 position = Vector2(-43, 54)
 
 [node name="Firepit" parent="." instance=ExtResource("1_r0du0")]
-position = Vector2(12, -39)
+position = Vector2(56, -34)
