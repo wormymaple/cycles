@@ -7,6 +7,7 @@ public partial class Player : RigidBody2D
 {
     [Export] float speed;
     [Export] int health;
+    [Export] int temp;
     [Export] float hunger;
     [Export] float hungerRate;
     [Export] int attackDamage;
@@ -14,31 +15,27 @@ public partial class Player : RigidBody2D
 
     [Export] float attackTimeMax;
     [Export] Curve attackCurve;
-    
+
     [Export] Curve dashCurve;
     [Export] float dashPower;
     [Export] float dashTimeMax, dashRegenTimeMax;
-	
+
     [Export] Camera2D mainCamera;
-	
-	[Export] float wiggleSpeed, wiggleIntensity;
-	[Export] float forcePerspCutoff;
+
+    [Export] float wiggleSpeed, wiggleIntensity;
+    [Export] float forcePerspCutoff;
 
     [Export] Sprite2D[] hands;
-	[Export] Vector2 handOffset;
-	[Export] Vector2 handVerticalShift;
+    [Export] Vector2 handOffset;
+    [Export] Vector2 handVerticalShift;
 
     [Export] Sprite2D[] eyes;
-	[Export] Vector2 eyeOffset;
-	[Export] Vector2 eyeVerticalShift;
+    [Export] Vector2 eyeOffset;
+    [Export] Vector2 eyeVerticalShift;
 
-    [Export] Sprite2D[] feet;
-	[Export] Vector2 footOffset;
-	[Export] Vector2 footVerticalShift;
-
-	public List<Inventory.StackData> Inventory = [];
-	Node2D equippedItem;
-	public Inventory.StackData EquippedItemData;
+    public List<Inventory.StackData> Inventory = [];
+    Node2D equippedItem;
+    public Inventory.StackData EquippedItemData;
 
     // Dash vars
     Vector2 dashDir;
@@ -49,7 +46,7 @@ public partial class Player : RigidBody2D
     Vector2 attackDir;
     float attackTime;
     bool isAttacking;
-	
+
     // animation vars
     float wiggleT;
     Vector2 lookDir;
@@ -217,9 +214,10 @@ public partial class Player : RigidBody2D
     
     public void AddInventoryItem(Inventory.StackData item)
     {
-	    if (GetInventoryUsage() >= inventorySize) return;
+        if (GetInventoryUsage() >= inventorySize) return;
 
-	    Inventory.Add(item);
+        Inventory.Add(item);
+        Inventory.ForEach(item => GD.Print(item));
     }
 
     public void RemoveInventoryItem(Inventory.StackData item)
@@ -237,11 +235,11 @@ public partial class Player : RigidBody2D
 
     void UnequipItem()
     {
-	    if (equippedItem == null) return;
-	    
-	    equippedItem.QueueFree();
-	    equippedItem = null;
-	    EquippedItemData = null;
+        if (equippedItem == null) return;
+
+        equippedItem.QueueFree();
+        equippedItem = null;
+        EquippedItemData = null;
     }
 
     public void EquipInventoryItem(Inventory.StackData item)
@@ -253,5 +251,40 @@ public partial class Player : RigidBody2D
 
         equippedItem = spawnedItem;
         EquippedItemData = item;
+    }
+
+    public bool consumeInventoryItem(ItemRes targetItem, int targetAmount)
+    {
+        int currCount = 0;
+        List<int> targetIndexes = new List<int>();
+        Inventory.StackData currItem;
+
+        for (int i = 0; i < Inventory.Count; i++)
+        {
+            currItem = Inventory[i];
+            if (currItem.RelatedRes == targetItem)
+            {
+                currCount += currItem.StackCount;
+                targetIndexes.Add(i);
+            }
+        }
+        if (currCount < targetAmount) return false;
+        
+        foreach (int index in targetIndexes)
+        {
+            if (targetAmount == 0) return true;
+
+            currItem = Inventory[index];
+            if (targetAmount >= currItem.StackCount)
+            {
+                targetAmount -= currItem.StackCount;
+                RemoveInventoryItem(currItem);
+            } else{
+                currItem.StackCount -= targetAmount;
+                targetAmount = 0;
+            }
+            
+        }
+        return targetAmount == 0;
     }
 }
