@@ -34,7 +34,7 @@ speed = 1.0
 zoomMoveSpeed = 2.0
 targetZoom = 5.0
 
-[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hands", "eyes", "feet") groups=["Player"]]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("mainCamera", "hands", "eyes") groups=["Player"]]
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
@@ -57,7 +57,6 @@ handOffset = Vector2(8, 4)
 eyes = [NodePath("Body/eye1"), NodePath("Body/eye2")]
 eyeOffset = Vector2(4, 2)
 eyeVerticalShift = Vector2(0, -7)
-feet = []
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
