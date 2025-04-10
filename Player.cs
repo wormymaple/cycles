@@ -14,6 +14,7 @@ public partial class Player : RigidBody2D
     
     [Export] float speed;
     [Export] int health;
+    [Export] int temp;
     [Export] float hunger;
     [Export] float hungerRate;
     [Export] int attackDamage;
@@ -39,11 +40,7 @@ public partial class Player : RigidBody2D
     [Export] Sprite2D[] eyes;
 	[Export] Vector2 eyeOffset;
 	[Export] Vector2 eyeVerticalShift;
-
-    [Export] Sprite2D[] feet;
-	[Export] Vector2 footOffset;
-	[Export] Vector2 footVerticalShift;
-
+    
 	public List<Inventory.StackData> Inventory = [];
 	Node2D equippedItem;
 	public Inventory.StackData EquippedItemData;
@@ -279,5 +276,37 @@ public partial class Player : RigidBody2D
 
         equippedItem = spawnedItem;
         EquippedItemData = item;
+    }
+
+    public bool ConsumeInventoryItem(ItemRes targetItem, int targetAmount)
+    {
+        int currCount = 0;
+        List<Inventory.StackData> targetElements = new List<Inventory.StackData>();
+
+        for (int i = 0; i < Inventory.Count; i++)
+        {
+            var currItem = Inventory[i];
+            if (currItem.RelatedRes == targetItem)
+            {
+                currCount += currItem.StackCount;
+                targetElements.Add(currItem);
+            }
+        }
+        if (currCount < targetAmount) return false;
+        
+        foreach (var currItem in targetElements)
+        {
+            if (targetAmount == 0) return true;
+            if (targetAmount >= currItem.StackCount)
+            {
+                targetAmount -= currItem.StackCount;
+                RemoveInventoryItem(currItem);
+            } else{
+                currItem.StackCount -= targetAmount;
+                targetAmount = 0;
+            }
+            
+        }
+        return targetAmount == 0;
     }
 }
