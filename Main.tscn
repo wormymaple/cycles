@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=3 uid="uid://461g5qid7tjj"]
 
 [ext_resource type="PackedScene" uid="uid://g6ik7apgklrm" path="res://Scenes/Environment/firepit.tscn" id="1_r0du0"]
-[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://player_package.tscn" id="1_uu6xs"]
+[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/player_package.tscn" id="1_uu6xs"]
 [ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/stick.tscn" id="2_uu6xs"]
+
 
 [node name="Main" type="Node2D"]
 

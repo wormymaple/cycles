@@ -1,9 +1,9 @@
 [gd_scene load_steps=17 format=3 uid="uid://clwnpa0et0auh"]
 
-[ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/ChunkLoader.cs" id="1_s486e"]
+[ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
-[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/ShadowCreature.cs" id="4_5t7yc"]
-[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://player_package.tscn" id="4_qumfl"]
+[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/enemies/ShadowCreature.cs" id="4_5t7yc"]
+[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/player_package.tscn" id="4_qumfl"]
 [ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="4_r08cw"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="5_ngcqm"]
 [ext_resource type="Shader" uid="uid://cbvqn50wroe45" path="res://Shaders/shadow_effect.gdshader" id="5_r08cw"]
@@ -53,6 +53,13 @@ chunkDist = 2
 chunkSize = 256.0
 
 [node name="PlayerPackage" parent="." instance=ExtResource("4_qumfl")]
+
+[node name="Player" parent="PlayerPackage" index="1"]
+tempRate = 0.01
+defaultHungerRate = 0.01
+currHungerRate = 0.01
+dashHungerRate = 3.0
+moveHungerRate = 2.0
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)

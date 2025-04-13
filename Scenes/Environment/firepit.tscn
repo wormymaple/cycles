@@ -1,34 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://g6ik7apgklrm"]
+[gd_scene load_steps=9 format=3 uid="uid://g6ik7apgklrm"]
 
 [ext_resource type="Script" uid="uid://b8jje3vblxr3p" path="res://Scripts/Interactables/Firepit.cs" id="2_rfyau"]
-[ext_resource type="Texture2D" uid="uid://c70c5lb3hv26l" path="res://assets/consumables/world_scenes/firepit.png" id="3_70h4f"]
+[ext_resource type="Texture2D" uid="uid://bc4pds86lac28" path="res://assets/placeables/Campfire.png" id="3_l2np5"]
 [ext_resource type="Resource" uid="uid://nrcqiv8lptgt" path="res://CustomResources/ItemResources/stick.tres" id="3_rfyau"]
-[ext_resource type="Texture2D" uid="uid://bdrjtlioklsag" path="res://assets/consumables/world_scenes/firepit_burnt.png" id="4_615hs"]
+[ext_resource type="Texture2D" uid="uid://cj6ysxinde373" path="res://assets/placeables/Burnt_Campfire.png.png" id="4_rfyau"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_keetx"]
 radius = 20.025
-
-[sub_resource type="Gradient" id="Gradient_01q75"]
-offsets = PackedFloat32Array(0.190909, 0.981818)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_lb03r"]
-gradient = SubResource("Gradient_01q75")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_wp88g"]
-lifetime_randomness = 0.1
-particle_flag_disable_z = true
-emission_shape_scale = Vector3(0.75, 1, 1)
-emission_shape = 1
-emission_sphere_radius = 8.71
-gravity = Vector3(0, -150, 0)
-tangential_accel_min = -19.54
-tangential_accel_max = 12.64
-color = Color(0.999403, 0.523487, 0.134198, 1)
-color_ramp = SubResource("GradientTexture1D_lb03r")
-turbulence_enabled = true
-turbulence_noise_strength = 10.35
-turbulence_noise_scale = 5.169
 
 [sub_resource type="Gradient" id="Gradient_wrne6"]
 offsets = PackedFloat32Array(0, 0.792208)
@@ -39,13 +17,26 @@ gradient = SubResource("Gradient_wrne6")
 fill = 1
 fill_from = Vector2(0.522936, 0.504587)
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l2np5"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 4.9
+gravity = Vector3(0, -12, 0)
+linear_accel_min = -2.23517e-06
+linear_accel_max = -2.23517e-06
+radial_accel_min = -2.23517e-06
+radial_accel_max = -2.23517e-06
+scale_min = 0.0
+scale_max = 2.5
+color = Color(0.987515, 0.6489, 0.363369, 1)
+
 [node name="Firepit" type="Node2D" node_paths=PackedStringArray("sprites", "light", "particles")]
 script = ExtResource("2_rfyau")
 sprites = [NodePath("Sprites/lit"), NodePath("Sprites/burnt")]
 light = NodePath("PointLight2D")
 particles = NodePath("GPUParticles2D")
 neededRes = ExtResource("3_rfyau")
-burnMaxTime = 5.0
+burnMaxTime = 30.0
 
 [node name="InteractionZone" type="Area2D" parent="."]
 
@@ -55,25 +46,23 @@ shape = SubResource("CircleShape2D_keetx")
 [node name="Sprites" type="Node2D" parent="."]
 
 [node name="lit" type="Sprite2D" parent="Sprites"]
-texture = ExtResource("3_70h4f")
+texture = ExtResource("3_l2np5")
 
 [node name="burnt" type="Sprite2D" parent="Sprites"]
 visible = false
-texture = ExtResource("4_615hs")
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
-visible = false
-amount = 100
-visibility_rect = Rect2(-100, -25, 200, 200)
-trail_enabled = true
-trail_lifetime = 0.01
-trail_sections = 5
-trail_section_subdivisions = 2
-process_material = SubResource("ParticleProcessMaterial_wp88g")
+texture = ExtResource("4_rfyau")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 visible = false
 texture = SubResource("GradientTexture2D_jcp8s")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+visible = false
+position = Vector2(0, -3)
+amount = 18
+speed_scale = 2.0
+collision_base_size = 0.0
+process_material = SubResource("ParticleProcessMaterial_l2np5")
 
 [connection signal="body_entered" from="InteractionZone" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="InteractionZone" to="." method="OnBodyExited"]

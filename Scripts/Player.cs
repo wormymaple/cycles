@@ -10,57 +10,95 @@ public partial class Player : RigidBody2D
     [Export] AudioStreamPlayer footstepSound;
     [Export] AudioStreamPlayer swingSound;
     [Export] AudioStreamPlayer dashSound;
-    
-    
+
+    [ExportCategory("Stats")]
     [Export] float speed;
-    [Export] int health;
-    [Export] int temp;
-    [Export] float hunger;
-    [Export] float hungerRate;
-    [Export] int attackDamage;
+    [Export] public float health;
+    [Export] public float maxHealth;
+    [Export] public float temp;
+    [Export] public float maxTemp;
+    [Export] public float tempRate;
+    [Export] public float hunger;
+    [Export] float defaultHungerRate;
+    [Export] public float currHungerRate;
+    [Export] float dashHungerRate;
+    [Export] float moveHungerRate;
+    [Export] public int attackDamage;
     [Export] public int inventorySize;
 
+    [ExportCategory("Player Logic")]
     [Export] float attackTimeMax;
     [Export] Curve attackCurve;
-    
+
     [Export] Curve dashCurve;
     [Export] float dashPower;
     [Export] float dashTimeMax, dashRegenTimeMax;
-	
+
+    [ExportCategory("Camera and Animation")]
     [Export] Camera2D mainCamera;
-	
-	[Export] float wiggleSpeed, wiggleIntensity;
+
+    [Export] float wiggleSpeed, wiggleIntensity;
     [Export] float alignRotSpeed;
-	[Export] float forcePerspCutoff;
+    [Export] float forcePerspCutoff;
 
+    [Export] Vector2 handOffset;
+    [Export] Vector2 handVerticalShift;
+
+
+    [Export] Vector2 eyeOffset;
+    [Export] Vector2 eyeVerticalShift;
+    [ExportCategory("Sprites")]
     [Export] Sprite2D[] hands;
-	[Export] Vector2 handOffset;
-	[Export] Vector2 handVerticalShift;
-
     [Export] Sprite2D[] eyes;
-	[Export] Vector2 eyeOffset;
-	[Export] Vector2 eyeVerticalShift;
-    
-	public List<Inventory.StackData> Inventory = [];
-	Node2D equippedItem;
-	public Inventory.StackData EquippedItemData;
-    
+    public List<Inventory.StackData> Inventory = [];
+    Node2D equippedItem;
+    public Inventory.StackData EquippedItemData;
+
     // Dash vars
     Vector2 dashDir;
     bool isDashing;
     float dashTime, dashRegenTime;
-    
+
     // attack vars
     Vector2 attackDir;
     float attackTime;
-    bool  isAttacking;
-	
+    bool isAttacking;
+
     // animation vars
     float wiggleT;
     Vector2 lookDir, lookingDir;
 
     bool controllerMode;
-    
+
+    public void DecrementStats(float reductionRate, ref int stat, float fDelta)
+    {
+        if (stat > 0)
+        {
+            stat -= (int) (fDelta * reductionRate); 
+        }
+    }
+    public void DecrementStats(float reductionRate,ref float stat, float fDelta)
+    {
+        if (stat > 0f)
+        {
+            stat -= fDelta * reductionRate; 
+        }
+    }
+    public void IncrementStats(float additionRate,ref int stat, int maxStat, float fDelta)
+    {
+        if (stat < maxStat)
+        {
+            stat +=(int) (fDelta * additionRate);
+        }
+    }
+        public void IncrementStats(float additionRate,ref float stat, float maxStat, float fDelta)
+    {
+        if (stat < maxStat)
+        {
+            stat += fDelta * additionRate;
+        }
+    }
+ 
     public override void _Ready()
     {
         lookDir = Vector2.Down;
@@ -68,21 +106,24 @@ public partial class Player : RigidBody2D
         dashRegenTime = dashRegenTimeMax;
         // inventory = new List<Inventory.StackData>(inventorySize); REPLACE AFTER TESTING
     }
-    
+
+
     public override void _Process(double delta)
     {
         float fDelta = (float)delta;
-        hunger += fDelta * hungerRate;
-
+        DecrementStats(currHungerRate, ref hunger, fDelta);
+        DecrementStats(tempRate, ref temp, fDelta);
+        GD.Print($"hunger rate {currHungerRate} | temp {temp}");         
         if (isDashing)
         {
             dashTime += fDelta;
             if (dashTime > dashTimeMax)
             {
+                currHungerRate = defaultHungerRate;
                 dashTime = dashTimeMax;
                 isDashing = false;
             }
-            
+
             float targetVel = dashCurve.Sample(dashTime / dashTimeMax) * dashPower;
             LinearVelocity = dashDir * targetVel;
         }
@@ -123,6 +164,7 @@ public partial class Player : RigidBody2D
 
         if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
         {
+            currHungerRate = dashHungerRate;
             dashSound.Play();
             isDashing = true;
             dashTime = 0;
@@ -132,17 +174,19 @@ public partial class Player : RigidBody2D
                 : GetLocalMousePosition().Normalized();
         }
     }
-    
+
     void Move(float delta)
     {
         Vector2 inputDir = Input.GetVector("left", "right", "up", "down");
         if (inputDir != Vector2.Zero)
         {
+            currHungerRate = moveHungerRate;
             lookDir = inputDir.Normalized();
             if (!footstepSound.IsPlaying()) footstepSound.Play();
         }
         else if (!controllerMode && !isAttacking)
         {
+            currHungerRate = defaultHungerRate;
             lookDir = GetLocalMousePosition().Normalized();
         }
         wiggleT += delta * inputDir.Length();
@@ -198,7 +242,7 @@ public partial class Player : RigidBody2D
         Vector2 wiggle,
         int targetZIndex
     )
-    
+
     {
         if (LinearVelocity == Vector2.Zero)
             wiggle = Vector2.Zero;
@@ -220,7 +264,7 @@ public partial class Player : RigidBody2D
         float targetAngle = Mathf.Atan2(lookDir.Y, lookDir.X);
         float moveAmount = targetAngle - currentAngle;
         if (Mathf.Abs(moveAmount) > Mathf.Pi) moveAmount -= Mathf.Tau * Mathf.Sign(moveAmount);
-        
+
         lookingDir = lookingDir.Rotated(moveAmount * alignRotSpeed * delta);
 
         if (isAttacking)
@@ -237,34 +281,36 @@ public partial class Player : RigidBody2D
     }
 
     int GetInventoryUsage() => Inventory.Count;
-    
-    public void AddInventoryItem(Inventory.StackData item)
-    {
-	    if (GetInventoryUsage() >= inventorySize) return;
 
-	    Inventory.Add(item);
+    public bool AddInventoryItem(Inventory.StackData item)
+    {
+        GD.Print(GetInventoryUsage() >= inventorySize);
+        if (GetInventoryUsage() >= inventorySize) return false;
+
+        Inventory.Add(item);
+        return true;
     }
 
     public void RemoveInventoryItem(Inventory.StackData item)
     {
-	    for (int i = 0; i < GetInventoryUsage(); i += 1)
-	    {
-		    if (Inventory[i] != item) continue;
-		    
-		    Inventory.RemoveAt(i);
-		    return;
-	    }
-	    
-	    GD.PrintErr("Tried to remove item not in inventory");
+        for (int i = 0; i < GetInventoryUsage(); i += 1)
+        {
+            if (Inventory[i] != item) continue;
+
+            Inventory.RemoveAt(i);
+            return;
+        }
+
+        GD.PrintErr("Tried to remove item not in inventory");
     }
 
     void UnequipItem()
     {
-	    if (equippedItem == null) return;
-	    
-	    equippedItem.QueueFree();
-	    equippedItem = null;
-	    EquippedItemData = null;
+        if (equippedItem == null) return;
+
+        equippedItem.QueueFree();
+        equippedItem = null;
+        EquippedItemData = null;
     }
 
     public void EquipInventoryItem(Inventory.StackData item)
@@ -293,7 +339,7 @@ public partial class Player : RigidBody2D
             }
         }
         if (currCount < targetAmount) return false;
-        
+
         foreach (var currItem in targetElements)
         {
             if (targetAmount == 0) return true;
@@ -301,11 +347,13 @@ public partial class Player : RigidBody2D
             {
                 targetAmount -= currItem.StackCount;
                 RemoveInventoryItem(currItem);
-            } else{
+            }
+            else
+            {
                 currItem.StackCount -= targetAmount;
                 targetAmount = 0;
             }
-            
+
         }
         return targetAmount == 0;
     }

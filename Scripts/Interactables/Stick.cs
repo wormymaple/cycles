@@ -31,8 +31,7 @@ public partial class Stick : Node2D
     {
         if (player != null && Input.IsActionJustPressed("interact"))
         {
-            player.AddInventoryItem(stackData);
-            QueueFree();
+            if(player.AddInventoryItem(stackData)) QueueFree();
         }
     }
 }

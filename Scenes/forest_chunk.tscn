@@ -1,9 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://yfbf3udixswl"]
+[gd_scene load_steps=11 format=3 uid="uid://yfbf3udixswl"]
 
 [ext_resource type="Texture2D" uid="uid://cn8s2frx3hq3j" path="res://Sprites/GrassTileSet.png" id="1_byomg"]
 [ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
-[ext_resource type="Script" uid="uid://bfwbappijwpos" path="res://Scripts/TreeSpawner.cs" id="3_25o4d"]
+[ext_resource type="Script" uid="uid://bfwbappijwpos" path="res://Scripts/ObjectSpawners/TreeSpawner.cs" id="3_25o4d"]
 [ext_resource type="PackedScene" uid="uid://d0donw3olqp03" path="res://Scenes/Environment/BasicTree.tscn" id="4_25o4d"]
+[ext_resource type="Script" uid="uid://31st0ckklty7" path="res://Scripts/ObjectSpawners/FirepitSpawner.cs" id="5_4itqu"]
+[ext_resource type="PackedScene" uid="uid://g6ik7apgklrm" path="res://Scenes/Environment/firepit.tscn" id="6_ymjai"]
+[ext_resource type="Script" uid="uid://bl1ri407j1nwc" path="res://Scripts/ObjectSpawners/StickSpawner.cs" id="7_ymjai"]
+[ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/stick.tscn" id="8_6txdr"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bp61h"]
 texture = ExtResource("1_byomg")
@@ -25,4 +29,15 @@ chunkSize = 16
 script = ExtResource("3_25o4d")
 tree = ExtResource("4_25o4d")
 treeCount = 5
+spawnAreaSize = 256.0
+
+[node name="FirepitSpawner" type="Node2D" parent="."]
+script = ExtResource("5_4itqu")
+firepit = ExtResource("6_ymjai")
+spawnAreaSize = 256.0
+
+[node name="StickSpawner" type="Node2D" parent="."]
+script = ExtResource("7_ymjai")
+stick = ExtResource("8_6txdr")
+stickCount = 6
 spawnAreaSize = 256.0

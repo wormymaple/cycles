@@ -1,19 +1,19 @@
 [gd_scene load_steps=18 format=3 uid="uid://cumt1j3h4nwn3"]
 
-[ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Player.cs" id="1_k626h"]
-[ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_kgrhw"]
-[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="2_k626h"]
-[ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="3_jkqk0"]
-[ext_resource type="Texture2D" uid="uid://bibjslvof0ak1" path="res://assets/character_sprite/eye.png" id="5_1ppdh"]
-[ext_resource type="Texture2D" uid="uid://dne7v3brjrcqb" path="res://assets/character_sprite/foot.png" id="5_xpgy0"]
-[ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="7_mcha1"]
-[ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/Inventory.cs" id="7_qr73d"]
-[ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="8_peuro"]
-[ext_resource type="PackedScene" uid="uid://ch55yi5bc7d1" path="res://Scenes/UI/item_listing.tscn" id="8_qr73d"]
-[ext_resource type="AudioStream" uid="uid://b5uvopunqst8" path="res://Audio/Footstep.mp3" id="11_qv6cs"]
-[ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://Audio/SwingSound1.mp3" id="12_2rjvx"]
-[ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://Audio/SwingSound2.mp3" id="13_tn725"]
-[ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://Audio/DashSound.mp3" id="14_mrrh4"]
+[ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_yfm5m"]
+[ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Scripts/Player.cs" id="2_dmh07"]
+[ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="3_5yjsd"]
+[ext_resource type="Texture2D" uid="uid://bibjslvof0ak1" path="res://assets/character_sprite/eye.png" id="4_qeouv"]
+[ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="5_hms1l"]
+[ext_resource type="Texture2D" uid="uid://dne7v3brjrcqb" path="res://assets/character_sprite/foot.png" id="6_lw1xy"]
+[ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/inventory/Inventory.cs" id="7_yghsy"]
+[ext_resource type="PackedScene" uid="uid://ch55yi5bc7d1" path="res://Scenes/UI/item_listing.tscn" id="8_6sr6s"]
+[ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="9_krqcq"]
+[ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="10_r3lbm"]
+[ext_resource type="AudioStream" uid="uid://b5uvopunqst8" path="res://Audio/Footstep.mp3" id="11_pfs3t"]
+[ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://Audio/SwingSound1.mp3" id="12_nveoa"]
+[ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://Audio/SwingSound2.mp3" id="13_2sln3"]
+[ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://Audio/DashSound.mp3" id="14_vpte4"]
 
 [sub_resource type="Curve" id="Curve_kkyro"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
@@ -32,7 +32,7 @@ radius = 8.0
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 zoom = Vector2(10, 10)
 position_smoothing_speed = 0.5
-script = ExtResource("1_kgrhw")
+script = ExtResource("1_yfm5m")
 target = NodePath("../Player")
 speed = 1.0
 zoomMoveSpeed = 2.0
@@ -42,12 +42,18 @@ targetZoom = 5.0
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
-script = ExtResource("1_k626h")
+script = ExtResource("2_dmh07")
 footstepSound = NodePath("../PlayerSoundQueue/Footstep")
 swingSound = NodePath("../PlayerSoundQueue/SwingSound1")
 dashSound = NodePath("../PlayerSoundQueue/DashSound")
 speed = 70.0
-inventorySize = 16
+health = 10.0
+maxHealth = 10.0
+temp = 10.0
+maxTemp = 10.0
+hunger = 10.0
+attackDamage = 10
+inventorySize = 10
 attackTimeMax = 0.5
 attackCurve = SubResource("Curve_kkyro")
 dashCurve = SubResource("Curve_k626h")
@@ -59,39 +65,39 @@ wiggleSpeed = 10.0
 wiggleIntensity = 1.0
 alignRotSpeed = 10.0
 forcePerspCutoff = 0.2
-hands = [NodePath("Body/Hand1"), NodePath("Body/Hand2")]
 handOffset = Vector2(8, 4)
-eyes = [NodePath("Body/eye1"), NodePath("Body/eye2")]
 eyeOffset = Vector2(4, 2)
 eyeVerticalShift = Vector2(0, -7)
+hands = [NodePath("Body/Hand1"), NodePath("Body/Hand2")]
+eyes = [NodePath("Body/eye1"), NodePath("Body/eye2")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_7dm0k")
 
 [node name="Body" type="Sprite2D" parent="Player"]
-texture = ExtResource("2_k626h")
+texture = ExtResource("3_5yjsd")
 
 [node name="eye1" type="Sprite2D" parent="Player/Body"]
-texture = ExtResource("5_1ppdh")
+texture = ExtResource("4_qeouv")
 
 [node name="eye2" type="Sprite2D" parent="Player/Body"]
-texture = ExtResource("5_1ppdh")
+texture = ExtResource("4_qeouv")
 
 [node name="Hand1" type="Sprite2D" parent="Player/Body"]
 z_index = 1
-texture = ExtResource("3_jkqk0")
+texture = ExtResource("5_hms1l")
 
 [node name="Hand2" type="Sprite2D" parent="Player/Body"]
 z_index = 1
-texture = ExtResource("3_jkqk0")
+texture = ExtResource("5_hms1l")
 
 [node name="foot1" type="Sprite2D" parent="Player/Body"]
 visible = false
-texture = ExtResource("5_xpgy0")
+texture = ExtResource("6_lw1xy")
 
 [node name="foot2" type="Sprite2D" parent="Player/Body"]
 visible = false
-texture = ExtResource("5_xpgy0")
+texture = ExtResource("6_lw1xy")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -103,15 +109,15 @@ anchor_bottom = 1.0
 grow_vertical = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
-script = ExtResource("7_qr73d")
+script = ExtResource("7_yghsy")
 player = NodePath("../../Player")
-itemListing = ExtResource("8_qr73d")
-equippedIcon = ExtResource("8_peuro")
+itemListing = ExtResource("8_6sr6s")
+equippedIcon = ExtResource("9_krqcq")
 listingsContainer = NodePath("ListingContainer")
 cameraController = NodePath("../../Camera2D")
 inventoryCameraOffset = Vector2(-50, 0)
 equippedIconOffset = Vector2(200, 40)
-items = Array[Object]([ExtResource("7_mcha1")])
+items = Array[Object]([ExtResource("10_r3lbm")])
 
 [node name="InventoryBackground" type="ColorRect" parent="CanvasLayer/Inventory"]
 layout_mode = 1
@@ -143,17 +149,17 @@ offset_bottom = 140.0
 visible = false
 
 [node name="Footstep" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
-stream = ExtResource("11_qv6cs")
+stream = ExtResource("11_pfs3t")
 volume_db = -11.0
 pitch_scale = 0.82
 
 [node name="SwingSound1" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
-stream = ExtResource("12_2rjvx")
+stream = ExtResource("12_nveoa")
 
 [node name="SwingSound2" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
-stream = ExtResource("13_tn725")
+stream = ExtResource("13_2sln3")
 
 [node name="DashSound" type="AudioStreamPlayer" parent="PlayerSoundQueue"]
-stream = ExtResource("14_mrrh4")
+stream = ExtResource("14_vpte4")
 volume_db = -5.0
 pitch_scale = 2.1

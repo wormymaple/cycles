@@ -47,6 +47,8 @@ public partial class Firepit : Node2D
 		} 
 		if(isBurning){
 			burnTime += delta;
+			player.IncrementStats(1f,ref player.health, player.maxHealth, (float)delta);
+			player.IncrementStats(1f,ref player.temp,player.maxTemp, (float)delta);
 			if(burnTime > burnMaxTime){
 				burnTime = 0; 
 				isBurning = false;

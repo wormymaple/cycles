@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://ch55yi5bc7d1"]
 
 [ext_resource type="Texture2D" uid="uid://c1d0s8u26dbmk" path="res://Sprites/Items/torch.png" id="1_h2217"]
-[ext_resource type="Script" uid="uid://cmfh6aqatqp1e" path="res://Scripts/InventoryItem.cs" id="2_jyd5o"]
+[ext_resource type="Script" uid="uid://cmfh6aqatqp1e" path="res://Scripts/inventory/InventoryItem.cs" id="2_jyd5o"]
+
 
 [node name="ItemLabel" type="TextureRect" node_paths=PackedStringArray("itemLabel")]
 custom_minimum_size = Vector2(250, 80)
