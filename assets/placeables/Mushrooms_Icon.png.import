@@ -3,11 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b4ghnpx1voxhq"
-valid=false
+path="res://.godot/imported/Mushrooms_Icon.png-7631e452354cb5e94f928dfc5ccd9656.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/placeables/Mushrooms_Icon.png"
+dest_files=["res://.godot/imported/Mushrooms_Icon.png-7631e452354cb5e94f928dfc5ccd9656.ctex"]
 
 [params]
 

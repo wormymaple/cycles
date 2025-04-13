@@ -3,11 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://811g48fpyv61"
-valid=false
+path="res://.godot/imported/Sticks_Icon.png.png-6213f8bdb3cb18cf6dc9e103b60b514b.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/placeables/Sticks_Icon.png.png"
+dest_files=["res://.godot/imported/Sticks_Icon.png.png-6213f8bdb3cb18cf6dc9e103b60b514b.ctex"]
 
 [params]
 
