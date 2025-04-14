@@ -45,8 +45,8 @@ shader_parameter/noise = SubResource("NoiseTexture2D_5t7yc")
 shader_parameter/noise_intensity = 0.02
 
 [sub_resource type="Curve" id="Curve_ws1hi"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.355, 0.449438), 0.0, 0.0, 0, 0, Vector2(0.485, 0), 0.0, 0.0, 0, 0, Vector2(0.62, 0.47191), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 5
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.4, 0.595506), 0.0, 0.0, 0, 0, Vector2(0.515, 0.0561798), 0.0, 0.0, 0, 0, Vector2(0.63, 0.58427), 0.0, 0.0, 0, 0, Vector2(0.99999, 0.988764), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 6
 
 [node name="Map" type="Node2D"]
 
@@ -61,7 +61,9 @@ chunkSize = 256.0
 
 [node name="Player" parent="PlayerPackage" index="1" node_paths=PackedStringArray("dayNightCycle")]
 dayNightCycle = NodePath("../../DayNightCycle")
-tempRate = 0.01
+currTempRate = 0.01
+dayTempRate = 0.01
+nightTempRate = 0.5
 hunger = 0.0
 maxHunger = 10.0
 defaultHungerRate = 0.01
@@ -119,6 +121,8 @@ autostart = true
 
 [connection signal="body_entered" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyEntered"]
 [connection signal="body_exited" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyExited"]
+[connection signal="DayStarted" from="DayNightCycle" to="ChunkLoader" method="DayStarted"]
+[connection signal="NightStarted" from="DayNightCycle" to="PlayerPackage/Player" method="NightStarted"]
 [connection signal="timeout" from="DayNightCycle/Timer" to="DayNightCycle" method="Timout"]
 
 [editable path="PlayerPackage"]

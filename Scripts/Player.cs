@@ -19,7 +19,9 @@ public partial class Player : RigidBody2D
     [Export] public float maxHealth;
     [Export] public float temp;
     [Export] public float maxTemp;
-    [Export] public float tempRate;
+    [Export] public float currTempRate;
+    [Export] public float dayTempRate;
+    [Export] public float nightTempRate;
     [Export] public float hunger;
     [Export] public float maxHunger;
     [Export] float defaultHungerRate;
@@ -72,36 +74,30 @@ public partial class Player : RigidBody2D
     Vector2 lookDir, lookingDir;
 
     bool controllerMode;
-
-    public void DecrementStats(float reductionRate, ref int stat, float fDelta)
-    {
-        if (stat > 0)
-        {
-            stat -= (int) (fDelta * reductionRate); 
-        }
+    
+    // Signals
+    public void DayStarted(){
+        currTempRate = dayTempRate;
     }
-    public void DecrementStats(float reductionRate,ref float stat, float fDelta)
+    public void NightStarted(){
+        currTempRate = nightTempRate;
+    }
+
+    public void DecrementStats(float reductionRate, ref float stat, float fDelta)
     {
         if (stat > 0f)
         {
-            stat -= fDelta * reductionRate; 
+            stat -= fDelta * reductionRate;
         }
     }
-    public void IncrementStats(float additionRate,ref int stat, int maxStat, float fDelta)
-    {
-        if (stat < maxStat)
-        {
-            stat +=(int) (fDelta * additionRate);
-        }
-    }
-        public void IncrementStats(float additionRate,ref float stat, float maxStat, float fDelta)
+    public void IncrementStats(float additionRate, ref float stat, float maxStat, float fDelta)
     {
         if (stat < maxStat)
         {
             stat += fDelta * additionRate;
         }
     }
- 
+
     public override void _Ready()
     {
         lookDir = Vector2.Down;
@@ -115,8 +111,8 @@ public partial class Player : RigidBody2D
     {
         float fDelta = (float)delta;
         IncrementStats(currHungerRate, ref hunger, maxHunger, fDelta);
-        DecrementStats(tempRate, ref temp, fDelta);
-        GD.Print($"hunger rate {currHungerRate} | temp {temp}");         
+        DecrementStats(currTempRate, ref temp, fDelta);
+        GD.Print($"hunger rate {currHungerRate} | temp {temp}");
         if (isDashing)
         {
             dashTime += fDelta;
