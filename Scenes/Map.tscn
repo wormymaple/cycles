@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://clwnpa0et0auh"]
+[gd_scene load_steps=19 format=3 uid="uid://clwnpa0et0auh"]
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="5_ngcqm"]
 [ext_resource type="Shader" uid="uid://cbvqn50wroe45" path="res://Shaders/shadow_effect.gdshader" id="5_r08cw"]
 [ext_resource type="Texture2D" uid="uid://uljgrncpkd5" path="res://icon.svg" id="6_00287"]
+[ext_resource type="Script" uid="uid://nogio3n7hvi4" path="res://Scripts/cycle-logic/DayNightCycle.cs" id="9_ws1hi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5t7yc"]
 radius = 100.0
@@ -43,6 +44,10 @@ shader = ExtResource("5_r08cw")
 shader_parameter/noise = SubResource("NoiseTexture2D_5t7yc")
 shader_parameter/noise_intensity = 0.02
 
+[sub_resource type="Curve" id="Curve_ws1hi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.355, 0.449438), 0.0, 0.0, 0, 0, Vector2(0.485, 0), 0.0, 0.0, 0, 0, Vector2(0.62, 0.47191), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 5
+
 [node name="Map" type="Node2D"]
 
 [node name="ChunkLoader" type="Node2D" parent="." node_paths=PackedStringArray("updateTarget")]
@@ -54,12 +59,15 @@ chunkSize = 256.0
 
 [node name="PlayerPackage" parent="." instance=ExtResource("4_qumfl")]
 
-[node name="Player" parent="PlayerPackage" index="1"]
+[node name="Player" parent="PlayerPackage" index="1" node_paths=PackedStringArray("dayNightCycle")]
+dayNightCycle = NodePath("../../DayNightCycle")
 tempRate = 0.01
+hunger = 0.0
+maxHunger = 10.0
 defaultHungerRate = 0.01
 currHungerRate = 0.01
-dashHungerRate = 3.0
-moveHungerRate = 2.0
+dashHungerRate = 1.0
+moveHungerRate = 0.2
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
@@ -99,7 +107,18 @@ z_index = 2
 material = SubResource("ShaderMaterial_5t7yc")
 texture = ExtResource("6_00287")
 
+[node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("timer", "worldLight")]
+script = ExtResource("9_ws1hi")
+timer = NodePath("Timer")
+worldLight = NodePath("../DirectionalLight2D")
+energyCurve = SubResource("Curve_ws1hi")
+
+[node name="Timer" type="Timer" parent="DayNightCycle"]
+wait_time = 300.0
+autostart = true
+
 [connection signal="body_entered" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyEntered"]
 [connection signal="body_exited" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyExited"]
+[connection signal="timeout" from="DayNightCycle/Timer" to="DayNightCycle" method="Timout"]
 
 [editable path="PlayerPackage"]

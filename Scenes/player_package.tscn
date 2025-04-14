@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=20 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_yfm5m"]
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Scripts/Player.cs" id="2_dmh07"]
@@ -14,6 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://Audio/SwingSound1.mp3" id="12_nveoa"]
 [ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://Audio/SwingSound2.mp3" id="13_2sln3"]
 [ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://Audio/DashSound.mp3" id="14_vpte4"]
+[ext_resource type="Script" uid="uid://bp7qbf3meleuo" path="res://Scripts/UI/GridContainer.cs" id="15_dmh07"]
 
 [sub_resource type="Curve" id="Curve_kkyro"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
@@ -26,6 +27,9 @@ point_count = 3
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_7dm0k"]
 radius = 8.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_5yjsd"]
+font_size = 10
 
 [node name="PlayerPackage" type="Node2D"]
 
@@ -144,6 +148,111 @@ layout_mode = 1
 offset_top = 100.0
 offset_right = 40.0
 offset_bottom = 140.0
+
+[node name="Stats" type="CanvasLayer" parent="."]
+
+[node name="GridContainer" type="GridContainer" parent="Stats" node_paths=PackedStringArray("player", "healthBar", "hungerBar", "tempBar")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -81.0
+offset_top = -103.0
+offset_right = 81.0
+grow_horizontal = 2
+grow_vertical = 0
+columns = 2
+script = ExtResource("15_dmh07")
+player = NodePath("../../Player")
+healthBar = NodePath("HealthBar/ColorRect")
+hungerBar = NodePath("HungerBar/ColorRect")
+tempBar = NodePath("TempBar/ColorRect")
+healthBarSize = 300.0
+hungerBarSize = 300.0
+tempBarSize = 300.0
+
+[node name="Label" type="Label" parent="Stats/GridContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "Health"
+label_settings = SubResource("LabelSettings_5yjsd")
+vertical_alignment = 2
+
+[node name="HealthBar" type="Control" parent="Stats/GridContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Stats/GridContainer/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Stats/GridContainer/HealthBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.466667, 0.482353, 1)
+
+[node name="Label4" type="Label" parent="Stats/GridContainer"]
+layout_mode = 2
+text = "Hunger"
+label_settings = SubResource("LabelSettings_5yjsd")
+vertical_alignment = 2
+
+[node name="HungerBar" type="Control" parent="Stats/GridContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Stats/GridContainer/HungerBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Stats/GridContainer/HungerBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 0.517647, 1)
+
+[node name="Label5" type="Label" parent="Stats/GridContainer"]
+layout_mode = 2
+text = "Temp"
+label_settings = SubResource("LabelSettings_5yjsd")
+vertical_alignment = 2
+
+[node name="TempBar" type="Control" parent="Stats/GridContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+
+[node name="Panel" type="Panel" parent="Stats/GridContainer/TempBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Stats/GridContainer/TempBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0.27451, 0, 1)
 
 [node name="PlayerSoundQueue" type="Node2D" parent="."]
 visible = false

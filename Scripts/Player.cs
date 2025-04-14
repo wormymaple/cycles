@@ -5,6 +5,8 @@ using System.Linq;
 
 public partial class Player : RigidBody2D
 {
+    [ExportCategory("Controllers")]
+    [Export] Node2D dayNightCycle;
     // Sounds 
     [ExportCategory("Sound Effects")]
     [Export] AudioStreamPlayer footstepSound;
@@ -19,6 +21,7 @@ public partial class Player : RigidBody2D
     [Export] public float maxTemp;
     [Export] public float tempRate;
     [Export] public float hunger;
+    [Export] public float maxHunger;
     [Export] float defaultHungerRate;
     [Export] public float currHungerRate;
     [Export] float dashHungerRate;
@@ -111,7 +114,7 @@ public partial class Player : RigidBody2D
     public override void _Process(double delta)
     {
         float fDelta = (float)delta;
-        DecrementStats(currHungerRate, ref hunger, fDelta);
+        IncrementStats(currHungerRate, ref hunger, maxHunger, fDelta);
         DecrementStats(tempRate, ref temp, fDelta);
         GD.Print($"hunger rate {currHungerRate} | temp {temp}");         
         if (isDashing)
