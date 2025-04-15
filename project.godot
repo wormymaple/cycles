@@ -27,6 +27,7 @@ project/assembly_name="cycles"
 [global_group]
 
 Player=""
+Enemy=""
 
 [input]
 

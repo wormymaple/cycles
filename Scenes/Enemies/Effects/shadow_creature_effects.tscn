@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://buscn0gjepdgl"]
+
+[ext_resource type="Script" uid="uid://d2y288c5t0bim" path="res://Scripts/DieAfterSeconds.cs" id="2_27gk0"]
+[ext_resource type="Script" uid="uid://dwmuqxf5iha2l" path="res://Scripts/PlayParticlesOnce.cs" id="3_27gk0"]
+
+[sub_resource type="Gradient" id="Gradient_0wetv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tyyhd"]
+gradient = SubResource("Gradient_0wetv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tyyhd"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 8.0
+angle_min = 1.07288e-05
+angle_max = 360.0
+spread = 180.0
+initial_velocity_min = 50.0
+initial_velocity_max = 50.0
+gravity = Vector3(0, -10, 0)
+damping_min = 100.0
+damping_max = 100.0
+scale_max = 4.0
+color = Color(0.590702, 0.412652, 0.967587, 1)
+color_ramp = SubResource("GradientTexture1D_tyyhd")
+hue_variation_min = -2.23517e-08
+hue_variation_max = 0.00999998
+
+[node name="ShadowCreatureEffects" type="Node2D"]
+script = ExtResource("2_27gk0")
+aliveTimeMax = 3.0
+
+[node name="ShadowCreatureDeath" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 100
+one_shot = true
+explosiveness = 0.9
+trail_lifetime = 1.0
+process_material = SubResource("ParticleProcessMaterial_tyyhd")
+script = ExtResource("3_27gk0")

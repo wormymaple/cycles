@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bkuuqec11fkgl"]
+
+[ext_resource type="Script" uid="uid://p204dsvolppr" path="res://Scripts/DamageArea.cs" id="1_tuwn5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ngcqm"]
+
+[node name="DamageArea" type="Area2D" node_paths=PackedStringArray("shape")]
+script = ExtResource("1_tuwn5")
+shape = NodePath("CollisionShape2D")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ngcqm")
+
+[connection signal="body_entered" from="." to="." method="OnBodyEntered"]
