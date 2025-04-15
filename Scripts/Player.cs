@@ -112,7 +112,6 @@ public partial class Player : RigidBody2D
         float fDelta = (float)delta;
         IncrementStats(currHungerRate, ref hunger, maxHunger, fDelta);
         DecrementStats(currTempRate, ref temp, fDelta);
-        GD.Print($"hunger rate {currHungerRate} | temp {temp}");
         if (isDashing)
         {
             dashTime += fDelta;

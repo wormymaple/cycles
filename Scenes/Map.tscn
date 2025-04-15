@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://clwnpa0et0auh"]
+[gd_scene load_steps=23 format=3 uid="uid://clwnpa0et0auh"]
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
@@ -45,8 +45,25 @@ shader_parameter/noise = SubResource("NoiseTexture2D_5t7yc")
 shader_parameter/noise_intensity = 0.02
 
 [sub_resource type="Curve" id="Curve_ws1hi"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.4, 0.595506), 0.0, 0.0, 0, 0, Vector2(0.515, 0.0561798), 0.0, 0.0, 0, 0, Vector2(0.63, 0.58427), 0.0, 0.0, 0, 0, Vector2(0.99999, 0.988764), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.253602, 1), -0.0674488, -0.0674488, 0, 0, Vector2(0.397694, 0.396834), 0.0, 0.0, 0, 0, Vector2(0.602305, 0.401705), 0.0, 0.0, 0, 0, Vector2(0.746398, 1), 0.0, 0.0, 0, 0, Vector2(0.99999, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 7
+
+[sub_resource type="Curve" id="Curve_xicox"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.315634, 0.916472), -2.0884, -2.0884, 0, 0, Vector2(0.4, 0.3), -1.84187, -1.84187, 0, 0, Vector2(0.6, 0.3), 1.89906, 1.89906, 0, 0, Vector2(0.684366, 0.886098), 2.4371, 2.4371, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
 point_count = 6
+
+[sub_resource type="Curve" id="Curve_bjq7f"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, 0.9), -1.5573, -1.5573, 0, 0, Vector2(0.327434, 0.567173), -6.2653, -6.2653, 0, 0, Vector2(0.4, 0.3), 0.0, 0.0, 0, 0, Vector2(0.6, 0.3), 0.0, 0.0, 0, 0, Vector2(0.675516, 0.574766), 8.64402, 8.64402, 0, 0, Vector2(0.75, 0.9), 1.14818, 1.14818, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="Curve" id="Curve_b7adt"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.25, 0.7), 0.0, 0.0, 0, 0, Vector2(0.35, 0.2), 0.0, 0.0, 0, 0, Vector2(0.4, 0.5), 0.0, 0.0, 0, 0, Vector2(0.6, 0.5), 0.0, 0.0, 0, 0, Vector2(0.65, 0.2), 0.0, 0.0, 0, 0, Vector2(0.75, 0.7), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 8
+
+[sub_resource type="CurveXYZTexture" id="CurveXYZTexture_bjq7f"]
+curve_x = SubResource("Curve_xicox")
+curve_y = SubResource("Curve_bjq7f")
+curve_z = SubResource("Curve_b7adt")
 
 [node name="Map" type="Node2D"]
 
@@ -114,9 +131,10 @@ script = ExtResource("9_ws1hi")
 timer = NodePath("Timer")
 worldLight = NodePath("../DirectionalLight2D")
 energyCurve = SubResource("Curve_ws1hi")
+colorCurve = SubResource("CurveXYZTexture_bjq7f")
 
 [node name="Timer" type="Timer" parent="DayNightCycle"]
-wait_time = 300.0
+wait_time = 10.0
 autostart = true
 
 [connection signal="body_entered" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyEntered"]
