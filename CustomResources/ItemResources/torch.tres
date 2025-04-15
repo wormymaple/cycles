@@ -4,7 +4,6 @@
 [ext_resource type="Script" uid="uid://copnyh8obxo7q" path="res://CustomResources/ItemRes.cs" id="1_nr0jk"]
 [ext_resource type="Texture2D" uid="uid://c1d0s8u26dbmk" path="res://Sprites/Items/torch.png" id="1_svhu6"]
 
-
 [resource]
 script = ExtResource("1_nr0jk")
 Name = "torch"
