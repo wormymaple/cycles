@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
-[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/player_package.tscn" id="4_qumfl"]
+[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/Player/player_package.tscn" id="4_qumfl"]
 [ext_resource type="PackedScene" uid="uid://qo0e8k1ta88t" path="res://Scenes/Enemies/shadow_creature.tscn" id="4_r08cw"]
 [ext_resource type="Script" uid="uid://nogio3n7hvi4" path="res://Scripts/CycleLogic/DayNightCycle.cs" id="9_ws1hi"]
 
@@ -66,7 +66,7 @@ energyCurve = SubResource("Curve_ws1hi")
 colorCurve = SubResource("CurveXYZTexture_bjq7f")
 
 [node name="Timer" type="Timer" parent="DayNightCycle"]
-wait_time = 10.0
+wait_time = 600.0
 autostart = true
 
 [connection signal="timeout" from="DayNightCycle/Timer" to="DayNightCycle" method="Timout"]

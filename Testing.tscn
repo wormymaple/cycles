@@ -2,12 +2,13 @@
 
 [ext_resource type="PackedScene" uid="uid://g6ik7apgklrm" path="res://Scenes/Environment/firepit.tscn" id="1_28q7j"]
 [ext_resource type="Script" uid="uid://xx4ic3wtcp72" path="res://StickSpawner.cs" id="2_1x61k"]
-[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/player_package.tscn" id="3_lj67a"]
+[ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/Player/player_package.tscn" id="3_lj67a"]
 
 [node name="Main" type="Node2D"]
 
-[node name="Firepit" parent="." instance=ExtResource("1_28q7j")]
+[node name="Firepit" parent="." node_paths=PackedStringArray("burningSound") instance=ExtResource("1_28q7j")]
 position = Vector2(56, -34)
+burningSound = NodePath("Node/burning")
 
 [node name="TestStickSpawner" type="Node2D" parent="."]
 script = ExtResource("2_1x61k")
