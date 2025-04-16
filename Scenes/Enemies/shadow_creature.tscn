@@ -1,6 +1,6 @@
-[gd_scene load_steps=15 format=3 uid="uid://qo0e8k1ta88t"]
+[gd_scene load_steps=17 format=3 uid="uid://qo0e8k1ta88t"]
 
-[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/ShadowCreature.cs" id="1_xch67"]
+[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/enemies/ShadowCreature.cs" id="1_xch67"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="2_6nxvi"]
 [ext_resource type="PackedScene" uid="uid://buscn0gjepdgl" path="res://Scenes/Enemies/Effects/shadow_creature_effects.tscn" id="3_6nxvi"]
 [ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="3_38tmn"]
@@ -41,6 +41,17 @@ shader = ExtResource("4_cr02q")
 shader_parameter/noise = SubResource("NoiseTexture2D_5t7yc")
 shader_parameter/noise_intensity = 0.02
 
+[sub_resource type="Gradient" id="Gradient_rue3w"]
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_6nxvi"]
+gradient = SubResource("Gradient_rue3w")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.2, 0.2)
+
 [node name="ShadowCreature" type="RigidBody2D" groups=["Enemy"]]
 gravity_scale = 0.0
 lock_rotation = true
@@ -49,7 +60,7 @@ script = ExtResource("1_xch67")
 moveSpeed = 30.0
 scaredItems = Array[Object]([ExtResource("2_6nxvi")])
 scaredDist = 100.0
-health = 9.0
+health = 25.0
 deathEffect = ExtResource("3_6nxvi")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -73,6 +84,11 @@ process_material = SubResource("ParticleProcessMaterial_ngcqm")
 z_index = 2
 material = SubResource("ShaderMaterial_5t7yc")
 texture = ExtResource("5_j1hbg")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(0.672, 0.528, 0.96, 1)
+energy = 0.25
+texture = SubResource("GradientTexture2D_6nxvi")
 
 [connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="Area2D" to="." method="OnBodyExited"]
