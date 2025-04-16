@@ -1,9 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://ybmsfpdra53e"]
+[gd_scene load_steps=12 format=3 uid="uid://ybmsfpdra53e"]
 
 [ext_resource type="Texture2D" uid="uid://b1303t024o8jd" path="res://Sprites/Items/torch_ingame.png" id="1_8kqqv"]
 [ext_resource type="Script" uid="uid://crdupbm75vb6l" path="res://Scripts/Items/Torch.cs" id="2_c3i2w"]
 [ext_resource type="PackedScene" uid="uid://bkuuqec11fkgl" path="res://Scenes/damage_area.tscn" id="3_qu6ik"]
-[ext_resource type="PackedScene" uid="uid://b8g6wil22475e" path="res://Scenes/Items/torch_effects.tscn" id="4_0rex4"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_41vrh"]
 light_mode = 1
@@ -58,7 +57,6 @@ damage = 10.0
 damageAreaDist = 20.0
 damageAreaSize = 20.0
 damageAreaTime = 0.15
-hitEffect = ExtResource("4_0rex4")
 
 [node name="FireParticles" type="GPUParticles2D" parent="."]
 z_index = 3
