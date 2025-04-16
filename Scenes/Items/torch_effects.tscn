@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=3 uid="uid://b8g6wil22475e"]
+
+[ext_resource type="Script" uid="uid://d2y288c5t0bim" path="res://Scripts/DieAfterSeconds.cs" id="1_lu674"]
+[ext_resource type="Script" uid="uid://dwmuqxf5iha2l" path="res://Scripts/PlayParticlesOnce.cs" id="2_0k2qu"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fbuim"]
+light_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_0wetv"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_tyyhd"]
+gradient = SubResource("Gradient_0wetv")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_tyyhd"]
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 4.0
+angle_min = 1.07288e-05
+angle_max = 1.07288e-05
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 75.0
+orbit_velocity_min = -0.25
+orbit_velocity_max = 0.25
+gravity = Vector3(0, 25, 0)
+damping_max = 100.0
+scale_min = 2.0
+scale_max = 2.0
+color = Color(0.946224, 0.471911, 3.85046e-07, 1)
+color_ramp = SubResource("GradientTexture1D_tyyhd")
+hue_variation_min = -0.07
+hue_variation_max = 0.07
+
+[node name="TorchHitEffect" type="Node2D"]
+script = ExtResource("1_lu674")
+aliveTimeMax = 3.0
+
+[node name="Particles" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_fbuim")
+emitting = false
+amount = 5
+one_shot = true
+explosiveness = 0.9
+trail_lifetime = 1.0
+process_material = SubResource("ParticleProcessMaterial_tyyhd")
+script = ExtResource("2_0k2qu")
