@@ -2,13 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
-[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/enemies/ShadowCreature.cs" id="4_5t7yc"]
+[ext_resource type="Script" uid="uid://b3mev8vknnr7y" path="res://Scripts/Enemies/ShadowCreature.cs" id="4_5t7yc"]
 [ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/player_package.tscn" id="4_qumfl"]
 [ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="4_r08cw"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="5_ngcqm"]
 [ext_resource type="Shader" uid="uid://cbvqn50wroe45" path="res://Shaders/shadow_effect.gdshader" id="5_r08cw"]
 [ext_resource type="Texture2D" uid="uid://uljgrncpkd5" path="res://icon.svg" id="6_00287"]
-[ext_resource type="Script" uid="uid://nogio3n7hvi4" path="res://Scripts/cycle-logic/DayNightCycle.cs" id="9_ws1hi"]
+[ext_resource type="Script" uid="uid://nogio3n7hvi4" path="res://Scripts/CycleLogic/DayNightCycle.cs" id="9_ws1hi"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5t7yc"]
 radius = 100.0
@@ -139,8 +139,6 @@ autostart = true
 
 [connection signal="body_entered" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyEntered"]
 [connection signal="body_exited" from="ShadowCreature/Area2D" to="ShadowCreature" method="OnBodyExited"]
-[connection signal="DayStarted" from="DayNightCycle" to="ChunkLoader" method="DayStarted"]
-[connection signal="NightStarted" from="DayNightCycle" to="PlayerPackage/Player" method="NightStarted"]
 [connection signal="timeout" from="DayNightCycle/Timer" to="DayNightCycle" method="Timout"]
 
 [editable path="PlayerPackage"]

@@ -1,15 +1,17 @@
 [gd_scene load_steps=5 format=3 uid="uid://b0xexkbpe5jdb"]
 
-[ext_resource type="Script" uid="uid://ds706adhow14b" path="res://Scripts/Pickup.cs" id="1_a76dh"]
-[ext_resource type="AudioStream" uid="uid://cc2upfh4g6bg5" path="res://Audio/RewardSound.mp3" id="2_3ts5t"]
-[ext_resource type="AudioStream" uid="uid://d1e48ivb7unn8" path="res://Audio/fullinv.mp3" id="3_kamwv"]
+[ext_resource type="Script" uid="uid://ds706adhow14b" path="res://Scripts/Interactables/Pickup.cs" id="1_a76dh"]
+[ext_resource type="AudioStream" uid="uid://cc2upfh4g6bg5" path="res://assets/Audio/RewardSound.mp3" id="2_3ts5t"]
+[ext_resource type="AudioStream" uid="uid://d1e48ivb7unn8" path="res://assets/Audio/fullinv.mp3" id="3_kamwv"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5y8f6"]
 radius = 18.0
 
-[node name="Pickup" type="Node2D" node_paths=PackedStringArray("pickupSprite")]
+[node name="Pickup" type="Node2D" node_paths=PackedStringArray("pickupSprite", "pickupNoise", "fullNoise")]
 script = ExtResource("1_a76dh")
 pickupSprite = NodePath("Sprite2D")
+pickupNoise = NodePath("Node2D/pickup")
+fullNoise = NodePath("Node2D/full")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 

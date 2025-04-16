@@ -10,11 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://ch55yi5bc7d1" path="res://Scenes/UI/item_listing.tscn" id="8_6sr6s"]
 [ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="9_krqcq"]
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="10_r3lbm"]
-[ext_resource type="AudioStream" uid="uid://b5uvopunqst8" path="res://Audio/Footstep.mp3" id="11_pfs3t"]
-[ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://Audio/SwingSound1.mp3" id="12_nveoa"]
-[ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://Audio/SwingSound2.mp3" id="13_2sln3"]
-[ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://Audio/DashSound.mp3" id="14_vpte4"]
-[ext_resource type="Script" uid="uid://bp7qbf3meleuo" path="res://Scripts/UI/GridContainer.cs" id="15_dmh07"]
+[ext_resource type="AudioStream" uid="uid://b5uvopunqst8" path="res://assets/Audio/Footstep.mp3" id="11_pfs3t"]
+[ext_resource type="AudioStream" uid="uid://b6sxj7takjs7x" path="res://assets/Audio/SwingSound1.mp3" id="12_nveoa"]
+[ext_resource type="AudioStream" uid="uid://cds6gcqmyg72a" path="res://assets/Audio/SwingSound2.mp3" id="13_2sln3"]
+[ext_resource type="AudioStream" uid="uid://dgxhj12iuib4p" path="res://assets/Audio/DashSound.mp3" id="14_vpte4"]
+[ext_resource type="Script" uid="uid://bp7qbf3meleuo" path="res://Scripts/UI/StatsContainer.cs" id="15_dmh07"]
 
 [sub_resource type="Curve" id="Curve_kkyro"]
 _limits = [-1.0, 1.0, 0.0, 1.0]
@@ -151,7 +151,7 @@ offset_bottom = 140.0
 
 [node name="Stats" type="CanvasLayer" parent="."]
 
-[node name="GridContainer" type="GridContainer" parent="Stats" node_paths=PackedStringArray("player", "healthBar", "hungerBar", "tempBar")]
+[node name="StatsContainer" type="GridContainer" parent="Stats" node_paths=PackedStringArray("player", "healthBar", "hungerBar", "tempBar")]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -172,18 +172,18 @@ healthBarSize = 300.0
 hungerBarSize = 300.0
 tempBarSize = 300.0
 
-[node name="Label" type="Label" parent="Stats/GridContainer"]
+[node name="Label" type="Label" parent="Stats/StatsContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Health"
 label_settings = SubResource("LabelSettings_5yjsd")
 vertical_alignment = 2
 
-[node name="HealthBar" type="Control" parent="Stats/GridContainer"]
+[node name="HealthBar" type="Control" parent="Stats/StatsContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="Stats/GridContainer/HealthBar"]
+[node name="Panel" type="Panel" parent="Stats/StatsContainer/HealthBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -191,7 +191,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Stats/GridContainer/HealthBar"]
+[node name="ColorRect" type="ColorRect" parent="Stats/StatsContainer/HealthBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -200,17 +200,17 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 0.466667, 0.482353, 1)
 
-[node name="Label4" type="Label" parent="Stats/GridContainer"]
+[node name="Label4" type="Label" parent="Stats/StatsContainer"]
 layout_mode = 2
 text = "Hunger"
 label_settings = SubResource("LabelSettings_5yjsd")
 vertical_alignment = 2
 
-[node name="HungerBar" type="Control" parent="Stats/GridContainer"]
+[node name="HungerBar" type="Control" parent="Stats/StatsContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="Stats/GridContainer/HungerBar"]
+[node name="Panel" type="Panel" parent="Stats/StatsContainer/HungerBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -218,7 +218,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Stats/GridContainer/HungerBar"]
+[node name="ColorRect" type="ColorRect" parent="Stats/StatsContainer/HungerBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -227,17 +227,17 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(1, 1, 0.517647, 1)
 
-[node name="Label5" type="Label" parent="Stats/GridContainer"]
+[node name="Label5" type="Label" parent="Stats/StatsContainer"]
 layout_mode = 2
 text = "Temp"
 label_settings = SubResource("LabelSettings_5yjsd")
 vertical_alignment = 2
 
-[node name="TempBar" type="Control" parent="Stats/GridContainer"]
+[node name="TempBar" type="Control" parent="Stats/StatsContainer"]
 custom_minimum_size = Vector2(300, 0)
 layout_mode = 2
 
-[node name="Panel" type="Panel" parent="Stats/GridContainer/TempBar"]
+[node name="Panel" type="Panel" parent="Stats/StatsContainer/TempBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -245,7 +245,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="Stats/GridContainer/TempBar"]
+[node name="ColorRect" type="ColorRect" parent="Stats/StatsContainer/TempBar"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

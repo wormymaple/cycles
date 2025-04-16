@@ -1,9 +1,18 @@
 using Godot;
 using System;
 
+/*
+TO DOS
+Prevent starting fire when already going
+Damage player if on top?
+Add extinguished noise
+Fine tune stat boosts
+*/
 public partial class Firepit : Node2D
 {
 	[Export] Sprite2D[] sprites;
+	[Export] AudioStreamPlayer burningSound;
+	[Export] AudioStreamPlayer extinguishedSound;
 	[Export] PointLight2D light;
 	[Export] GpuParticles2D particles;
 	[Export] ItemRes neededRes;
@@ -16,10 +25,8 @@ public partial class Firepit : Node2D
 
 	void OnBodyEntered(Node body)
 	{
-		GD.Print("entered-firepit");
 		if (body is Player)
 		{
-			GD.Print("entered-firepit");
 			player = (Player)body;
 		}
 	}
@@ -28,7 +35,6 @@ public partial class Firepit : Node2D
 
 		if (body is Player)
 		{
-			GD.Print("exited-firepit");
 			player = null;
 		}
 	}
@@ -38,6 +44,7 @@ public partial class Firepit : Node2D
 		sprites[1].Visible = !state;
 		light.Visible = state;
 		particles.Visible = state;
+		burningSound.Playing = state;
 	}
 
 	public override void _Ready()
@@ -49,7 +56,6 @@ public partial class Firepit : Node2D
 	{
 		if (player != null && Input.IsActionJustPressed("interact"))
 		{
-			GD.Print("togglefire");
 			if (player.ConsumeInventoryItem(neededRes, 7))
 			{
 				isBurning = true;

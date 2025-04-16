@@ -282,7 +282,6 @@ public partial class Player : RigidBody2D
 
     public bool AddInventoryItem(Inventory.StackData item)
     {
-        GD.Print(GetInventoryUsage() >= inventorySize);
         if (GetInventoryUsage() >= inventorySize) return false;
 
         Inventory.Add(item);

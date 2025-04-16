@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://g6ik7apgklrm"]
+[gd_scene load_steps=10 format=3 uid="uid://g6ik7apgklrm"]
 
 [ext_resource type="Script" uid="uid://b8jje3vblxr3p" path="res://Scripts/Interactables/Firepit.cs" id="2_rfyau"]
 [ext_resource type="Texture2D" uid="uid://bc4pds86lac28" path="res://assets/placeables/Campfire.png" id="3_l2np5"]
 [ext_resource type="Resource" uid="uid://nrcqiv8lptgt" path="res://CustomResources/ItemResources/stick.tres" id="3_rfyau"]
 [ext_resource type="Texture2D" uid="uid://cj6ysxinde373" path="res://assets/placeables/Burnt_Campfire.png.png" id="4_rfyau"]
+[ext_resource type="AudioStream" uid="uid://be1qrdin6o705" path="res://assets/Audio/firesound.mp3" id="5_rfyau"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_keetx"]
 radius = 20.025
@@ -30,9 +31,11 @@ scale_min = 0.0
 scale_max = 2.5
 color = Color(0.987515, 0.6489, 0.363369, 1)
 
-[node name="Firepit" type="Node2D" node_paths=PackedStringArray("sprites", "light", "particles")]
+[node name="Firepit" type="Node2D" node_paths=PackedStringArray("sprites", "burningSound", "extinguishedSound", "light", "particles")]
 script = ExtResource("2_rfyau")
 sprites = [NodePath("Sprites/lit"), NodePath("Sprites/burnt")]
+burningSound = NodePath("Node/burning")
+extinguishedSound = NodePath("Node/extinguished")
 light = NodePath("PointLight2D")
 particles = NodePath("GPUParticles2D")
 neededRes = ExtResource("3_rfyau")
@@ -66,6 +69,14 @@ amount = 18
 speed_scale = 2.0
 collision_base_size = 0.0
 process_material = SubResource("ParticleProcessMaterial_l2np5")
+
+[node name="Node" type="Node" parent="."]
+
+[node name="burning" type="AudioStreamPlayer" parent="Node"]
+stream = ExtResource("5_rfyau")
+parameters/looping = false
+
+[node name="extinguished" type="AudioStreamPlayer" parent="Node"]
 
 [connection signal="body_entered" from="InteractionZone" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="InteractionZone" to="." method="OnBodyExited"]
