@@ -158,6 +158,8 @@ public partial class Player : RigidBody2D
             {
                 attackDir = GetLocalMousePosition().Normalized();
             }
+            
+            ((Item)equippedItem)?.Use(attackDir);
         }
 
         if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
