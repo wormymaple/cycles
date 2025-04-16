@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ItemRes" load_steps=4 format=3 uid="uid://b18uhvy2my5xf"]
 
-[ext_resource type="PackedScene" uid="uid://ybmsfpdra53e" path="res://Scenes/equippables/torch.tscn" id="1_b1l2b"]
+[ext_resource type="PackedScene" uid="uid://ybmsfpdra53e" path="res://Scenes/Equippables/torch.tscn" id="1_b1l2b"]
 [ext_resource type="Script" uid="uid://copnyh8obxo7q" path="res://CustomResources/ItemRes.cs" id="1_nr0jk"]
 [ext_resource type="Texture2D" uid="uid://c1d0s8u26dbmk" path="res://Sprites/Items/torch.png" id="1_svhu6"]
 

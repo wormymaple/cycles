@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://ybmsfpdra53e"]
 
-[ext_resource type="Texture2D" uid="uid://b1303t024o8jd" path="res://Sprites/Items/torch_ingame.png" id="1_41vrh"]
-[ext_resource type="Script" uid="uid://crdupbm75vb6l" path="res://Scripts/Items/Torch.cs" id="2_rue3w"]
-[ext_resource type="PackedScene" uid="uid://bkuuqec11fkgl" path="res://Scenes/damage_area.tscn" id="3_mwaps"]
+[ext_resource type="Texture2D" uid="uid://b1303t024o8jd" path="res://Sprites/Items/torch_ingame.png" id="1_8kqqv"]
+[ext_resource type="Script" uid="uid://crdupbm75vb6l" path="res://Scripts/Items/Torch.cs" id="2_c3i2w"]
+[ext_resource type="PackedScene" uid="uid://bkuuqec11fkgl" path="res://Scenes/damage_area.tscn" id="3_qu6ik"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_41vrh"]
 light_mode = 1
@@ -49,10 +49,10 @@ fill_to = Vector2(0.2, 0.2)
 
 [node name="Torch" type="Sprite2D"]
 z_index = -1
-texture = ExtResource("1_41vrh")
+texture = ExtResource("1_8kqqv")
 offset = Vector2(0, -4)
-script = ExtResource("2_rue3w")
-damageArea = ExtResource("3_mwaps")
+script = ExtResource("2_c3i2w")
+damageArea = ExtResource("3_qu6ik")
 damage = 10.0
 damageAreaDist = 20.0
 damageAreaSize = 20.0

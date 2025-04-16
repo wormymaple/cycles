@@ -126,6 +126,7 @@ public partial class Player : RigidBody2D
 
             float targetVel = dashCurve.Sample(dashTime / dashTimeMax) * dashPower;
             LinearVelocity = dashDir * targetVel;
+            lookDir = dashDir;
         }
         else
         {
@@ -148,6 +149,11 @@ public partial class Player : RigidBody2D
 
     public override void _Input(InputEvent @event)
     {
+        if (@event.IsActionPressed("controller_override"))
+            controllerMode = true;
+        else if (@event.IsActionPressed("keyboard_override"))
+            controllerMode = false;
+        
         if (@event.IsActionPressed("hit"))
         {
             if (isAttacking) return;
@@ -155,7 +161,7 @@ public partial class Player : RigidBody2D
             attackTime = 0;
             isAttacking = true;
             Vector2 aimDir = Input.GetVector("aim_left", "aim_right", "aim_up", "aim_down").Normalized();
-            if (controllerMode)
+            if (aimDir.Length() > 0.1f)
                 attackDir = aimDir.Length() > 0 ? aimDir : lookingDir;
             else
             {
