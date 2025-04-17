@@ -1,9 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://yfbf3udixswl"]
+[gd_scene load_steps=12 format=3 uid="uid://yfbf3udixswl"]
 
 [ext_resource type="Texture2D" uid="uid://cn8s2frx3hq3j" path="res://Sprites/GrassTileSet.png" id="1_byomg"]
 [ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
 [ext_resource type="Script" uid="uid://bfwbappijwpos" path="res://Scripts/ObjectSpawners/TreeSpawner.cs" id="3_25o4d"]
 [ext_resource type="PackedScene" uid="uid://d0donw3olqp03" path="res://Scenes/Environment/BasicTree.tscn" id="4_25o4d"]
+[ext_resource type="Script" uid="uid://cij7l76bh6s7h" path="res://Scripts/chunk logic/ItemSpawner.cs" id="5_jitx1"]
+[ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/Pickup.tscn" id="6_0i6wv"]
+[ext_resource type="Resource" uid="uid://crieuil0u4yl7" path="res://CustomResources/ItemResources/mushroom.tres" id="7_uq5s0"]
+[ext_resource type="Resource" uid="uid://dmueyrt0hi86g" path="res://CustomResources/ItemResources/stick.tres" id="8_v451w"]
+[ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="9_twuih"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bp61h"]
 texture = ExtResource("1_byomg")
@@ -26,3 +31,9 @@ script = ExtResource("3_25o4d")
 tree = ExtResource("4_25o4d")
 treeCount = 5
 spawnAreaSize = 256.0
+
+[node name="ItemSpawner" type="Node2D" parent="."]
+script = ExtResource("5_jitx1")
+spawnRadius = 256.0
+templateScene = ExtResource("6_0i6wv")
+currChunkItems = Array[Object]([ExtResource("7_uq5s0"), ExtResource("8_v451w"), ExtResource("9_twuih")])
