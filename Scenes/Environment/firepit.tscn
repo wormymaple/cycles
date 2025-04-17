@@ -31,13 +31,17 @@ scale_min = 0.0
 scale_max = 2.5
 color = Color(0.987515, 0.6489, 0.363369, 1)
 
-[node name="Firepit" type="Node2D" node_paths=PackedStringArray("sprites", "light", "particles")]
+[node name="Firepit" type="Node2D" node_paths=PackedStringArray("sprites", "burningSound", "extinguishedSound", "light", "particles")]
 script = ExtResource("2_rfyau")
 sprites = [NodePath("Sprites/lit"), NodePath("Sprites/burnt")]
+burningSound = NodePath("Node/burning")
+extinguishedSound = NodePath("Node/extinguished")
 light = NodePath("PointLight2D")
 particles = NodePath("GPUParticles2D")
 neededRes = ExtResource("3_rfyau")
 burnMaxTime = 30.0
+probValue = 1.0
+numSpawns = 2
 
 [node name="InteractionZone" type="Area2D" parent="."]
 
