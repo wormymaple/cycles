@@ -295,7 +295,7 @@ public partial class Player : RigidBody2D
     public bool AddInventoryItem(Inventory.StackData item)
     {
         if (GetInventoryUsage() >= inventorySize) return false;
-
+        
         Inventory.Add(item);
         return true;
     }

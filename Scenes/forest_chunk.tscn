@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
 [ext_resource type="Script" uid="uid://bfwbappijwpos" path="res://Scripts/ObjectSpawners/TreeSpawner.cs" id="3_25o4d"]
 [ext_resource type="PackedScene" uid="uid://d0donw3olqp03" path="res://Scenes/Environment/BasicTree.tscn" id="4_25o4d"]
-[ext_resource type="Script" uid="uid://cij7l76bh6s7h" path="res://Scripts/chunk logic/ItemSpawner.cs" id="5_jitx1"]
+[ext_resource type="Script" uid="uid://cij7l76bh6s7h" path="res://Scripts/chunk logic/LootSpawner.cs" id="5_jitx1"]
 [ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/Pickup.tscn" id="6_0i6wv"]
 [ext_resource type="Resource" uid="uid://crieuil0u4yl7" path="res://CustomResources/ItemResources/mushroom.tres" id="7_uq5s0"]
 [ext_resource type="Resource" uid="uid://dmueyrt0hi86g" path="res://CustomResources/ItemResources/stick.tres" id="8_v451w"]
@@ -34,13 +34,18 @@ tree = ExtResource("4_25o4d")
 treeCount = 5
 spawnAreaSize = 256.0
 
-[node name="ItemSpawner" type="Node2D" parent="."]
+[node name="LootSpawner" type="Node2D" parent="."]
 script = ExtResource("5_jitx1")
-spawnRadius = 256.0
 templateScene = ExtResource("6_0i6wv")
-currChunkItems = Array[Object]([ExtResource("7_uq5s0"), ExtResource("8_v451w"), ExtResource("9_twuih")])
+spawnableLoot = Array[Object]([ExtResource("7_uq5s0"), ExtResource("8_v451w"), ExtResource("9_twuih")])
+spawnableLootQtys = PackedInt32Array(3, 5, 1)
+spawnRadius = 256.0
+probValues = PackedFloat32Array(0.6, 0.2, 0.1)
+maxSpawnsPerChunk = PackedInt32Array(20, 10, 1)
 
 [node name="InteractablesSpawner" type="Node2D" parent="."]
 script = ExtResource("10_uq5s0")
+spawnableInteractables = Array[PackedScene]([ExtResource("11_v451w")])
 spawnRadius = 256.0
-currChunkInteractables = Array[PackedScene]([ExtResource("11_v451w")])
+probValues = PackedFloat32Array(1)
+maxSpawnsPerChunk = PackedInt32Array(1)
