@@ -292,11 +292,26 @@ public partial class Player : RigidBody2D
 
     int GetInventoryUsage() => Inventory.Count;
 
-    public bool AddInventoryItem(Inventory.StackData item)
+    public bool AddInventoryItem(Inventory.StackData newItem)
     {
         if (GetInventoryUsage() >= inventorySize) return false;
-        
-        Inventory.Add(item);
+        for (int i = 0; i < Inventory.Count; i++)
+        {
+            Inventory.StackData currInvItem = Inventory[i];
+            if (currInvItem.RelatedRes.Name == newItem.RelatedRes.Name)
+            {
+                int roomLeft = currInvItem.RelatedRes.MaxStack - currInvItem.StackCount;
+                while (roomLeft > 0 && newItem.StackCount > 0)
+                {
+                    currInvItem.StackCount += 1;
+                    newItem.StackCount -= 1;
+                    roomLeft -= 1;
+                }
+
+            }
+            if (newItem.StackCount < 1) return true;
+        }
+        Inventory.Add(newItem);
         return true;
     }
 

@@ -7,6 +7,7 @@ public partial class ItemRes : Resource
     [ExportCategory("rules")]
     [Export] public string Name;
     [Export] public bool Stackable, Equippable;
+    [Export] public int MaxStack;
     
     [ExportCategory("assets and scene")]
     [Export] public Texture2D InventoryTex;

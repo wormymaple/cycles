@@ -33,13 +33,14 @@ public abstract partial class SpawnerBase : Node2D
             {
                 if (rng.RandfRange(0f, 1f) < probValues[i])
                 {
-                    float x = rng.RandfRange(0, spawnRadius);
-                    float y = rng.RandfRange(0, spawnRadius);
+                    float x = rng.RandfRange(-spawnRadius, spawnRadius);
+                    float y = rng.RandfRange(-spawnRadius, spawnRadius);
 
                     Node2D newScene = CreateScene(i);
                     if (newScene != null)
                     {
                         newScene.Position = new Vector2(x, y);
+                        newScene.ZIndex = 10;
                         AddChild(newScene);
                     }
                     else

@@ -10,7 +10,7 @@ public partial class LootSpawner : SpawnerBase
     {
         Pickup newScene = (Pickup) templateScene.Instantiate();
         Inventory.StackData packagedData = new(
-            spawnableLoot[objectIndex], spawnableLootQtys[objectIndex]);
+            spawnableLoot[objectIndex], rng.RandiRange(1, spawnableLootQtys[objectIndex]));
             newScene.SetItem(packagedData);
         return newScene;
     }

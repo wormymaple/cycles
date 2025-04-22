@@ -22,6 +22,7 @@ public partial class TreeSpawner : Node2D
 			float y = rng.Randf() * spawnAreaSize;
 
 			SpawnTree(new Vector2(x,y));
+			
 		}
 	}
 
