@@ -2,25 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://bfqii4fuijewm" path="res://assets/Birds/Flying_Red_Bird.png" id="1_r31ve"]
 
-
-[sub_resource type="Animation" id="Animation_4dncd"]
-resource_name = "Flying_Blue_Bird"
-length = 0.5
-loop_mode = 1
-step = 0.1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("FlyingBlueBirdSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1),
-"update": 1,
-"values": [0, 1, 2, 3]
-}
-
 [sub_resource type="Animation" id="Animation_pnwsj"]
 length = 0.001
 tracks/0/type = "value"
@@ -35,10 +16,40 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FlyingRedBirdSprite:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_rkuw5"]
+resource_name = "Flying_Red_Bird"
+length = 0.8
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FlyingRedBirdSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 3, 2, 1]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_scuvq"]
 _data = {
-&"Flying_Blue_Bird": SubResource("Animation_4dncd"),
+&"Flying_Red_Bird": SubResource("Animation_rkuw5"),
 &"RESET": SubResource("Animation_pnwsj")
 }
 
