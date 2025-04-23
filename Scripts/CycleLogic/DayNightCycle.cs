@@ -3,6 +3,12 @@ using System;
 
 public partial class DayNightCycle : Node2D
 {
+    public enum DayState
+    {
+        Daytime,
+        Nighttime
+    }
+    
     [Signal] public delegate void DayStartedEventHandler();
     [Signal] public delegate void NightStartedEventHandler();
     [Export] Timer timer;
@@ -11,6 +17,7 @@ public partial class DayNightCycle : Node2D
     [Export] CurveXyzTexture colorCurve;
     [Export] float cutoffEnergy;
     bool isDay = true, isNight;
+    public static DayState State = DayState.Daytime;
     public void Timeout()
     {
 
@@ -34,14 +41,16 @@ public partial class DayNightCycle : Node2D
         worldLight.Energy = energy;
         worldLight.Color = new Color(red, green, blue);
         
-        if (energy < cutoffEnergy && isDay) 
+        if (energy < cutoffEnergy && isDay)
         {
+            State = DayState.Nighttime;
             EmitSignal(SignalName.NightStarted);
             isDay = false;
             isNight = true;
         }
         else if (energy > cutoffEnergy && isNight)
         {
+            State = DayState.Daytime;
             EmitSignal(SignalName.DayStarted);
             isDay = true;
             isNight = false;

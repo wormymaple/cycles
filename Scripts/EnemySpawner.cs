@@ -7,7 +7,17 @@ public partial class EnemySpawner : Node2D
     [Export] int spawnCountAtNight;
     [Export] PackedScene enemy;
     RandomNumberGenerator rng = new();
-    
+    DayNightCycle.DayState oldState = DayNightCycle.DayState.Daytime;
+
+    public override void _Process(double delta)
+    {
+        if (DayNightCycle.State != oldState)
+        {
+            if (DayNightCycle.State == DayNightCycle.DayState.Nighttime) SpawnOnNight();
+        }
+
+        oldState = DayNightCycle.State;
+    }
 
     void SpawnOnNight()
     {
