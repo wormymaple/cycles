@@ -9,8 +9,10 @@ public partial class DayNightCycle : Node2D
     [Export] DirectionalLight2D worldLight;
     [Export] Curve energyCurve;
     [Export] CurveXyzTexture colorCurve;
-    bool isDay, isNight;
-    public void Timeout(){
+    [Export] float cutoffEnergy;
+    bool isDay = true, isNight;
+    public void Timeout()
+    {
 
     }
     public override void _Ready()
@@ -19,9 +21,9 @@ public partial class DayNightCycle : Node2D
         isDay = true;
         isNight = false;
     }
+    
     public override void _Process(double delta)
-    {
-        
+    {   
         float curveInput = (float) (timer.TimeLeft/ timer.WaitTime);
         float energy = energyCurve.Sample(curveInput);
 
@@ -32,13 +34,13 @@ public partial class DayNightCycle : Node2D
         worldLight.Energy = energy;
         worldLight.Color = new Color(red, green, blue);
         
-        if (energy < .3f && isDay) 
+        if (energy < cutoffEnergy && isDay) 
         {
             EmitSignal(SignalName.NightStarted);
             isDay = false;
             isNight = true;
         }
-        else if (energy > .3f && isNight)
+        else if (energy > cutoffEnergy && isNight)
         {
             EmitSignal(SignalName.DayStarted);
             isDay = true;
