@@ -42,6 +42,8 @@ public partial class Player : RigidBody2D
     [ExportCategory("Camera and Animation")]
     [Export] Camera2D mainCamera;
 
+    [Export] private GpuParticles2D dashParticles;
+
     [Export] float wiggleSpeed, wiggleIntensity;
     [Export] float alignRotSpeed;
     [Export] float forcePerspCutoff;
@@ -128,6 +130,7 @@ public partial class Player : RigidBody2D
         }
         else
         {
+            dashParticles.Emitting = false;
             Move(fDelta);
             dashRegenTime += fDelta;
         }
@@ -170,6 +173,7 @@ public partial class Player : RigidBody2D
 
         if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
         {
+            dashParticles.Emitting = true;
             currHungerRate = dashHungerRate;
             dashSound.Play();
             isDashing = true;
@@ -288,11 +292,26 @@ public partial class Player : RigidBody2D
 
     int GetInventoryUsage() => Inventory.Count;
 
-    public bool AddInventoryItem(Inventory.StackData item)
+    public bool AddInventoryItem(Inventory.StackData newItem)
     {
         if (GetInventoryUsage() >= inventorySize) return false;
+        for (int i = 0; i < Inventory.Count; i++)
+        {
+            Inventory.StackData currInvItem = Inventory[i];
+            if (currInvItem.RelatedRes.Name == newItem.RelatedRes.Name)
+            {
+                int roomLeft = currInvItem.RelatedRes.MaxStack - currInvItem.StackCount;
+                while (roomLeft > 0 && newItem.StackCount > 0)
+                {
+                    currInvItem.StackCount += 1;
+                    newItem.StackCount -= 1;
+                    roomLeft -= 1;
+                }
 
-        Inventory.Add(item);
+            }
+            if (newItem.StackCount < 1) return true;
+        }
+        Inventory.Add(newItem);
         return true;
     }
 

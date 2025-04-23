@@ -19,6 +19,12 @@ public partial class Firepit : Node2D
 	[Export] double burnMaxTime;
 	[Export] float regenRate;
 
+	[ExportCategory("spawning logic")] 
+	[Export] private float probValue;
+	[Export] private int numSpawns;
+	
+	
+
 	private Player player;
 	private double burnTime;
 	private bool isBurning;

@@ -5,7 +5,6 @@
 [ext_resource type="Texture2D" uid="uid://blpc51ochi2j1" path="res://assets/character_sprite/body.png" id="3_5yjsd"]
 [ext_resource type="Texture2D" uid="uid://bibjslvof0ak1" path="res://assets/character_sprite/eye.png" id="4_qeouv"]
 [ext_resource type="Texture2D" uid="uid://d2xfmyh6rafuu" path="res://assets/character_sprite/hand.png" id="5_hms1l"]
-[ext_resource type="Texture2D" uid="uid://dne7v3brjrcqb" path="res://assets/character_sprite/foot.png" id="6_lw1xy"]
 [ext_resource type="Script" uid="uid://c4gsm5ls6dtey" path="res://Scripts/inventory/Inventory.cs" id="7_yghsy"]
 [ext_resource type="PackedScene" uid="uid://ch55yi5bc7d1" path="res://Scenes/UI/item_listing.tscn" id="8_6sr6s"]
 [ext_resource type="PackedScene" uid="uid://c7ekqnotff58q" path="res://Scenes/UI/equipped_arrow.tscn" id="9_krqcq"]
@@ -28,6 +27,22 @@ point_count = 3
 [sub_resource type="CircleShape2D" id="CircleShape2D_7dm0k"]
 radius = 8.0
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_woy4e"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(10, 2, 1)
+emission_shape = 3
+emission_box_extents = Vector3(0.1, 0, 1)
+direction = Vector3(0, -1, 0)
+spread = 60.0
+initial_velocity_min = 20.0
+initial_velocity_max = 30.0
+gravity = Vector3(0, 98, 0)
+damping_min = 30.0
+damping_max = 40.0
+scale_min = 0.5
+scale_max = 2.0
+color = Color(0.346045, 0.726316, 0.344937, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_5yjsd"]
 font_size = 10
 
@@ -42,7 +57,7 @@ speed = 1.0
 zoomMoveSpeed = 2.0
 targetZoom = 5.0
 
-[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("footstepSound", "swingSound", "dashSound", "mainCamera", "hands", "eyes") groups=["Player"]]
+[node name="Player" type="RigidBody2D" parent="." node_paths=PackedStringArray("footstepSound", "swingSound", "dashSound", "mainCamera", "dashParticles", "hands", "eyes") groups=["Player"]]
 gravity_scale = 0.0
 lock_rotation = true
 angular_damp = 10.0
@@ -65,6 +80,7 @@ dashPower = 350.0
 dashTimeMax = 0.3
 dashRegenTimeMax = 1.5
 mainCamera = NodePath("../Camera2D")
+dashParticles = NodePath("GPUParticles2D")
 wiggleSpeed = 10.0
 wiggleIntensity = 1.0
 alignRotSpeed = 10.0
@@ -95,13 +111,14 @@ texture = ExtResource("5_hms1l")
 z_index = 1
 texture = ExtResource("5_hms1l")
 
-[node name="foot1" type="Sprite2D" parent="Player/Body"]
-visible = false
-texture = ExtResource("6_lw1xy")
-
-[node name="foot2" type="Sprite2D" parent="Player/Body"]
-visible = false
-texture = ExtResource("6_lw1xy")
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Player"]
+z_index = -2
+position = Vector2(0, 9)
+emitting = false
+amount = 60
+lifetime = 0.7
+explosiveness = 0.3
+process_material = SubResource("ParticleProcessMaterial_woy4e")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 

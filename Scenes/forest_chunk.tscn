@@ -1,9 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://yfbf3udixswl"]
+[gd_scene load_steps=13 format=3 uid="uid://yfbf3udixswl"]
 
 [ext_resource type="Texture2D" uid="uid://cn8s2frx3hq3j" path="res://Sprites/GrassTileSet.png" id="1_byomg"]
 [ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
 [ext_resource type="Script" uid="uid://bfwbappijwpos" path="res://Scripts/ObjectSpawners/TreeSpawner.cs" id="3_25o4d"]
 [ext_resource type="PackedScene" uid="uid://d0donw3olqp03" path="res://Scenes/Environment/BasicTree.tscn" id="4_25o4d"]
+[ext_resource type="Script" uid="uid://cij7l76bh6s7h" path="res://Scripts/chunk logic/LootSpawner.cs" id="5_jitx1"]
+[ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/Pickup.tscn" id="6_0i6wv"]
+[ext_resource type="Resource" uid="uid://crieuil0u4yl7" path="res://CustomResources/ItemResources/mushroom.tres" id="7_uq5s0"]
+[ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="9_twuih"]
+[ext_resource type="Script" uid="uid://dy0f3104jfya7" path="res://Scripts/chunk logic/InteractablesSpawner.cs" id="10_uq5s0"]
+[ext_resource type="PackedScene" uid="uid://g6ik7apgklrm" path="res://Scenes/Interactables/firepit.tscn" id="11_v451w"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bp61h"]
 texture = ExtResource("1_byomg")
@@ -26,3 +32,19 @@ script = ExtResource("3_25o4d")
 tree = ExtResource("4_25o4d")
 treeCount = 5
 spawnAreaSize = 256.0
+
+[node name="LootSpawner" type="Node2D" parent="."]
+script = ExtResource("5_jitx1")
+templateScene = ExtResource("6_0i6wv")
+spawnableLoot = Array[Object]([ExtResource("9_twuih"), ExtResource("7_uq5s0")])
+spawnableLootQtys = PackedInt32Array(1, 2)
+spawnRadius = 256.0
+probValues = PackedFloat32Array(0.1, 0.45)
+maxSpawnsPerChunk = PackedInt32Array(1, 10)
+
+[node name="InteractablesSpawner" type="Node2D" parent="."]
+script = ExtResource("10_uq5s0")
+spawnableInteractables = Array[PackedScene]([ExtResource("11_v451w")])
+spawnRadius = 256.0
+probValues = PackedFloat32Array(0.25)
+maxSpawnsPerChunk = PackedInt32Array(1)

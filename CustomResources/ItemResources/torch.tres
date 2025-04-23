@@ -1,14 +1,19 @@
-[gd_resource type="Resource" script_class="ItemRes" load_steps=4 format=3 uid="uid://b18uhvy2my5xf"]
+[gd_resource type="Resource" script_class="ItemRes" load_steps=6 format=3 uid="uid://b18uhvy2my5xf"]
 
-[ext_resource type="PackedScene" uid="uid://ybmsfpdra53e" path="res://Scenes/Equippables/torch.tscn" id="1_b1l2b"]
+[ext_resource type="PackedScene" uid="uid://ybmsfpdra53e" path="res://Scenes/equippables/torch.tscn" id="1_b1l2b"]
 [ext_resource type="Script" uid="uid://copnyh8obxo7q" path="res://CustomResources/ItemRes.cs" id="1_nr0jk"]
 [ext_resource type="Texture2D" uid="uid://c1d0s8u26dbmk" path="res://Sprites/Items/torch.png" id="1_svhu6"]
+[ext_resource type="AudioStream" uid="uid://d1e48ivb7unn8" path="res://assets/Audio/fullinv.mp3" id="2_spdgc"]
+[ext_resource type="AudioStream" uid="uid://kxegmb1vgnlw" path="res://assets/Audio/torchpickup.mp3" id="4_vqmwv"]
 
 [resource]
 script = ExtResource("1_nr0jk")
 Name = "torch"
 Stackable = false
 Equippable = true
+MaxStack = 1
 InventoryTex = ExtResource("1_svhu6")
+PickupNoise = ExtResource("4_vqmwv")
+FullInvNoise = ExtResource("2_spdgc")
 EquippedScene = ExtResource("1_b1l2b")
 metadata/_custom_type_script = "uid://copnyh8obxo7q"

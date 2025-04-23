@@ -1,6 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://d0donw3olqp03"]
+[gd_scene load_steps=8 format=3 uid="uid://d0donw3olqp03"]
 
 [ext_resource type="PackedScene" uid="uid://ndu846peb18h" path="res://Trees/leaf.tscn" id="1_lruhd"]
+[ext_resource type="Script" uid="uid://cij7l76bh6s7h" path="res://Scripts/chunk logic/LootSpawner.cs" id="2_cf6g3"]
+[ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/Pickup.tscn" id="3_us005"]
+[ext_resource type="Resource" uid="uid://dmueyrt0hi86g" path="res://CustomResources/ItemResources/stick.tres" id="5_us0sk"]
 
 [sub_resource type="Curve" id="Curve_vimdi"]
 _data = [Vector2(0, 1), 0.0, -2.53991e-07, 0, 1, Vector2(0.234672, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -1.30663, 0.0, 1, 0]
@@ -137,3 +140,12 @@ rotation = 1.86111
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 5)
 shape = SubResource("CircleShape2D_vimdi")
+
+[node name="LootSpawner" type="Node2D" parent="."]
+script = ExtResource("2_cf6g3")
+templateScene = ExtResource("3_us005")
+spawnableLoot = Array[Object]([ExtResource("5_us0sk")])
+spawnableLootQtys = PackedInt32Array(3)
+spawnRadius = 20.0
+probValues = PackedFloat32Array(0.25)
+maxSpawnsPerChunk = PackedInt32Array(4)

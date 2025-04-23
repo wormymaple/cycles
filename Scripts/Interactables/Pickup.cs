@@ -16,6 +16,8 @@ public partial class Pickup : Node2D
     {
         itemData = stackData;
         pickupSprite.Texture = itemData.RelatedRes.InventoryTex;
+        pickupNoise.SetStream(itemData.RelatedRes.PickupNoise);
+        fullNoise.SetStream(itemData.RelatedRes.FullInvNoise);
     }
     public void OnBodyEntered(Node2D body)
     {
