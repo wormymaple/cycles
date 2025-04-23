@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://clwnpa0et0auh"]
+[gd_scene load_steps=13 format=3 uid="uid://clwnpa0et0auh"]
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
 [ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/Player/player_package.tscn" id="4_qumfl"]
-[ext_resource type="PackedScene" uid="uid://qo0e8k1ta88t" path="res://Scenes/Enemies/shadow_creature.tscn" id="4_r08cw"]
 [ext_resource type="Script" uid="uid://cbku8eibffkuo" path="res://Scripts/MusicHandler.cs" id="6_00287"]
 [ext_resource type="AudioStream" uid="uid://hbbg2nxohm1g" path="res://Audio/Music/summer_wip.mp3" id="7_ngcqm"]
 [ext_resource type="AudioStream" uid="uid://dmrw112uibxv4" path="res://Audio/Music/winter_test.mp3" id="8_ws1hi"]
@@ -58,15 +57,13 @@ color = Color(0, 0, 0, 1)
 
 [node name="DirectionalLight2D" type="DirectionalLight2D" parent="."]
 
-[node name="ShadowCreature" parent="." instance=ExtResource("4_r08cw")]
-position = Vector2(77, 88)
-
 [node name="DayNightCycle" type="Node2D" parent="." node_paths=PackedStringArray("timer", "worldLight")]
 script = ExtResource("9_ws1hi")
 timer = NodePath("Timer")
 worldLight = NodePath("../DirectionalLight2D")
 energyCurve = SubResource("Curve_ws1hi")
 colorCurve = SubResource("CurveXYZTexture_bjq7f")
+cutoffEnergy = 0.5
 
 [node name="Timer" type="Timer" parent="DayNightCycle"]
 wait_time = 600.0
