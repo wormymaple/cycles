@@ -1,0 +1,45 @@
+[gd_scene load_steps=8 format=3 uid="uid://crqpesfgkqbi"]
+
+[ext_resource type="Script" uid="uid://b02vowukmgeka" path="res://Scripts/Interactables/Chest.cs" id="1_k88t0"]
+[ext_resource type="Texture2D" uid="uid://c7h0qfimetfoj" path="res://assets/chest_sprite/closed.png" id="2_6cicf"]
+[ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="2_sctcq"]
+[ext_resource type="PackedScene" uid="uid://b0xexkbpe5jdb" path="res://Scenes/Items/Pickup.tscn" id="3_oebv6"]
+[ext_resource type="Texture2D" uid="uid://bja3jinwjcihy" path="res://assets/chest_sprite/open.png" id="3_sctcq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dtnaf"]
+radius = 26.0192
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sctcq"]
+radius = 8.0
+
+[node name="Chest" type="Node2D" node_paths=PackedStringArray("sprites")]
+z_index = -2
+z_as_relative = false
+script = ExtResource("1_k88t0")
+itemDrops = Array[Object]([ExtResource("2_sctcq")])
+templateScene = ExtResource("3_oebv6")
+sprites = [NodePath("Sprites/Closed"), NodePath("Sprites/Open")]
+
+[node name="InteractionZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionZone"]
+shape = SubResource("CircleShape2D_dtnaf")
+
+[node name="Sprites" type="Node2D" parent="."]
+z_index = -2
+z_as_relative = false
+
+[node name="Closed" type="Sprite2D" parent="Sprites"]
+texture = ExtResource("2_6cicf")
+
+[node name="Open" type="Sprite2D" parent="Sprites"]
+visible = false
+texture = ExtResource("3_sctcq")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource("CircleShape2D_sctcq")
+
+[connection signal="body_entered" from="InteractionZone" to="." method="OnBodyEntered"]
+[connection signal="body_exited" from="InteractionZone" to="." method="OnBodyExited"]

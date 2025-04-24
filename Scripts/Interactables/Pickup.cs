@@ -10,7 +10,7 @@ public partial class Pickup : Node2D
 
     private Player player;
     private Inventory.StackData itemData;
-    private bool queueDelete;
+    private bool queueDelete = false;
 
     public void SetItem(Inventory.StackData stackData)
     {
@@ -37,13 +37,15 @@ public partial class Pickup : Node2D
 
     public override void _Process(double delta)
     {
-        if (queueDelete && pickupNoise.Playing == false) QueueFree();
+        if (queueDelete && !pickupNoise.Playing) QueueFree();
+        
         if (player != null && Input.IsActionJustPressed("interact"))
         {
             if (player.AddInventoryItem(itemData))
             {
                 pickupNoise.Play();
                 pickupSprite.Visible = false;
+                queueDelete = true;
             }
             else fullNoise.Play();
         }

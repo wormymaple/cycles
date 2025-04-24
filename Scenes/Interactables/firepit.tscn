@@ -38,10 +38,10 @@ burningSound = NodePath("Node/burning")
 extinguishedSound = NodePath("Node/extinguished")
 light = NodePath("PointLight2D")
 particles = NodePath("GPUParticles2D")
-neededRes = ExtResource("2_egw2n")
+neededResource = ExtResource("2_egw2n")
 burnMaxTime = 30.0
-probValue = 1.0
-numSpawns = 2
+regenRate = 10.0
+neededPlayerResources = 5
 
 [node name="InteractionZone" type="Area2D" parent="."]
 
