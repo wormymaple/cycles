@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cumt1j3h4nwn3"]
+[gd_scene load_steps=22 format=3 uid="uid://cumt1j3h4nwn3"]
 
 [ext_resource type="Script" uid="uid://b1m0fbs5avpmc" path="res://Scripts/CameraController.cs" id="1_yfm5m"]
 [ext_resource type="Script" uid="uid://dat2xj8rkjc6l" path="res://Scripts/Player.cs" id="2_dmh07"]
@@ -27,11 +27,19 @@ point_count = 3
 [sub_resource type="CircleShape2D" id="CircleShape2D_7dm0k"]
 radius = 8.0
 
+[sub_resource type="Gradient" id="Gradient_woy4e"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_bu0un"]
+gradient = SubResource("Gradient_woy4e")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_woy4e"]
 particle_flag_disable_z = true
 emission_shape_scale = Vector3(10, 2, 1)
 emission_shape = 3
 emission_box_extents = Vector3(0.1, 0, 1)
+angle_min = 1.07288e-05
+angle_max = 360.0
 direction = Vector3(0, -1, 0)
 spread = 60.0
 initial_velocity_min = 20.0
@@ -41,7 +49,8 @@ damping_min = 30.0
 damping_max = 40.0
 scale_min = 0.5
 scale_max = 2.0
-color = Color(0.346045, 0.726316, 0.344937, 1)
+color = Color(0.5995, 0.66, 0.33, 1)
+color_ramp = SubResource("GradientTexture1D_bu0un")
 
 [sub_resource type="LabelSettings" id="LabelSettings_5yjsd"]
 font_size = 10
