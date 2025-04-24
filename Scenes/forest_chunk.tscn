@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://yfbf3udixswl"]
+[gd_scene load_steps=14 format=3 uid="uid://yfbf3udixswl"]
 
 [ext_resource type="Texture2D" uid="uid://cn8s2frx3hq3j" path="res://Sprites/GrassTileSet.png" id="1_byomg"]
 [ext_resource type="Script" uid="uid://yvrlptymo6g3" path="res://Scripts/ChunkTypes/Forest.cs" id="2_bp61h"]
@@ -10,9 +10,7 @@
 [ext_resource type="Resource" uid="uid://b18uhvy2my5xf" path="res://CustomResources/ItemResources/torch.tres" id="9_twuih"]
 [ext_resource type="Script" uid="uid://dy0f3104jfya7" path="res://Scripts/chunk logic/InteractablesSpawner.cs" id="10_uq5s0"]
 [ext_resource type="PackedScene" uid="uid://crqpesfgkqbi" path="res://Scenes/Interactables/Chest.tscn" id="11_twuih"]
-[ext_resource type="Script" uid="uid://lq64h5nlhjtq" path="res://Scripts/EnemySpawner.cs" id="13_twxih"]
 [ext_resource type="PackedScene" uid="uid://g6ik7apgklrm" path="res://Scenes/Interactables/firepit.tscn" id="11_v451w"]
-[ext_resource type="PackedScene" uid="uid://qo0e8k1ta88t" path="res://Scenes/Enemies/shadow_creature.tscn" id="12_twuih"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_bp61h"]
 texture = ExtResource("1_byomg")
@@ -53,7 +51,3 @@ probValues = PackedFloat32Array(0.25, 0.25)
 maxSpawnsPerChunk = PackedInt32Array(1, 1)
 
 [node name="EnemySpawner" type="Node2D" parent="."]
-script = ExtResource("11_twuih")
-spawningRange = Vector2(256, 256)
-spawnCountAtNight = 1
-enemy = ExtResource("12_twuih")
