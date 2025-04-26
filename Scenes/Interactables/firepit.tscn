@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://g6ik7apgklrm"]
+[gd_scene load_steps=11 format=3 uid="uid://g6ik7apgklrm"]
 
 [ext_resource type="Script" uid="uid://b8jje3vblxr3p" path="res://Scripts/Interactables/Firepit.cs" id="1_5n0i8"]
 [ext_resource type="Resource" uid="uid://dmueyrt0hi86g" path="res://CustomResources/ItemResources/stick.tres" id="2_egw2n"]
@@ -17,6 +17,9 @@ colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 gradient = SubResource("Gradient_wrne6")
 fill = 1
 fill_from = Vector2(0.513761, 0.481651)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_5n0i8"]
+radius = 135.0
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l2np5"]
 particle_flag_disable_z = true
@@ -62,6 +65,11 @@ visible = false
 color = Color(0.951224, 0.660313, 0.398144, 1)
 texture = SubResource("GradientTexture2D_jcp8s")
 texture_scale = 5.35
+
+[node name="LightRangeP" type="Area2D" parent="PointLight2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PointLight2D/LightRangeP"]
+shape = SubResource("CircleShape2D_5n0i8")
 
 [node name="GPUParticles2D" type="GPUParticles2D" parent="."]
 visible = false

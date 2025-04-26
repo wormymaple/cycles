@@ -12,13 +12,10 @@ position = Vector2(56, -34)
 [node name="PlayerPackage" parent="." instance=ExtResource("3_lj67a")]
 
 [node name="Player" parent="PlayerPackage" index="1"]
-currTempRate = 0.01
 dayTempRate = 0.01
 nightTempRate = 0.05
-hunger = 0.0
 maxHunger = 10.0
 defaultHungerRate = 0.01
-currHungerRate = 0.01
 dashHungerRate = 0.03
 moveHungerRate = 0.02
 eyeVerticalShift = Vector2(0, -6)

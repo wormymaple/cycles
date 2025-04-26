@@ -3,10 +3,11 @@ using System;
 
 public partial class Enemy : RigidBody2D
 {
-    [Export] float health, damage;
+    [Export] protected float health, damage;
     [Export] PackedScene deathEffect;
     protected bool playerInRange;
     protected Player player;
+    protected bool playerInAttackRange;
 
     void OnBodyEntered(Node2D body)
     {
@@ -21,6 +22,15 @@ public partial class Enemy : RigidBody2D
         if (body.IsInGroup("Player")) playerInRange = false;
     }
 
+    void DamageAreaEntered(Node2D body)
+    {
+        if (body is Player) playerInAttackRange = true;
+    }
+
+    void DamageAreaExited(Node2D body)
+    {
+        if (body is Player) playerInAttackRange = false;
+    }
     public void TakeDamage(float damage)
     {
         health -= damage;
@@ -30,7 +40,6 @@ public partial class Enemy : RigidBody2D
 
     void Die()
     {
-        GD.Print(deathEffect);
         Node2D newEffect = deathEffect.Instantiate() as Node2D; 
         GetParent().AddChild(newEffect);
         newEffect.GlobalPosition = GlobalPosition;
@@ -39,11 +48,11 @@ public partial class Enemy : RigidBody2D
         
         QueueFree();
     }
-    
-    void BodyCollision(Node body)
+
+    public override void _Ready()
     {
-        if (!body.IsInGroup("Player")) return;
-        
-        ((Player)body).TakeDamage(damage);
+        playerInAttackRange = false;
     }
+    
+    
 }

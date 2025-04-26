@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ybmsfpdra53e"]
+[gd_scene load_steps=14 format=3 uid="uid://ybmsfpdra53e"]
 
 [ext_resource type="Texture2D" uid="uid://b1303t024o8jd" path="res://Sprites/Items/torch_ingame.png" id="1_8kqqv"]
 [ext_resource type="Script" uid="uid://crdupbm75vb6l" path="res://Scripts/Items/Torch.cs" id="2_c3i2w"]
@@ -48,6 +48,9 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.2, 0.2)
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_nrj05"]
+radius = 79.7621
+
 [node name="Torch" type="Sprite2D"]
 z_index = -1
 texture = ExtResource("1_8kqqv")
@@ -72,3 +75,8 @@ position = Vector2(0, -11)
 color = Color(1, 0.643416, 0.318953, 1)
 energy = 0.5
 texture = SubResource("GradientTexture2D_mwaps")
+
+[node name="LightRange" type="Area2D" parent="PointLight2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PointLight2D/LightRange"]
+shape = SubResource("CircleShape2D_nrj05")

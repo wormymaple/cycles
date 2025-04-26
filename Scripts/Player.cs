@@ -5,42 +5,44 @@ using System.Linq;
 
 public partial class Player : RigidBody2D
 {
-    [ExportCategory("Controllers")]
-    [Export] Node2D dayNightCycle;
+    [ExportCategory("Controllers")] [Export]
+    Node2D dayNightCycle;
+
     // Sounds 
-    [ExportCategory("Sound Effects")]
-    [Export] AudioStreamPlayer footstepSound;
+    [ExportCategory("Sound Effects")] [Export]
+    AudioStreamPlayer footstepSound;
+
     [Export] AudioStreamPlayer swingSound;
     [Export] AudioStreamPlayer dashSound;
 
-    [ExportCategory("Stats")]
-    [Export] float speed;
-    [Export] public float health;
+    [ExportCategory("Stats")] [Export] float speed;
+    public float health;
     [Export] public float maxHealth;
     [Export] public float temp;
     [Export] public float maxTemp;
-    [Export] public float currTempRate;
+    public float currTempRate;
     [Export] public float dayTempRate;
     [Export] public float nightTempRate;
-    [Export] public float hunger;
+    public float hunger;
     [Export] public float maxHunger;
     [Export] float defaultHungerRate;
-    [Export] public float currHungerRate;
+    public float currHungerRate;
     [Export] float dashHungerRate;
     [Export] float moveHungerRate;
     [Export] public int attackDamage;
     [Export] public int inventorySize;
 
-    [ExportCategory("Player Logic")]
-    [Export] float attackTimeMax;
+    [ExportCategory("Player Logic")] [Export]
+    float attackTimeMax;
+
     [Export] Curve attackCurve;
 
     [Export] Curve dashCurve;
     [Export] float dashPower;
     [Export] float dashTimeMax, dashRegenTimeMax;
 
-    [ExportCategory("Camera and Animation")]
-    [Export] Camera2D mainCamera;
+    [ExportCategory("Camera and Animation")] [Export]
+    Camera2D mainCamera;
 
     [Export] private GpuParticles2D dashParticles;
 
@@ -54,8 +56,7 @@ public partial class Player : RigidBody2D
 
     [Export] Vector2 eyeOffset;
     [Export] Vector2 eyeVerticalShift;
-    [ExportCategory("Sprites")]
-    [Export] Sprite2D[] hands;
+    [ExportCategory("Sprites")] [Export] Sprite2D[] hands;
     [Export] Sprite2D[] eyes;
     public List<Inventory.StackData> Inventory = [];
     Node2D equippedItem;
@@ -69,19 +70,22 @@ public partial class Player : RigidBody2D
     // attack vars
     Vector2 attackDir;
     float attackTime;
-    bool isAttacking;
+    public bool isAttacking;
 
     // animation vars
     float wiggleT;
     Vector2 lookDir, lookingDir;
 
     bool controllerMode;
-    
+
     // Signals
-    public void DayStarted(){
+    public void DayStarted()
+    {
         currTempRate = dayTempRate;
     }
-    public void NightStarted(){
+
+    public void NightStarted()
+    {
         currTempRate = nightTempRate;
     }
 
@@ -92,6 +96,7 @@ public partial class Player : RigidBody2D
             stat -= fDelta * reductionRate;
         }
     }
+
     public void IncrementStats(float additionRate, ref float stat, float maxStat, float fDelta)
     {
         if (stat < maxStat)
@@ -134,6 +139,7 @@ public partial class Player : RigidBody2D
             Move(fDelta);
             dashRegenTime += fDelta;
         }
+
         if (isAttacking)
         {
             attackTime += fDelta;
@@ -153,7 +159,7 @@ public partial class Player : RigidBody2D
             controllerMode = true;
         else if (@event.IsActionPressed("keyboard_override"))
             controllerMode = false;
-        
+
         if (@event.IsActionPressed("hit"))
         {
             if (isAttacking) return;
@@ -167,7 +173,7 @@ public partial class Player : RigidBody2D
             {
                 attackDir = GetLocalMousePosition().Normalized();
             }
-            
+
             ((Item)equippedItem)?.Use(attackDir);
         }
 
@@ -199,6 +205,7 @@ public partial class Player : RigidBody2D
             currHungerRate = defaultHungerRate;
             lookDir = GetLocalMousePosition().Normalized();
         }
+
         wiggleT += delta * inputDir.Length();
         LinearVelocity = inputDir * speed;
     }
@@ -211,6 +218,7 @@ public partial class Player : RigidBody2D
             GD.PrintErr("SetZIndexes: spriteNodes and perpDirs length do not match");
             return;
         }
+
         bool perspCutoff = Mathf.Abs(targetDir.X) < forcePerspCutoff;
 
         for (int i = 0; i < spriteNodes.Length; i++)
@@ -225,6 +233,7 @@ public partial class Player : RigidBody2D
                 spriteNodes[i].ZIndex = (perpDirs[i].Y < 0 ? -1 : 1) * targetZIndex;
         }
     }
+
     void AnimateAttack(Vector2 attackDir)
     {
         float sample = attackCurve.Sample(attackTime / attackTimeMax);
@@ -244,6 +253,7 @@ public partial class Player : RigidBody2D
         Vector2[] perpDirs = [perpDir, -perpDir, perpDir, -perpDir];
         SetZIndexes(spriteNodes, perpDirs, simulatedLookDir, targetZIndices);
     }
+
     void AnimateBodyParts(
         Sprite2D[] bodyParts,
         Vector2[] perpDirs,
@@ -265,6 +275,7 @@ public partial class Player : RigidBody2D
         int[] zIndices = [targetZIndex, targetZIndex];
         SetZIndexes(bodyParts, perpDirs, lookingDir, zIndices);
     }
+
     void Animate(float delta)
     {
         Vector2 perpDir = lookingDir.Rotated(Mathf.Pi / 2);
@@ -286,7 +297,6 @@ public partial class Player : RigidBody2D
             Vector2 wiggle = Mathf.Sin(wiggleT * wiggleSpeed) * wiggleIntensity * lookingDir;
             AnimateBodyParts(hands, perpDirs, handOffset, handVerticalShift, wiggle, 3);
             AnimateBodyParts(eyes, perpDirs, eyeOffset, eyeVerticalShift, wiggle, 1);
-
         }
     }
 
@@ -307,10 +317,11 @@ public partial class Player : RigidBody2D
                     newItem.StackCount -= 1;
                     roomLeft -= 1;
                 }
-
             }
+
             if (newItem.StackCount < 1) return true;
         }
+
         Inventory.Add(newItem);
         return true;
     }
@@ -362,6 +373,7 @@ public partial class Player : RigidBody2D
                 targetElements.Add(currItem);
             }
         }
+
         if (currCount < targetAmount) return false;
 
         foreach (var currItem in targetElements)
@@ -377,14 +389,18 @@ public partial class Player : RigidBody2D
                 currItem.StackCount -= targetAmount;
                 targetAmount = 0;
             }
-
         }
+
         return targetAmount == 0;
     }
 
     public void TakeDamage(float enemyDamage)
     {
         health -= enemyDamage;
-        GD.Print("health: " + health);
+        if (health <= 0)
+        {
+            GD.Print("dead");
+            QueueFree();
+        }
     }
 }

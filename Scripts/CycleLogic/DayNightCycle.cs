@@ -16,6 +16,7 @@ public partial class DayNightCycle : Node2D
     [Export] Curve energyCurve;
     [Export] CurveXyzTexture colorCurve;
     [Export] float cutoffEnergy;
+    [Export] private AudioStreamPlayer daySound, nightSound;
     bool isDay = true, isNight;
     public static DayState State = DayState.Daytime;
     public void Timeout()
@@ -43,6 +44,7 @@ public partial class DayNightCycle : Node2D
         
         if (energy < cutoffEnergy && isDay)
         {
+            nightSound.Play();
             State = DayState.Nighttime;
             EmitSignal(SignalName.NightStarted);
             isDay = false;
@@ -50,6 +52,7 @@ public partial class DayNightCycle : Node2D
         }
         else if (energy > cutoffEnergy && isNight)
         {
+            daySound.Play();
             State = DayState.Daytime;
             EmitSignal(SignalName.DayStarted);
             isDay = true;
