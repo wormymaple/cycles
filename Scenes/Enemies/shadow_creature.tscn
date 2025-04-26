@@ -57,12 +57,15 @@ z_index = 1
 z_as_relative = false
 gravity_scale = 0.0
 lock_rotation = true
+contact_monitor = true
+max_contacts_reported = 1
 linear_damp = 2.5
 script = ExtResource("1_xch67")
 moveSpeed = 30.0
 scaredItems = Array[Object]([ExtResource("2_6nxvi")])
 scaredDist = 100.0
 health = 25.0
+damage = 10.0
 deathEffect = ExtResource("3_6nxvi")
 
 [node name="Area2D" type="Area2D" parent="."]
@@ -92,5 +95,6 @@ color = Color(0.672, 0.528, 0.96, 1)
 energy = 0.25
 texture = SubResource("GradientTexture2D_6nxvi")
 
+[connection signal="body_entered" from="." to="." method="BodyCollision"]
 [connection signal="body_entered" from="Area2D" to="." method="OnBodyEntered"]
 [connection signal="body_exited" from="Area2D" to="." method="OnBodyExited"]

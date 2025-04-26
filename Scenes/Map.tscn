@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://clwnpa0et0auh"]
+[gd_scene load_steps=14 format=3 uid="uid://clwnpa0et0auh"]
 
 [ext_resource type="Script" uid="uid://cakd4nc31j8gb" path="res://Scripts/chunk logic/ChunkLoader.cs" id="1_s486e"]
 [ext_resource type="PackedScene" uid="uid://yfbf3udixswl" path="res://Scenes/forest_chunk.tscn" id="2_7yn8b"]
 [ext_resource type="PackedScene" uid="uid://cumt1j3h4nwn3" path="res://Scenes/Player/player_package.tscn" id="4_qumfl"]
 [ext_resource type="Script" uid="uid://cbku8eibffkuo" path="res://Scripts/MusicHandler.cs" id="6_00287"]
 [ext_resource type="AudioStream" uid="uid://hbbg2nxohm1g" path="res://Audio/Music/summer_wip.mp3" id="7_ngcqm"]
+[ext_resource type="PackedScene" uid="uid://qo0e8k1ta88t" path="res://Scenes/Enemies/shadow_creature.tscn" id="8_ngcqm"]
 [ext_resource type="AudioStream" uid="uid://dmrw112uibxv4" path="res://Audio/Music/winter_test.mp3" id="8_ws1hi"]
 [ext_resource type="Script" uid="uid://nogio3n7hvi4" path="res://Scripts/CycleLogic/DayNightCycle.cs" id="9_ws1hi"]
 
@@ -72,6 +73,8 @@ autostart = true
 script = ExtResource("6_00287")
 tracks = Array[AudioStream]([ExtResource("7_ngcqm"), ExtResource("8_ws1hi")])
 trackDelay = 60.0
+
+[node name="ShadowCreature" parent="." instance=ExtResource("8_ngcqm")]
 
 [connection signal="timeout" from="DayNightCycle/Timer" to="DayNightCycle" method="Timout"]
 
