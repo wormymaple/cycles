@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class StatsContainer : Godot.GridContainer
+public partial class StatsContainer : GridContainer
 {
     [Export] Player player;
     [Export] ColorRect healthBar;

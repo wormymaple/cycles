@@ -381,4 +381,10 @@ public partial class Player : RigidBody2D
         }
         return targetAmount == 0;
     }
+
+    public void TakeDamage(float enemyDamage)
+    {
+        health -= enemyDamage;
+        GD.Print("health: " + health);
+    }
 }

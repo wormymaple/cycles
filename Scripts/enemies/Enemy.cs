@@ -3,7 +3,7 @@ using System;
 
 public partial class Enemy : RigidBody2D
 {
-    [Export] float health;
+    [Export] float health, damage;
     [Export] PackedScene deathEffect;
     protected bool playerInRange;
     protected Player player;
@@ -38,5 +38,12 @@ public partial class Enemy : RigidBody2D
         // ADD ITEM DROP
         
         QueueFree();
+    }
+    
+    void BodyCollision(Node body)
+    {
+        if (!body.IsInGroup("Player")) return;
+        
+        ((Player)body).TakeDamage(damage);
     }
 }
