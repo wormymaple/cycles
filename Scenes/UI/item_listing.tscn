@@ -3,7 +3,6 @@
 [ext_resource type="Texture2D" uid="uid://c1d0s8u26dbmk" path="res://Sprites/Items/torch.png" id="1_h2217"]
 [ext_resource type="Script" uid="uid://cmfh6aqatqp1e" path="res://Scripts/inventory/InventoryItem.cs" id="2_jyd5o"]
 
-
 [node name="ItemLabel" type="TextureRect" node_paths=PackedStringArray("itemLabel")]
 custom_minimum_size = Vector2(250, 80)
 mouse_filter = 0
@@ -20,11 +19,12 @@ anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 80.0
 offset_top = -20.0
-offset_right = 180.0
+offset_right = 189.0
 offset_bottom = 20.0
 grow_vertical = 2
 mouse_filter = 2
 text = "ItemLabel (1)"
+fit_content = true
 autowrap_mode = 0
 vertical_alignment = 1
 

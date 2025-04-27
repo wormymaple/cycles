@@ -47,8 +47,7 @@ public partial class ShadowCreature : Enemy
         if (playerInAttackRange && !inLight)
         {
             if(!attackSound.Playing) attackSound.Play();
-            player.TakeDamage(damage * (float) delta);
-            
+            player.ModifyHealth(-(damage * (float) delta));
         }
 
         LinearVelocity = dirToPlayer.Normalized() * moveSpeed * moveDir;

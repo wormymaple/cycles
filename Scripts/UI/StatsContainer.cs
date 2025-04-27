@@ -15,9 +15,9 @@ public partial class StatsContainer : GridContainer
     
     public override void _Process(double delta)
     {
-        float healthPerc = player.health / player.maxHealth;
-        float hungerPerc = player.hunger / player.maxHunger;
-        float tempPerc = player.temp / player.maxTemp;
+        float healthPerc = player.GetHealthPerc();
+        float hungerPerc = player.GetHungerPerc();
+        float tempPerc = player.GetTempPerc();
         
         healthBar.Size = new Vector2 (healthBarSize * healthPerc, healthBar.Size.Y);
         hungerBar.Size = new Vector2 (hungerBarSize * hungerPerc, hungerBar.Size.Y);

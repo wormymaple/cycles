@@ -5,47 +5,47 @@ using System.Linq;
 
 public partial class Player : RigidBody2D
 {
-    [ExportCategory("Controllers")] [Export]
-    Node2D dayNightCycle;
+    // Exports 
+    
+    [ExportCategory("Controllers")] 
+    [Export] Node2D dayNightCycle;
 
     // Sounds 
-    [ExportCategory("Sound Effects")] [Export]
-    AudioStreamPlayer footstepSound;
-
+    [ExportCategory("Sound Effects")] 
+    [Export] AudioStreamPlayer footstepSound;
     [Export] AudioStreamPlayer swingSound;
     [Export] AudioStreamPlayer dashSound;
 
-    [ExportCategory("Stats")] [Export] float speed;
-    public float health;
-    [Export] public float maxHealth;
-    [Export] public float temp;
-    [Export] public float maxTemp;
-    public float currTempRate;
-    [Export] public float dayTempRate;
-    [Export] public float nightTempRate;
-    public float hunger;
-    [Export] public float maxHunger;
-    [Export] float defaultHungerRate;
-    public float currHungerRate;
+    [ExportCategory("Stats Maxs")] 
+    [Export] float defaultMaxSpeed;
+    [Export] float defaultMaxHealth;
+    [Export] private float defaultMaxTemp;
+    [Export] float defaultMaxHunger;
+    [Export] public int defaultAttackDamage;
+    
+    [ExportCategory("Stat rates")]
+    [Export] private float dayTempRate;
+    [Export] private float nightTempRate;
+    [Export] float idleHungerRate;
     [Export] float dashHungerRate;
     [Export] float moveHungerRate;
-    [Export] public int attackDamage;
+    
+    [ExportCategory("debufs")]
+    [Export] float hungrySpeed;
+    
+    [ExportCategory("Inv")]
     [Export] public int inventorySize;
-
-    [ExportCategory("Player Logic")] [Export]
-    float attackTimeMax;
-
+    
+    [ExportCategory("Player Logic")] 
+    [Export] float attackTimeMax;
     [Export] Curve attackCurve;
-
     [Export] Curve dashCurve;
     [Export] float dashPower;
     [Export] float dashTimeMax, dashRegenTimeMax;
 
-    [ExportCategory("Camera and Animation")] [Export]
-    Camera2D mainCamera;
-
+    [ExportCategory("Camera and Animation")] 
+    [Export] Camera2D mainCamera;
     [Export] private GpuParticles2D dashParticles;
-
     [Export] float wiggleSpeed, wiggleIntensity;
     [Export] float alignRotSpeed;
     [Export] float forcePerspCutoff;
@@ -56,12 +56,38 @@ public partial class Player : RigidBody2D
 
     [Export] Vector2 eyeOffset;
     [Export] Vector2 eyeVerticalShift;
-    [ExportCategory("Sprites")] [Export] Sprite2D[] hands;
+    
+    [ExportCategory("Sprites")]
+    [Export] Sprite2D[] hands;
     [Export] Sprite2D[] eyes;
-    public List<Inventory.StackData> Inventory = [];
+    
+    //encapsulated fields
+    
+    public List<Inventory.StackData> Inventory;
     Node2D equippedItem;
     public Inventory.StackData EquippedItemData;
+    
+    
+    //stat vars
+    
+    private float maxHealth;
+    private float currHealth;
+    
+    private float maxSpeed;
+    private float currSpeed;
 
+    private float minTemp;
+    private float maxTemp;
+    private float currTemp;
+    private float currTempRate;
+    private float currClothingModifier;
+
+    private float maxHunger;
+    private float currHunger;
+    private float currHungerRate;
+    
+    private float currAttackDamage;
+    
     // Dash vars
     Vector2 dashDir;
     bool isDashing;
@@ -82,49 +108,112 @@ public partial class Player : RigidBody2D
     public void DayStarted()
     {
         currTempRate = dayTempRate;
+        minTemp = maxTemp / 2;
     }
 
     public void NightStarted()
     {
         currTempRate = nightTempRate;
+        minTemp = 0f;
     }
 
-    public void DecrementStats(float reductionRate, ref float stat, float fDelta)
+    public void Die()
     {
-        if (stat > 0f)
+        QueueFree();
+    }
+    // Getters
+    public float GetHealthPerc()
+    {
+        return currHealth/maxHealth;
+    }
+    public float GetHungerPerc()
+    {
+        return currHunger/maxHunger;
+    }
+    public float GetTempPerc()
+    {
+        return currTemp/maxTemp;
+    }
+    // Setters
+    public void ModifyHunger(float value)
+    {
+        currHunger = Mathf.Clamp(currHunger+value, 0, maxHunger);
+        if (currHunger == maxHunger)
         {
-            stat -= fDelta * reductionRate;
+            currSpeed = hungrySpeed;
+        }
+        else
+        {
+            currSpeed = maxSpeed;
+        }
+    }
+    public void ModifyTemp(float value)
+    {
+        currTemp = Mathf.Clamp(currTemp+(value*(1f - currClothingModifier)), minTemp, maxTemp);
+        if (currTemp == 0) Die();
+    }
+
+    public void ModifyHealth(float value)
+    {
+        currHealth = Mathf.Clamp(currHealth+value, 0, maxHealth);
+        if (currHealth == 0)
+        {
+            Die();
         }
     }
 
-    public void IncrementStats(float additionRate, ref float stat, float maxStat, float fDelta)
+    public void ModifySpeed(float value)
     {
-        if (stat < maxStat)
-        {
-            stat += fDelta * additionRate;
-        }
+        currSpeed = value;
+    }
+
+    public void ModifyAttackDamage(float value)
+    {
+        currAttackDamage = value;
+    }
+
+    public void ModifyClothingModifier(float value)
+    {
+        currClothingModifier = value;
     }
 
     public override void _Ready()
     {
+        maxHealth = defaultMaxHealth;
+        maxHunger = defaultMaxHunger;
+        maxTemp = defaultMaxTemp;
+        maxSpeed = defaultMaxSpeed;
+
+        currHealth = maxHealth;
+        currTemp = maxTemp;
+        minTemp = maxTemp / 2;
+        currTempRate = dayTempRate;
+        currHunger = 0;
+        currHungerRate = idleHungerRate;
+        currSpeed = defaultMaxSpeed;
+        
         lookDir = Vector2.Down;
         lookingDir = Vector2.Down;
+        
+        
         dashRegenTime = dashRegenTimeMax;
-        // inventory = new List<Inventory.StackData>(inventorySize); REPLACE AFTER TESTING
+        Inventory = new List<Inventory.StackData>();
     }
 
 
     public override void _Process(double delta)
     {
         float fDelta = (float)delta;
-        IncrementStats(currHungerRate, ref hunger, maxHunger, fDelta);
-        DecrementStats(currTempRate, ref temp, fDelta);
+        
+        ModifyHunger(currHungerRate * fDelta);
+        ModifyTemp(currTempRate * fDelta);
+        
         if (isDashing)
         {
             dashTime += fDelta;
             if (dashTime > dashTimeMax)
             {
-                currHungerRate = defaultHungerRate;
+                currHungerRate = idleHungerRate;
                 dashTime = dashTimeMax;
                 isDashing = false;
             }
@@ -177,7 +266,7 @@ public partial class Player : RigidBody2D
             ((Item)equippedItem)?.Use(attackDir);
         }
 
-        if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax)
+        if (@event.IsActionPressed("dash") && dashRegenTime >= dashRegenTimeMax && currHunger != 0)
         {
             dashParticles.Emitting = true;
             currHungerRate = dashHungerRate;
@@ -202,12 +291,12 @@ public partial class Player : RigidBody2D
         }
         else if (!controllerMode && !isAttacking)
         {
-            currHungerRate = defaultHungerRate;
+            currHungerRate = idleHungerRate;
             lookDir = GetLocalMousePosition().Normalized();
         }
 
         wiggleT += delta * inputDir.Length();
-        LinearVelocity = inputDir * speed;
+        LinearVelocity = inputDir * currSpeed;
     }
 
     // Animation Methods
@@ -393,14 +482,5 @@ public partial class Player : RigidBody2D
 
         return targetAmount == 0;
     }
-
-    public void TakeDamage(float enemyDamage)
-    {
-        health -= enemyDamage;
-        if (health <= 0)
-        {
-            GD.Print("dead");
-            QueueFree();
-        }
-    }
+    
 }

@@ -14,6 +14,8 @@ public partial class ItemRes : Resource
     [Export] public AudioStream PickupNoise;
     [Export] public AudioStream FullInvNoise;
     [Export] public PackedScene EquippedScene;
+    [Export] public bool Edible;
+    [Export] public float hungerRegen;
     public ItemRes() : this("none", true, false, null, null)
     {
     }

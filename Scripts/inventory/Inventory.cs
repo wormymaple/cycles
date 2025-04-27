@@ -31,13 +31,17 @@ public partial class Inventory : Control
 
 	public override void _Ready()
 	{
-		// TORCH TESTING - REMOVE LATER
-		StackData testStackData = new(items[0], 0);
-		player.AddInventoryItem(testStackData);
-		player.AddInventoryItem(testStackData);
-		// END
+		
 	}
 
+	public override void _Process(double delta)
+	{
+		if (open)
+		{
+			CloseInventory();
+			OpenInventory();
+		}
+	}
 	public override void _Input(InputEvent @event)
 	{
 		if (@event.IsActionPressed("inventory")) ToggleInventory();
@@ -76,7 +80,11 @@ public partial class Inventory : Control
 	public void EquipItem(InventoryItem item)
 	{
 		if (player.EquippedItemData == item.ItemData) return; // Unequip?
-		
+		if (item.ItemData.RelatedRes.Edible)
+		{
+			player.ConsumeInventoryItem(item.ItemData.RelatedRes, 1);
+			player.ModifyHunger(-item.ItemData.RelatedRes.hungerRegen);
+		}
 		player.EquipInventoryItem(item.ItemData);
 		SpawnEquippedIcon(item);
 	}

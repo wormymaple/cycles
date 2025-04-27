@@ -14,8 +14,6 @@ position = Vector2(56, -34)
 [node name="Player" parent="PlayerPackage" index="1"]
 dayTempRate = 0.01
 nightTempRate = 0.05
-maxHunger = 10.0
-defaultHungerRate = 0.01
 dashHungerRate = 0.03
 moveHungerRate = 0.02
 eyeVerticalShift = Vector2(0, -6)

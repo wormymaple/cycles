@@ -44,12 +44,11 @@ chunkSize = 256.0
 
 [node name="Player" parent="PlayerPackage" index="1" node_paths=PackedStringArray("dayNightCycle")]
 dayNightCycle = NodePath("../../DayNightCycle")
-dayTempRate = 0.01
-nightTempRate = 0.5
-maxHunger = 10.0
-defaultHungerRate = 0.01
-dashHungerRate = 1.0
-moveHungerRate = 0.2
+dayTempRate = -0.5
+nightTempRate = -1.0
+idleHungerRate = 0.2
+dashHungerRate = 2.0
+moveHungerRate = 0.4
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(0, 0, 0, 1)
@@ -67,7 +66,7 @@ daySound = NodePath("DaySound")
 nightSound = NodePath("NightSound")
 
 [node name="Timer" type="Timer" parent="DayNightCycle"]
-wait_time = 600.0
+wait_time = 20.0
 autostart = true
 
 [node name="DaySound" type="AudioStreamPlayer" parent="DayNightCycle"]
@@ -82,6 +81,8 @@ script = ExtResource("6_00287")
 tracks = Array[AudioStream]([ExtResource("7_ngcqm"), ExtResource("8_ws1hi")])
 trackDelay = 60.0
 
+[connection signal="DayStarted" from="DayNightCycle" to="PlayerPackage/Player" method="DayStarted"]
+[connection signal="NightStarted" from="DayNightCycle" to="PlayerPackage/Player" method="NightStarted"]
 [connection signal="timeout" from="DayNightCycle/Timer" to="DayNightCycle" method="Timout"]
 
 [editable path="PlayerPackage"]

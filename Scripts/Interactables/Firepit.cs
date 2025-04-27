@@ -69,8 +69,7 @@ public partial class Firepit : InteractableBase
         }
 
         if (player == null) return;
-        
-        player.IncrementStats(regenRate, ref player.health, player.maxHealth, (float)delta);
-        player.IncrementStats(regenRate, ref player.temp, player.maxTemp, (float)delta);
+        player.ModifyHealth(regenRate*(float)delta);
+        player.ModifyTemp(regenRate*(float)delta);
     }
 }

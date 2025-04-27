@@ -14,4 +14,6 @@ MaxStack = 15
 InventoryTex = ExtResource("1_0bmpn")
 PickupNoise = ExtResource("3_67b1a")
 FullInvNoise = ExtResource("1_myig4")
+Edible = true
+hungerRegen = 5.0
 metadata/_custom_type_script = "uid://copnyh8obxo7q"
